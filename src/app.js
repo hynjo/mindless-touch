@@ -9,6 +9,15 @@ const params = new URLSearchParams(window.location.search);
 const debug = params.get("debug") === "1";
 const MAX_MOUSE_MOVEMENT = 10;
 const MAX_TOUCH_MOVEMENT = 24;
+const DEFAULT_LEVEL = 5;
+const MIN_LEVEL = 1;
+const MAX_LEVEL = 10;
+const requestedLevel = Number.parseInt(params.get("level"), 10);
+const level = Number.isNaN(requestedLevel)
+  ? DEFAULT_LEVEL
+  : Math.min(MAX_LEVEL, Math.max(MIN_LEVEL, requestedLevel));
+const maxArea = 0.18 * (0.8 ** (level - 1));
+const difficulty = { minArea: maxArea * 0.5, maxArea };
 
 const debugPanel = debug ? document.createElement("output") : null;
 if (debugPanel) {
@@ -54,6 +63,8 @@ function updateDebugPanel() {
     `AudioContext: ${audioDebug.state}`,
     `Sample rate: ${audioDebug.sampleRate ?? "n/a"}`,
     `Playback latency: ${audioDebug.playbackLatency ?? "n/a"} ms`,
+    `Level: ${level}`,
+    `Target area: ${blob ? `${(blob.targetArea * 100).toFixed(1)}%` : "n/a"}`,
     `Game phase: ${phase}`,
     `Last input: ${lastInputAction}`,
     `Last action: ${lastAudioAction}`,
@@ -119,7 +130,7 @@ function draw() {
 
 function beginRound() {
   round += 1;
-  blob = generateBlob(`${baseSeed}:${round}`);
+  blob = generateBlob(`${baseSeed}:${round}`, difficulty);
   misses = [];
   correctTap = null;
   phase = "playing";
