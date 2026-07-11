@@ -12,6 +12,7 @@ const introEnabled = params.get("intro") !== "0";
 const MAX_MOUSE_MOVEMENT = 10;
 const MAX_TOUCH_MOVEMENT = 24;
 const NEXT_ROUND_DELAY = 200;
+const EYE_CLOSE_DELAY = 250;
 const DEFAULT_LEVEL = 5;
 const MIN_LEVEL = 1;
 const MAX_LEVEL = 10;
@@ -395,8 +396,11 @@ function handleTap(point, startedPhase = phase, startedRound = round) {
     status.textContent = "Correct. The next round will start after the sound.";
     lastAudioAction = "playCorrect";
     catEyes.classList.remove("is-celebrating");
-    void catEyes.offsetWidth;
-    catEyes.classList.add("is-celebrating");
+    window.setTimeout(() => {
+      if (phase !== "transitioning" || round !== startedRound) return;
+      void catEyes.offsetWidth;
+      catEyes.classList.add("is-celebrating");
+    }, EYE_CLOSE_DELAY);
     updateDebugPanel();
     sound.playCorrect(() => {
       if (phase !== "transitioning" || round !== startedRound) return;
