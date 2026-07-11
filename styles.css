@@ -76,9 +76,33 @@ body {
   }
 }
 
+.cat-eyes.is-celebrating .cat-eye {
+  animation: cat-eye-close 500ms cubic-bezier(0.45, 0, 0.55, 1) both;
+  will-change: clip-path;
+}
+
+@keyframes cat-eye-close {
+  0%,
+  24% {
+    clip-path: inset(0 0 0 0 round 50%);
+  }
+
+  60% {
+    clip-path: inset(48% 0 48% 0 round 50%);
+  }
+
+  100% {
+    clip-path: inset(50% 0 50% 0 round 50%);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .cat-eyes.is-celebrating {
     animation: cat-eyes-celebrate-reduced 300ms ease-out both;
+  }
+
+  .cat-eyes.is-celebrating .cat-eye {
+    animation: none;
   }
 
   @keyframes cat-eyes-celebrate-reduced {
