@@ -43,6 +43,8 @@ const generatedSeed = globalThis.crypto?.randomUUID?.() ?? fallbackSeed;
 const baseSeed = params.get("seed") ?? generatedSeed;
 const sound = new SoundEngine({
   revealUrl: `${import.meta.env.BASE_URL}assets/reveal.wav`,
+  wrongUrl: `${import.meta.env.BASE_URL}assets/wrong.wav`,
+  foundUrl: `${import.meta.env.BASE_URL}assets/found.wav`,
 });
 app.querySelectorAll(".cat-eyes").forEach((element) => element.remove());
 const catEyes = document.createElement("div");

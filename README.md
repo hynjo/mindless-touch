@@ -58,7 +58,7 @@ http://localhost:5173/mindless-touch/?level=8
 
 ## 사운드 에셋
 
-`reveal` 피드백은 `public/assets/reveal.wav` 파일을 사용합니다. 나머지 효과음은 브라우저에서 합성합니다.
+`reveal` 피드백은 `public/assets/reveal.wav`, 오답 피드백은 `public/assets/wrong.wav`, `found` 피드백은 `public/assets/found.wav` 파일을 사용합니다. 나머지 효과음은 브라우저에서 합성합니다.
 
 ## 디버그
 

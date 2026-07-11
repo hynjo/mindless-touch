@@ -8,13 +8,6 @@ const SOUND_DEFINITIONS = {
     { frequency: 523.25, start: 0, duration: 0.18, gain: 0.34 },
     { frequency: 783.99, start: 0.1, duration: 0.28, gain: 0.36 },
   ],
-  found: [
-    { frequency: 587.33, start: 0, duration: 0.1, gain: 0.28 },
-    { frequency: 698.46, start: 0.08, duration: 0.14, gain: 0.3 },
-  ],
-  wrong: [
-    { frequency: 164.81, start: 0, duration: 0.11, type: "triangle", gain: 0.24 },
-  ],
 };
 
 function writeText(view, offset, text) {
@@ -93,7 +86,7 @@ function createFileAudio(url) {
 }
 
 export class SoundEngine {
-  constructor({ revealUrl = null } = {}) {
+  constructor({ revealUrl = null, wrongUrl = null, foundUrl = null } = {}) {
     this.lastError = null;
     this.playbackLatency = null;
     this.stateListener = null;
@@ -108,7 +101,10 @@ export class SoundEngine {
     this.sounds = Object.fromEntries(
       Object.entries(this.samples).map(([name, samples]) => [name, createAudio(samples)]),
     );
-    this.externalAudioUrls = revealUrl ? { reveal: revealUrl } : {};
+    this.externalAudioUrls = Object.fromEntries(
+      Object.entries({ reveal: revealUrl, wrong: wrongUrl, found: foundUrl })
+        .filter(([, url]) => url),
+    );
     for (const [name, url] of Object.entries(this.externalAudioUrls)) {
       this.sounds[name] = createFileAudio(url);
     }
