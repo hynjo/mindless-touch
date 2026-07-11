@@ -135,6 +135,25 @@ function draw() {
   catEyes.style.width = `${blob.width * window.innerWidth}px`;
   catEyes.style.height = `${blob.height * window.innerHeight}px`;
 
+  if (debug) {
+    context.save();
+    context.setLineDash([6, 4]);
+    context.lineWidth = 1;
+    context.strokeStyle = "rgba(255, 255, 255, 0.65)";
+    context.beginPath();
+    context.ellipse(
+      (blob.hitX + blob.hitWidth / 2) * window.innerWidth,
+      (blob.hitY + blob.hitHeight / 2) * window.innerHeight,
+      (blob.hitWidth * window.innerWidth) / 2,
+      (blob.hitHeight * window.innerHeight) / 2,
+      0,
+      0,
+      Math.PI * 2,
+    );
+    context.stroke();
+    context.restore();
+  }
+
   if (isRevealed && debug) {
     misses.forEach((point) => drawPoint(point, 3, "rgba(255, 255, 255, 0.55)"));
     drawPoint(correctTap, 7, "#000000", "#ffffff");
