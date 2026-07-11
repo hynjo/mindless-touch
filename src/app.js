@@ -124,7 +124,7 @@ function draw() {
   context.fillStyle = isRevealed ? "#d7ff45" : "rgba(215, 255, 69, 0.2)";
   context.fill();
 
-  if (isRevealed) {
+  if (isRevealed && debug) {
     misses.forEach((point) => drawPoint(point, 3, "rgba(255, 255, 255, 0.55)"));
     drawPoint(correctTap, 7, "#111111", "#ffffff");
   }
