@@ -11,12 +11,39 @@ const baseSeed = params.get("seed") ?? crypto.randomUUID();
 const sound = new SoundEngine();
 const MAX_TAP_MOVEMENT = 10;
 
+const debugPanel = debug ? document.createElement("output") : null;
+if (debugPanel) {
+  debugPanel.className = "debug-panel";
+  app.append(debugPanel);
+}
+
 let phase = "idle";
 let round = 0;
 let blob = null;
 let misses = [];
 let correctTap = null;
-let pointerStart = null;
+let inputStart = null;
+let audioDebug = { state: "not-created", sampleRate: null, error: null };
+let lastAudioAction = "waiting for first tap";
+let lastInputAction = "none";
+
+function updateDebugPanel() {
+  if (!debugPanel) return;
+
+  debugPanel.textContent = [
+    `AudioContext: ${audioDebug.state}`,
+    `Sample rate: ${audioDebug.sampleRate ?? "n/a"}`,
+    `Game phase: ${phase}`,
+    `Last input: ${lastInputAction}`,
+    `Last action: ${lastAudioAction}`,
+    `Error: ${audioDebug.error ?? "none"}`,
+  ].join("\n");
+}
+
+sound.onStateChange((details) => {
+  audioDebug = details;
+  updateDebugPanel();
+});
 
 function resizeCanvas() {
   const ratio = Math.min(window.devicePixelRatio || 1, 3);
@@ -78,18 +105,18 @@ function beginRound() {
   app.setAttribute("aria-label", "Find the hidden shape");
   status.textContent = "A new round has started.";
   draw();
+  lastAudioAction = "playProblem";
+  updateDebugPanel();
   sound.playProblem();
 }
 
-async function handleTap(point) {
+function handleTap(point) {
+  sound.unlock();
+
   if (phase === "idle") {
-    phase = "unlocking";
-    await sound.unlock();
     beginRound();
     return;
   }
-
-  if (phase === "unlocking") return;
 
   if (phase === "revealed") {
     beginRound();
@@ -101,34 +128,70 @@ async function handleTap(point) {
     phase = "revealed";
     app.setAttribute("aria-label", "Correct. Tap again to start the next round");
     status.textContent = `Correct. You found it in ${misses.length + 1} taps.`;
+    lastAudioAction = "playCorrect";
+    updateDebugPanel();
     sound.playCorrect();
     draw();
     return;
   }
 
   misses.push(point);
+  lastAudioAction = "playWrong";
+  updateDebugPanel();
   sound.playWrong();
   draw();
 }
 
-canvas.addEventListener("pointerdown", (event) => {
-  if (!event.isPrimary || pointerStart) return;
-  pointerStart = { id: event.pointerId, x: event.clientX, y: event.clientY };
-  canvas.setPointerCapture(event.pointerId);
-});
-
-canvas.addEventListener("pointerup", (event) => {
-  if (!pointerStart || pointerStart.id !== event.pointerId) return;
-  const distance = Math.hypot(event.clientX - pointerStart.x, event.clientY - pointerStart.y);
-  pointerStart = null;
+function finishTap(x, y, inputType) {
+  if (!inputStart) return;
+  const distance = Math.hypot(x - inputStart.x, y - inputStart.y);
+  inputStart = null;
   if (distance > MAX_TAP_MOVEMENT) return;
 
-  void handleTap({
-    x: Math.min(1, Math.max(0, event.clientX / window.innerWidth)),
-    y: Math.min(1, Math.max(0, event.clientY / window.innerHeight)),
+  lastInputAction = inputType;
+  updateDebugPanel();
+  handleTap({
+    x: Math.min(1, Math.max(0, x / window.innerWidth)),
+    y: Math.min(1, Math.max(0, y / window.innerHeight)),
   });
-});
+}
 
-canvas.addEventListener("pointercancel", () => { pointerStart = null; });
+if ("ontouchstart" in window) {
+  canvas.addEventListener("touchstart", (event) => {
+    event.preventDefault();
+    if (event.touches.length !== 1 || inputStart) return;
+    const touch = event.touches[0];
+    inputStart = { id: touch.identifier, x: touch.clientX, y: touch.clientY };
+    lastInputAction = "touchstart";
+    updateDebugPanel();
+  }, { passive: false });
+
+  canvas.addEventListener("touchend", (event) => {
+    event.preventDefault();
+    if (!inputStart) return;
+    const touch = Array.from(event.changedTouches)
+      .find((changedTouch) => changedTouch.identifier === inputStart.id);
+    if (!touch) return;
+    finishTap(touch.clientX, touch.clientY, "touchend");
+  }, { passive: false });
+
+  canvas.addEventListener("touchcancel", () => { inputStart = null; });
+} else {
+  canvas.addEventListener("pointerdown", (event) => {
+    if (!event.isPrimary || inputStart) return;
+    inputStart = { id: event.pointerId, x: event.clientX, y: event.clientY };
+    canvas.setPointerCapture(event.pointerId);
+    lastInputAction = "pointerdown";
+    updateDebugPanel();
+  });
+
+  canvas.addEventListener("pointerup", (event) => {
+    if (!inputStart || inputStart.id !== event.pointerId) return;
+    finishTap(event.clientX, event.clientY, "pointerup");
+  });
+
+  canvas.addEventListener("pointercancel", () => { inputStart = null; });
+}
+
 window.addEventListener("resize", resizeCanvas);
 resizeCanvas();
