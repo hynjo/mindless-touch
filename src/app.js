@@ -9,8 +9,6 @@ const params = new URLSearchParams(window.location.search);
 const debug = params.get("debug") === "1";
 const MAX_MOUSE_MOVEMENT = 10;
 const MAX_TOUCH_MOVEMENT = 24;
-const MIN_FOUND_INTERVAL = 40;
-const MAX_FOUND_INTERVAL = 450;
 const DEFAULT_LEVEL = 5;
 const MIN_LEVEL = 1;
 const MAX_LEVEL = 10;
@@ -46,8 +44,6 @@ let round = 0;
 let blob = null;
 let misses = [];
 let correctTap = null;
-let foundAt = null;
-let foundTimer = null;
 let mouseStart = null;
 const touchStarts = new Map();
 let audioDebug = {
@@ -134,33 +130,11 @@ function draw() {
   }
 }
 
-function clearFoundChain() {
-  if (foundTimer !== null) window.clearTimeout(foundTimer);
-  foundTimer = null;
-  foundAt = null;
-}
-
-function startFoundChain() {
-  clearFoundChain();
-  foundAt = performance.now();
-  const foundRound = round;
-  foundTimer = window.setTimeout(() => {
-    if (phase !== "found" || round !== foundRound) return;
-    foundAt = null;
-    foundTimer = null;
-    phase = "playing";
-    app.setAttribute("aria-label", "Find the hidden shape");
-    status.textContent = "Find the hidden shape.";
-    updateDebugPanel();
-  }, MAX_FOUND_INTERVAL);
-}
-
 function beginRound() {
   round += 1;
   blob = generateBlob(`${baseSeed}:${round}`, difficulty);
   misses = [];
   correctTap = null;
-  clearFoundChain();
   phase = "playing";
   app.setAttribute("aria-label", "Find the hidden shape");
   status.textContent = "A new round has started.";
@@ -181,21 +155,17 @@ function handleTap(point, startedPhase = phase, startedRound = round) {
   if (startedPhase === "found") {
     if (phase !== "found" || round !== startedRound) return;
 
-    const interval = performance.now() - foundAt;
-
-    if (interval < MIN_FOUND_INTERVAL
-      || interval > MAX_FOUND_INTERVAL
-      || !pointInPolygon(point, blob.points)) {
-      clearFoundChain();
+    if (!pointInPolygon(point, blob.points)) {
       phase = "playing";
       misses.push(point);
+      app.setAttribute("aria-label", "Missed. Find the hidden shape again");
+      status.textContent = "Missed. Find the hidden shape again.";
       lastAudioAction = "playWrong";
       updateDebugPanel();
       sound.playWrong();
       return;
     }
 
-    clearFoundChain();
     correctTap = point;
     phase = "revealing";
     app.setAttribute("aria-label", "Shape revealed. Wait for the sound to finish");
@@ -232,9 +202,8 @@ function handleTap(point, startedPhase = phase, startedRound = round) {
   if (pointInPolygon(point, blob.points)) {
     correctTap = point;
     phase = "found";
-    startFoundChain();
-    app.setAttribute("aria-label", "Target found. Tap the same area again quickly");
-    status.textContent = "Target found. Tap the same area again quickly.";
+    app.setAttribute("aria-label", "Target found. Find the same hidden area again");
+    status.textContent = "Target found. Find the same hidden area again.";
     lastAudioAction = "playFound";
     updateDebugPanel();
     sound.playFound();
