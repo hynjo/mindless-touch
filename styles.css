@@ -42,7 +42,7 @@ body {
 }
 
 .intro {
-  --intro-pulse-duration: 1.4s;
+  --intro-pulse-duration: 1.2s;
   position: fixed;
   inset: 0;
   z-index: 5;
@@ -73,7 +73,11 @@ body {
 .intro-sound-wave {
   fill: none;
   transform-origin: 32px 32px;
-  animation: intro-wave-pulse var(--intro-pulse-duration) ease-in-out infinite;
+  animation: intro-wave-inner var(--intro-pulse-duration) ease-in-out infinite;
+}
+
+.intro-sound-wave-outer {
+  animation-name: intro-wave-outer;
 }
 
 .tap-feedback-layer {
@@ -211,11 +215,17 @@ body {
   height: 100%;
 }
 
-@keyframes intro-wave-pulse {
+@keyframes intro-wave-inner {
   0%,
+  12%,
   100% {
     opacity: 0;
     transform: scale(0.88);
+  }
+
+  24% {
+    opacity: 1;
+    transform: scale(0.96);
   }
 
   38% {
@@ -228,9 +238,38 @@ body {
     transform: scale(1.04);
   }
 
-  68% {
-    opacity: 0.2;
-    transform: scale(1.08);
+  55% {
+    opacity: 0;
+    transform: scale(1.06);
+  }
+}
+
+@keyframes intro-wave-outer {
+  0%,
+  30%,
+  100% {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+
+  38% {
+    opacity: 1;
+    transform: scale(0.96);
+  }
+
+  50% {
+    opacity: 0.85;
+    transform: scale(1.04);
+  }
+
+  55% {
+    opacity: 0.75;
+    transform: scale(1.06);
+  }
+
+  72% {
+    opacity: 0;
+    transform: scale(1.12);
   }
 }
 
