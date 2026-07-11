@@ -104,7 +104,7 @@ body {
   position: absolute;
   inset: 0;
   display: block;
-  transform-origin: 50% 88%;
+  transform-origin: 42% 90%;
   pointer-events: none;
 }
 
@@ -325,23 +325,23 @@ body {
 @keyframes completion-paw-goodbye {
   0%,
   100% {
-    transform: rotate(0deg);
+    transform: translateY(0) rotate(0deg);
   }
 
   18% {
-    transform: rotate(-18deg);
+    transform: translateY(-2px) rotate(-15deg);
   }
 
   38% {
-    transform: rotate(16deg);
+    transform: translateY(-4px) rotate(13deg);
   }
 
   58% {
-    transform: rotate(-13deg);
+    transform: translateY(-5px) rotate(-10deg);
   }
 
   78% {
-    transform: rotate(9deg);
+    transform: translateY(-5px) rotate(6deg);
   }
 }
 
