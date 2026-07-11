@@ -9,6 +9,8 @@ const params = new URLSearchParams(window.location.search);
 const debug = params.get("debug") === "1";
 const MAX_MOUSE_MOVEMENT = 10;
 const MAX_TOUCH_MOVEMENT = 24;
+const MIN_FOUND_INTERVAL = 40;
+const MAX_FOUND_INTERVAL = 450;
 const DEFAULT_LEVEL = 5;
 const MIN_LEVEL = 1;
 const MAX_LEVEL = 10;
@@ -44,6 +46,8 @@ let round = 0;
 let blob = null;
 let misses = [];
 let correctTap = null;
+let foundAt = null;
+let foundTimer = null;
 let mouseStart = null;
 const touchStarts = new Map();
 let audioDebug = {
@@ -65,6 +69,7 @@ function updateDebugPanel() {
     `Playback latency: ${audioDebug.playbackLatency ?? "n/a"} ms`,
     `Level: ${level}`,
     `Target area: ${blob ? `${(blob.targetArea * 100).toFixed(1)}%` : "n/a"}`,
+    `Found chain: ${phase === "found" ? "active" : "inactive"}`,
     `Game phase: ${phase}`,
     `Last input: ${lastInputAction}`,
     `Last action: ${lastAudioAction}`,
@@ -116,16 +121,38 @@ function drawPoint(point, radius, fill, stroke = null) {
 
 function draw() {
   context.clearRect(0, 0, window.innerWidth, window.innerHeight);
-  if (!blob || (phase !== "revealed" && !debug)) return;
+  const isRevealed = phase === "revealing" || phase === "revealed" || phase === "transitioning";
+  if (!blob || (!isRevealed && !debug)) return;
 
   traceBlob();
-  context.fillStyle = phase === "revealed" ? "#d7ff45" : "rgba(215, 255, 69, 0.2)";
+  context.fillStyle = isRevealed ? "#d7ff45" : "rgba(215, 255, 69, 0.2)";
   context.fill();
 
-  if (phase === "revealed") {
+  if (isRevealed) {
     misses.forEach((point) => drawPoint(point, 3, "rgba(255, 255, 255, 0.55)"));
     drawPoint(correctTap, 7, "#111111", "#ffffff");
   }
+}
+
+function clearFoundChain() {
+  if (foundTimer !== null) window.clearTimeout(foundTimer);
+  foundTimer = null;
+  foundAt = null;
+}
+
+function startFoundChain() {
+  clearFoundChain();
+  foundAt = performance.now();
+  const foundRound = round;
+  foundTimer = window.setTimeout(() => {
+    if (phase !== "found" || round !== foundRound) return;
+    foundAt = null;
+    foundTimer = null;
+    phase = "playing";
+    app.setAttribute("aria-label", "Find the hidden shape");
+    status.textContent = "Find the hidden shape.";
+    updateDebugPanel();
+  }, MAX_FOUND_INTERVAL);
 }
 
 function beginRound() {
@@ -133,6 +160,7 @@ function beginRound() {
   blob = generateBlob(`${baseSeed}:${round}`, difficulty);
   misses = [];
   correctTap = null;
+  clearFoundChain();
   phase = "playing";
   app.setAttribute("aria-label", "Find the hidden shape");
   status.textContent = "A new round has started.";
@@ -150,8 +178,52 @@ function handleTap(point, startedPhase = phase, startedRound = round) {
     return;
   }
 
+  if (startedPhase === "found") {
+    if (phase !== "found" || round !== startedRound) return;
+
+    const interval = performance.now() - foundAt;
+
+    if (interval < MIN_FOUND_INTERVAL
+      || interval > MAX_FOUND_INTERVAL
+      || !pointInPolygon(point, blob.points)) {
+      clearFoundChain();
+      phase = "playing";
+      misses.push(point);
+      lastAudioAction = "playWrong";
+      updateDebugPanel();
+      sound.playWrong();
+      return;
+    }
+
+    clearFoundChain();
+    correctTap = point;
+    phase = "revealing";
+    app.setAttribute("aria-label", "Shape revealed. Wait for the sound to finish");
+    status.textContent = "Shape revealed. Wait for the sound to finish.";
+    lastAudioAction = "playReveal";
+    draw();
+    updateDebugPanel();
+    sound.playReveal(() => {
+      if (phase !== "revealing" || round !== startedRound) return;
+      phase = "revealed";
+      app.setAttribute("aria-label", "Tap anywhere to complete the round");
+      status.textContent = "Tap anywhere to complete the round.";
+      updateDebugPanel();
+    });
+    return;
+  }
+
   if (startedPhase === "revealed") {
-    if (phase === "revealed" && round === startedRound) beginRound();
+    if (phase !== "revealed" || round !== startedRound) return;
+
+    phase = "transitioning";
+    app.setAttribute("aria-label", "Correct. The next round will start after the sound");
+    status.textContent = "Correct. The next round will start after the sound.";
+    lastAudioAction = "playCorrect";
+    updateDebugPanel();
+    sound.playCorrect(() => {
+      if (phase === "transitioning" && round === startedRound) beginRound();
+    });
     return;
   }
 
@@ -159,13 +231,13 @@ function handleTap(point, startedPhase = phase, startedRound = round) {
 
   if (pointInPolygon(point, blob.points)) {
     correctTap = point;
-    phase = "revealed";
-    app.setAttribute("aria-label", "Correct. Tap again to start the next round");
-    status.textContent = `Correct. You found it in ${misses.length + 1} taps.`;
-    lastAudioAction = "playCorrect";
+    phase = "found";
+    startFoundChain();
+    app.setAttribute("aria-label", "Target found. Tap the same area again quickly");
+    status.textContent = "Target found. Tap the same area again quickly.";
+    lastAudioAction = "playFound";
     updateDebugPanel();
-    sound.playCorrect();
-    draw();
+    sound.playFound();
     return;
   }
 

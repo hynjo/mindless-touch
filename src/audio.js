@@ -8,6 +8,15 @@ const SOUND_DEFINITIONS = {
     { frequency: 523.25, start: 0, duration: 0.18, gain: 0.34 },
     { frequency: 783.99, start: 0.1, duration: 0.28, gain: 0.36 },
   ],
+  found: [
+    { frequency: 587.33, start: 0, duration: 0.1, gain: 0.28 },
+    { frequency: 698.46, start: 0.08, duration: 0.14, gain: 0.3 },
+  ],
+  reveal: [
+    { frequency: 392, start: 0, duration: 0.12, gain: 0.24 },
+    { frequency: 523.25, start: 0.06, duration: 0.16, gain: 0.28 },
+    { frequency: 659.25, start: 0.12, duration: 0.2, gain: 0.3 },
+  ],
   wrong: [
     { frequency: 164.81, start: 0, duration: 0.11, type: "triangle", gain: 0.24 },
   ],
@@ -140,7 +149,7 @@ export class SoundEngine {
     });
   }
 
-  play(name) {
+  play(name, onEnded = null) {
     const requestedAt = performance.now();
 
     if (this.context?.state === "running") {
@@ -155,6 +164,7 @@ export class SoundEngine {
       const source = this.context.createBufferSource();
       source.buffer = this.buffers[name];
       source.connect(this.context.destination);
+      if (onEnded) source.addEventListener("ended", onEnded, { once: true });
       source.start();
       this.activeBufferSource = source;
       this.lastError = null;
@@ -169,6 +179,7 @@ export class SoundEngine {
 
     const audio = this.sounds[name];
     audio.currentTime = 0;
+    if (onEnded) audio.addEventListener("ended", onEnded, { once: true });
     this.activeSound = audio;
     void audio.play()
       .then(() => {
@@ -185,8 +196,16 @@ export class SoundEngine {
     this.play("problem");
   }
 
-  playCorrect() {
-    this.play("correct");
+  playCorrect(onEnded = null) {
+    this.play("correct", onEnded);
+  }
+
+  playFound() {
+    this.play("found");
+  }
+
+  playReveal(onEnded = null) {
+    this.play("reveal", onEnded);
   }
 
   playWrong() {
