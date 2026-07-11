@@ -1,5 +1,5 @@
 import { SoundEngine } from "./audio.js";
-import { generateBlob, pointInPolygon } from "./geometry.js";
+import { generateCatTarget, loadCatSprite, pointInCat } from "./cat-target.js";
 
 const canvas = document.querySelector("#playfield");
 const context = canvas.getContext("2d");
@@ -38,10 +38,12 @@ const fallbackSeed = `${Date.now()}-${Math.random()}`;
 const generatedSeed = globalThis.crypto?.randomUUID?.() ?? fallbackSeed;
 const baseSeed = params.get("seed") ?? generatedSeed;
 const sound = new SoundEngine();
+const catSpritePromise = loadCatSprite(`${import.meta.env.BASE_URL}assets/cute-cat-source.png`);
 
 let phase = "idle";
 let round = 0;
 let blob = null;
+let catSprite = null;
 let misses = [];
 let correctTap = null;
 let mouseStart = null;
@@ -95,11 +97,13 @@ function toPixels(point) {
 }
 
 function traceBlob() {
-  const [first, ...rest] = blob.points.map(toPixels);
-  context.beginPath();
-  context.moveTo(first.x, first.y);
-  rest.forEach((point) => context.lineTo(point.x, point.y));
-  context.closePath();
+  context.drawImage(
+    catSprite.canvas,
+    blob.x * window.innerWidth,
+    blob.y * window.innerHeight,
+    blob.width * window.innerWidth,
+    blob.height * window.innerHeight,
+  );
 }
 
 function drawPoint(point, radius, fill, stroke = null) {
@@ -120,9 +124,10 @@ function draw() {
   const isRevealed = phase === "revealing" || phase === "revealed" || phase === "transitioning";
   if (!blob || (!isRevealed && !debug)) return;
 
+  context.save();
+  context.globalAlpha = isRevealed ? 1 : 0.35;
   traceBlob();
-  context.fillStyle = isRevealed ? "#d7ff45" : "rgba(215, 255, 69, 0.2)";
-  context.fill();
+  context.restore();
 
   if (isRevealed && debug) {
     misses.forEach((point) => drawPoint(point, 3, "rgba(255, 255, 255, 0.55)"));
@@ -132,7 +137,12 @@ function draw() {
 
 function beginRound() {
   round += 1;
-  blob = generateBlob(`${baseSeed}:${round}`, difficulty);
+  blob = generateCatTarget(
+    `${baseSeed}:${round}`,
+    catSprite,
+    difficulty,
+    window.innerWidth / window.innerHeight,
+  );
   misses = [];
   correctTap = null;
   phase = "playing";
@@ -148,14 +158,20 @@ function handleTap(point, startedPhase = phase, startedRound = round) {
   sound.unlock();
 
   if (startedPhase === "idle") {
-    if (phase === "idle") beginRound();
+    if (phase === "idle") {
+      phase = "loading";
+      void catSpritePromise.then((sprite) => {
+        catSprite = sprite;
+        if (phase === "loading") beginRound();
+      });
+    }
     return;
   }
 
   if (startedPhase === "found") {
     if (phase !== "found" || round !== startedRound) return;
 
-    if (!pointInPolygon(point, blob.points)) {
+    if (!pointInCat(point, blob, catSprite)) {
       phase = "playing";
       misses.push(point);
       app.setAttribute("aria-label", "Missed. Find the hidden shape again");
@@ -199,7 +215,7 @@ function handleTap(point, startedPhase = phase, startedRound = round) {
 
   if (phase !== "playing" || round !== startedRound) return;
 
-  if (pointInPolygon(point, blob.points)) {
+  if (pointInCat(point, blob, catSprite)) {
     correctTap = point;
     phase = "found";
     app.setAttribute("aria-label", "Target found. Find the same hidden area again");
