@@ -59,7 +59,7 @@ http://localhost:5173/mindless-touch/?level=8
 
 ## 사운드 에셋
 
-`reveal` 피드백은 `public/assets/reveal.wav`, 오답 피드백은 `public/assets/wrong.wav`, `found` 피드백은 `public/assets/found.wav` 파일을 사용합니다. 나머지 효과음은 브라우저에서 합성합니다.
+`reveal` 피드백은 `public/assets/reveal.wav`, 오답 피드백은 `public/assets/wrong.wav`, `found` 피드백은 `public/assets/found.wav`, 완료 피드백은 `public/assets/correct.wav` 파일을 사용합니다. 문제 시작음은 브라우저에서 합성합니다. 라운드를 완료하면 고양이 눈이 잠시 커지고 밝아지며, 완료음이 끝난 뒤 200ms 후 다음 라운드가 시작됩니다.
 
 ## 디버그
 

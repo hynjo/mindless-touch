@@ -10,6 +10,7 @@ const debugValue = params.get("debug");
 const debug = params.has("debug") && debugValue !== "0" && debugValue !== "false";
 const MAX_MOUSE_MOVEMENT = 10;
 const MAX_TOUCH_MOVEMENT = 24;
+const NEXT_ROUND_DELAY = 200;
 const DEFAULT_LEVEL = 5;
 const MIN_LEVEL = 1;
 const MAX_LEVEL = 10;
@@ -45,6 +46,7 @@ const sound = new SoundEngine({
   revealUrl: `${import.meta.env.BASE_URL}assets/reveal.wav`,
   wrongUrl: `${import.meta.env.BASE_URL}assets/wrong.wav`,
   foundUrl: `${import.meta.env.BASE_URL}assets/found.wav`,
+  correctUrl: `${import.meta.env.BASE_URL}assets/correct.wav`,
 });
 app.querySelectorAll(".cat-eyes").forEach((element) => element.remove());
 const catEyes = document.createElement("div");
@@ -161,6 +163,7 @@ function draw() {
 }
 
 function beginRound() {
+  catEyes.classList.remove("is-celebrating");
   round += 1;
   blob = generateCatTarget(
     `${baseSeed}:${round}`,
@@ -230,9 +233,16 @@ function handleTap(point, startedPhase = phase, startedRound = round) {
     );
     status.textContent = "Correct. The next round will start after the sound.";
     lastAudioAction = "playCorrect";
+    catEyes.classList.remove("is-celebrating");
+    void catEyes.offsetWidth;
+    catEyes.classList.add("is-celebrating");
     updateDebugPanel();
     sound.playCorrect(() => {
-      if (phase === "transitioning" && round === startedRound) beginRound();
+      if (phase !== "transitioning" || round !== startedRound) return;
+
+      window.setTimeout(() => {
+        if (phase === "transitioning" && round === startedRound) beginRound();
+      }, NEXT_ROUND_DELAY);
     });
     return;
   }

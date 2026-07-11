@@ -86,7 +86,7 @@ function createFileAudio(url) {
 }
 
 export class SoundEngine {
-  constructor({ revealUrl = null, wrongUrl = null, foundUrl = null } = {}) {
+  constructor({ revealUrl = null, wrongUrl = null, foundUrl = null, correctUrl = null } = {}) {
     this.lastError = null;
     this.playbackLatency = null;
     this.stateListener = null;
@@ -102,7 +102,12 @@ export class SoundEngine {
       Object.entries(this.samples).map(([name, samples]) => [name, createAudio(samples)]),
     );
     this.externalAudioUrls = Object.fromEntries(
-      Object.entries({ reveal: revealUrl, wrong: wrongUrl, found: foundUrl })
+      Object.entries({
+        reveal: revealUrl,
+        wrong: wrongUrl,
+        found: foundUrl,
+        correct: correctUrl,
+      })
         .filter(([, url]) => url),
     );
     for (const [name, url] of Object.entries(this.externalAudioUrls)) {
