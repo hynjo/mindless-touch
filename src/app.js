@@ -8,6 +8,7 @@ const status = document.querySelector("#status");
 const params = new URLSearchParams(window.location.search);
 const debugValue = params.get("debug");
 const debug = params.has("debug") && debugValue !== "0" && debugValue !== "false";
+const introEnabled = params.get("intro") !== "0";
 const MAX_MOUSE_MOVEMENT = 10;
 const MAX_TOUCH_MOVEMENT = 24;
 const NEXT_ROUND_DELAY = 200;
@@ -54,7 +55,40 @@ catEyes.className = "cat-eyes";
 catEyes.innerHTML = '<span class="cat-eye"></span><span class="cat-eye"></span>';
 app.append(catEyes);
 
-let phase = "idle";
+const PAW_MARKUP = `
+  <span class="intro-paw-pad"></span>
+  <span class="intro-paw-toe intro-paw-toe-1"></span>
+  <span class="intro-paw-toe intro-paw-toe-2"></span>
+  <span class="intro-paw-toe intro-paw-toe-3"></span>
+  <span class="intro-paw-toe intro-paw-toe-4"></span>
+`;
+const tapFeedbackLayer = document.createElement("div");
+tapFeedbackLayer.className = "tap-feedback-layer";
+tapFeedbackLayer.setAttribute("aria-hidden", "true");
+app.append(tapFeedbackLayer);
+
+const intro = document.createElement("div");
+intro.className = "intro";
+intro.setAttribute("aria-hidden", "true");
+intro.innerHTML = `
+  <svg class="intro-speaker" viewBox="0 0 64 64" aria-hidden="true">
+    <path d="M10 25h11l14-11v36L21 39H10z"></path>
+    <path class="intro-sound-wave" d="M43 23c5 5 5 13 0 18"></path>
+    <path class="intro-sound-wave intro-sound-wave-outer" d="M50 16c9 9 9 23 0 32"></path>
+  </svg>
+  <span class="paw-touch intro-touch is-success">${PAW_MARKUP}</span>
+  <span class="intro-cat-position">
+    <span class="cat-eyes intro-demo-eyes">
+      <span class="cat-eye"></span><span class="cat-eye"></span>
+    </span>
+  </span>
+`;
+app.append(intro);
+
+const introTouch = intro.querySelector(".intro-touch");
+const introDemoEyes = intro.querySelector(".intro-demo-eyes");
+
+let phase = introEnabled ? "intro" : "idle";
 let round = 0;
 let blob = null;
 let misses = [];
@@ -71,6 +105,118 @@ let audioDebug = {
 let lastAudioAction = "waiting for first tap";
 let lastInputAction = "none";
 let lastTouchAt = 0;
+let introRun = 0;
+const introTimers = new Set();
+
+function scheduleIntro(callback, delay) {
+  const timer = window.setTimeout(() => {
+    introTimers.delete(timer);
+    callback();
+  }, delay);
+  introTimers.add(timer);
+  return timer;
+}
+
+function clearIntroTimers() {
+  introRun += 1;
+  introTimers.forEach((timer) => window.clearTimeout(timer));
+  introTimers.clear();
+}
+
+function showIntroTap(x, y, successful = false) {
+  introTouch.style.left = `${x}%`;
+  introTouch.style.top = `${y}%`;
+  introTouch.classList.toggle("is-success", successful);
+  introTouch.classList.remove("is-tapping");
+  void introTouch.offsetWidth;
+  introTouch.classList.add("is-tapping");
+}
+
+function showTapFeedback(point, successful) {
+  const paw = document.createElement("span");
+  paw.className = "paw-touch game-paw is-tapping";
+  paw.classList.toggle("is-success", successful);
+  paw.style.left = `${point.x * 100}%`;
+  paw.style.top = `${point.y * 100}%`;
+  paw.innerHTML = PAW_MARKUP;
+  tapFeedbackLayer.append(paw);
+  paw.addEventListener("animationend", () => paw.remove(), { once: true });
+  window.setTimeout(() => paw.remove(), 600);
+}
+
+function resetIntro() {
+  clearIntroTimers();
+  phase = "intro";
+  intro.hidden = false;
+  intro.classList.remove("is-demo");
+  introTouch.classList.remove("is-tapping");
+  introTouch.classList.add("is-success");
+  introTouch.removeAttribute("style");
+  introDemoEyes.classList.remove("is-visible", "is-revealing", "is-celebrating");
+  app.setAttribute("aria-label", "Tap anywhere to start the sound demonstration");
+  status.textContent = "Tap anywhere to start the sound demonstration.";
+  lastAudioAction = "waiting for intro tap";
+  updateDebugPanel();
+}
+
+function finishIntro(run) {
+  if (phase !== "demo" || run !== introRun) return;
+  clearIntroTimers();
+  intro.hidden = true;
+  introDemoEyes.classList.remove("is-visible", "is-revealing", "is-celebrating");
+  beginRound();
+}
+
+function startIntroDemo() {
+  if (phase !== "intro") return;
+
+  clearIntroTimers();
+  const run = introRun;
+  phase = "demo";
+  intro.classList.add("is-demo");
+  app.setAttribute("aria-label", "Sound and touch demonstration in progress");
+  status.textContent = "Sound and touch demonstration in progress.";
+  lastAudioAction = "intro problem";
+  updateDebugPanel();
+  sound.playProblem();
+
+  scheduleIntro(() => {
+    if (run !== introRun) return;
+    showIntroTap(26, 66);
+    lastAudioAction = "intro wrong";
+    updateDebugPanel();
+    sound.playWrong();
+  }, 600);
+
+  scheduleIntro(() => {
+    if (run !== introRun) return;
+    showIntroTap(74, 68);
+    lastAudioAction = "intro wrong";
+    updateDebugPanel();
+    sound.playWrong();
+  }, 1200);
+
+  scheduleIntro(() => {
+    if (run !== introRun) return;
+    showIntroTap(62, 42, true);
+    lastAudioAction = "intro target tap";
+    updateDebugPanel();
+    scheduleIntro(() => introTouch.classList.remove("is-tapping"), 220);
+    scheduleIntro(() => {
+      if (run !== introRun) return;
+      introDemoEyes.classList.add("is-visible", "is-revealing");
+      lastAudioAction = "intro found";
+      updateDebugPanel();
+      sound.playFound();
+      scheduleIntro(() => introDemoEyes.classList.remove("is-revealing"), 220);
+    }, 280);
+    scheduleIntro(() => {
+      if (run !== introRun) return;
+      introDemoEyes.classList.add("is-celebrating");
+    }, 600);
+    scheduleIntro(() => finishIntro(run), 1100);
+  }, 1800);
+}
 
 function updateDebugPanel() {
   if (!debugPanel) return;
@@ -187,6 +333,13 @@ function beginRound() {
 function handleTap(point, startedPhase = phase, startedRound = round) {
   sound.unlock();
 
+  if (startedPhase === "intro") {
+    if (phase === "intro") startIntroDemo();
+    return;
+  }
+
+  if (phase === "demo" || startedPhase === "demo") return;
+
   if (startedPhase === "idle") {
     if (phase === "idle") beginRound();
     return;
@@ -284,9 +437,16 @@ function normalizePoint(x, y) {
 function finishTap(start, x, y, inputType, maxMovement) {
   const distance = Math.hypot(x - start.x, y - start.y);
   if (distance > maxMovement) return;
+  const point = normalizePoint(x, y);
+  const targetWasHit = Boolean(blob) && pointInCat(point, blob);
+  const successful =
+    ((start.phase === "playing" || start.phase === "found") && targetWasHit)
+    || start.phase === "revealed";
+  if (start.phase !== "intro" && start.phase !== "demo")
+    showTapFeedback(point, successful);
   lastInputAction = inputType;
   updateDebugPanel();
-  handleTap(normalizePoint(x, y), start.phase, start.round);
+  handleTap(point, start.phase, start.round);
 }
 
 canvas.addEventListener(
@@ -362,7 +522,9 @@ document.addEventListener("visibilitychange", () => {
   touchStarts.clear();
   mouseStart = null;
 
-  if (phase === "revealing") {
+  if (phase === "demo") {
+    resetIntro();
+  } else if (phase === "revealing") {
     phase = "found";
     app.setAttribute(
       "aria-label",
@@ -388,3 +550,5 @@ document.addEventListener("visibilitychange", () => {
 
 window.addEventListener("resize", resizeCanvas);
 resizeCanvas();
+if (introEnabled) resetIntro();
+else intro.hidden = true;

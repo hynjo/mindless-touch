@@ -37,6 +37,253 @@ body {
   height: 100%;
 }
 
+[hidden] {
+  display: none !important;
+}
+
+.intro {
+  --intro-pulse-duration: 1.4s;
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  overflow: hidden;
+  background: #000000;
+  pointer-events: none;
+}
+
+.intro-speaker {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  width: clamp(72px, 22vw, 112px);
+  height: auto;
+  overflow: visible;
+  fill: var(--cat-eye-color);
+  stroke: var(--cat-eye-color);
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transform: translate(-50%, -50%);
+}
+
+.intro-speaker > path:first-child {
+  stroke: none;
+}
+
+.intro-sound-wave {
+  fill: none;
+  transform-origin: 32px 32px;
+  animation: intro-wave-pulse var(--intro-pulse-duration) ease-in-out infinite;
+}
+
+.tap-feedback-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.paw-touch {
+  --paw-color: #4b4928;
+  --paw-glow: rgba(75, 73, 40, 0.12);
+  position: absolute;
+  width: 56px;
+  height: 52px;
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.65);
+  pointer-events: none;
+}
+
+.paw-touch.is-success {
+  --paw-color: var(--cat-eye-color);
+  --paw-glow: rgba(255, 248, 117, 0.3);
+}
+
+.intro-touch {
+  top: 68%;
+  left: 50%;
+}
+
+.intro:not(.is-demo) .intro-touch {
+  animation: intro-tap-prompt var(--intro-pulse-duration) ease-in-out infinite;
+}
+
+.paw-touch::after {
+  position: absolute;
+  inset: 5px;
+  border: 2px solid var(--paw-color);
+  border-radius: 50%;
+  opacity: 0;
+  content: "";
+}
+
+.intro-paw-pad,
+.intro-paw-toe {
+  position: absolute;
+  display: block;
+  background: var(--paw-color);
+  filter: drop-shadow(0 0 4px var(--paw-glow));
+}
+
+.intro-paw-pad {
+  top: 24px;
+  left: 15px;
+  width: 27px;
+  height: 23px;
+  border-radius: 48% 48% 55% 55% / 58% 58% 44% 44%;
+}
+
+.intro-paw-toe {
+  width: 11px;
+  height: 15px;
+  border-radius: 50%;
+}
+
+.intro-paw-toe-1 {
+  top: 15px;
+  left: 3px;
+  transform: rotate(-28deg);
+}
+
+.intro-paw-toe-2 {
+  top: 3px;
+  left: 15px;
+  transform: rotate(-10deg);
+}
+
+.intro-paw-toe-3 {
+  top: 3px;
+  left: 30px;
+  transform: rotate(10deg);
+}
+
+.intro-paw-toe-4 {
+  top: 15px;
+  left: 42px;
+  transform: rotate(28deg);
+}
+
+.paw-touch.is-tapping {
+  animation: intro-touch-down 420ms ease-out both;
+}
+
+.paw-touch.is-tapping::after {
+  animation: intro-touch-ripple 420ms ease-out both;
+}
+
+.intro.is-demo .intro-speaker {
+  animation: intro-speaker-start 600ms ease-out both;
+}
+
+.intro-cat-position {
+  position: absolute;
+  top: 42%;
+  left: 62%;
+  width: min(42vw, 190px);
+  aspect-ratio: 2.4 / 1;
+  transform: translate(-50%, -50%);
+}
+
+.intro-demo-eyes {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+@keyframes intro-wave-pulse {
+  0%,
+  100% {
+    opacity: 0;
+    transform: scale(0.88);
+  }
+
+  38% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.6;
+    transform: scale(1.04);
+  }
+
+  68% {
+    opacity: 0.2;
+    transform: scale(1.08);
+  }
+}
+
+@keyframes intro-tap-prompt {
+  0%,
+  100% {
+    opacity: 0.2;
+    transform: translate(-50%, -50%) scale(0.75);
+  }
+
+  38% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(0.92);
+  }
+
+  50% {
+    opacity: 0.6;
+    transform: translate(-50%, -50%) scale(0.68);
+  }
+
+  68% {
+    opacity: 0.2;
+    transform: translate(-50%, -50%) scale(0.78);
+  }
+}
+
+@keyframes intro-speaker-start {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+
+  70% {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%);
+  }
+}
+
+@keyframes intro-touch-down {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1.2);
+  }
+
+  35% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(0.68);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.82);
+  }
+}
+
+@keyframes intro-touch-ripple {
+  0%,
+  30% {
+    opacity: 0.8;
+    transform: scale(0.8);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(2.2);
+  }
+}
+
 .cat-eyes {
   --eye-size: 38%;
   --half-eye-gap: 4.5%;
@@ -174,7 +421,7 @@ body {
   position: fixed;
   top: max(12px, env(safe-area-inset-top));
   left: max(12px, env(safe-area-inset-left));
-  z-index: 4;
+  z-index: 6;
   padding: 10px 12px;
   border-radius: 8px;
   background: rgba(0, 0, 0, 0.82);
