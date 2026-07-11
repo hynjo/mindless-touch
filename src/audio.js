@@ -95,6 +95,7 @@ export class SoundEngine {
     this.context = null;
     this.buffers = {};
     this.externalBuffersStarted = false;
+    this.needsForegroundRecovery = false;
     this.samples = Object.fromEntries(
       Object.entries(SOUND_DEFINITIONS).map(([name, events]) => [name, createSamples(events)]),
     );
@@ -113,6 +114,69 @@ export class SoundEngine {
     for (const [name, url] of Object.entries(this.externalAudioUrls)) {
       this.sounds[name] = createFileAudio(url);
     }
+
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === "hidden") this.markForForegroundRecovery();
+    });
+    window.addEventListener("pagehide", () => this.markForForegroundRecovery());
+    window.addEventListener("pageshow", (event) => {
+      if (event.persisted) this.markForForegroundRecovery();
+    });
+  }
+
+  markForForegroundRecovery() {
+    if (!this.context) return;
+    this.needsForegroundRecovery = true;
+    this.notifyState();
+  }
+
+  stopActiveSound() {
+    const activeSound = this.activeSound;
+    const activeBufferSource = this.activeBufferSource;
+    this.activeSound = null;
+    this.activeBufferSource = null;
+
+    if (activeSound) {
+      activeSound.onended = null;
+      activeSound.pause();
+    }
+    if (activeBufferSource) {
+      activeBufferSource.onended = null;
+      try { activeBufferSource.stop(); } catch { /* It already ended. */ }
+    }
+  }
+
+  createContext() {
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    const context = new AudioContext({ latencyHint: "interactive" });
+    this.context = context;
+    this.buffers = {};
+    this.externalBuffersStarted = false;
+    context.addEventListener("statechange", () => {
+      if (this.context === context) this.notifyState();
+    });
+
+    for (const [name, samples] of Object.entries(this.samples)) {
+      const buffer = context.createBuffer(1, samples.length, SAMPLE_RATE);
+      buffer.copyToChannel(samples, 0);
+      this.buffers[name] = buffer;
+    }
+  }
+
+  recoverForegroundAudio() {
+    const previousContext = this.context;
+    this.stopActiveSound();
+    this.context = null;
+    this.needsForegroundRecovery = false;
+
+    for (const [name, url] of Object.entries(this.externalAudioUrls)) {
+      this.sounds[name] = createFileAudio(url);
+    }
+
+    if (previousContext && previousContext.state !== "closed") {
+      void previousContext.close().catch(() => {});
+    }
+    this.createContext();
   }
 
   unlock() {
@@ -120,31 +184,24 @@ export class SoundEngine {
       try { navigator.audioSession.type = "playback"; } catch { /* Use the default session. */ }
     }
 
-    if (!this.context) {
-      const AudioContext = window.AudioContext || window.webkitAudioContext;
-      this.context = new AudioContext({ latencyHint: "interactive" });
-      this.context.addEventListener("statechange", () => this.notifyState());
-
-      for (const [name, samples] of Object.entries(this.samples)) {
-        const buffer = this.context.createBuffer(1, samples.length, SAMPLE_RATE);
-        buffer.copyToChannel(samples, 0);
-        this.buffers[name] = buffer;
-      }
-    }
+    if (this.needsForegroundRecovery) this.recoverForegroundAudio();
+    if (!this.context) this.createContext();
 
     if (!this.externalBuffersStarted) {
       this.externalBuffersStarted = true;
+      const context = this.context;
       for (const [name, url] of Object.entries(this.externalAudioUrls)) {
         void fetch(url)
           .then((response) => {
             if (!response.ok) throw new Error(`Failed to load ${name} sound`);
             return response.arrayBuffer();
           })
-          .then((data) => this.context.decodeAudioData(data))
+          .then((data) => context.decodeAudioData(data))
           .then((buffer) => {
-            this.buffers[name] = buffer;
+            if (this.context === context) this.buffers[name] = buffer;
           })
           .catch((error) => {
+            if (this.context !== context) return;
             this.lastError = error instanceof Error ? error.message : String(error);
             this.notifyState();
           });
@@ -172,6 +229,7 @@ export class SoundEngine {
       state: this.context ? `web-audio:${this.context.state}` : "media-fallback",
       sampleRate: SAMPLE_RATE,
       playbackLatency: this.playbackLatency,
+      recoveryPending: this.needsForegroundRecovery,
       error: this.lastError,
     });
   }
@@ -180,18 +238,16 @@ export class SoundEngine {
     const requestedAt = performance.now();
 
     if (this.context?.state === "running" && this.buffers[name]) {
-      if (this.activeSound) {
-        this.activeSound.pause();
-        this.activeSound = null;
-      }
-      if (this.activeBufferSource) {
-        try { this.activeBufferSource.stop(); } catch { /* It already ended. */ }
-      }
+      this.stopActiveSound();
 
       const source = this.context.createBufferSource();
       source.buffer = this.buffers[name];
       source.connect(this.context.destination);
-      if (onEnded) source.addEventListener("ended", onEnded, { once: true });
+      source.onended = () => {
+        if (this.activeBufferSource !== source) return;
+        this.activeBufferSource = null;
+        onEnded?.();
+      };
       source.start();
       this.activeBufferSource = source;
       this.lastError = null;
@@ -200,13 +256,15 @@ export class SoundEngine {
       return;
     }
 
-    if (this.activeSound) {
-      this.activeSound.pause();
-    }
+    this.stopActiveSound();
 
     const audio = this.sounds[name];
     audio.currentTime = 0;
-    if (onEnded) audio.addEventListener("ended", onEnded, { once: true });
+    audio.onended = () => {
+      if (this.activeSound !== audio) return;
+      this.activeSound = null;
+      onEnded?.();
+    };
     this.activeSound = audio;
     void audio.play()
       .then(() => {

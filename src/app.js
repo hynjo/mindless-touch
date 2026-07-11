@@ -65,6 +65,7 @@ let audioDebug = {
   state: "not-created",
   sampleRate: null,
   playbackLatency: null,
+  recoveryPending: false,
   error: null,
 };
 let lastAudioAction = "waiting for first tap";
@@ -78,6 +79,7 @@ function updateDebugPanel() {
     `AudioContext: ${audioDebug.state}`,
     `Sample rate: ${audioDebug.sampleRate ?? "n/a"}`,
     `Playback latency: ${audioDebug.playbackLatency ?? "n/a"} ms`,
+    `Foreground recovery: ${audioDebug.recoveryPending ? "pending" : "ready"}`,
     `Level: ${level}`,
     `Target area: ${blob ? `${(blob.targetArea * 100).toFixed(1)}%` : "n/a"}`,
     `Found chain: ${phase === "found" ? "active" : "inactive"}`,
@@ -350,6 +352,36 @@ canvas.addEventListener("mouseup", (event) => {
 
 canvas.addEventListener("mouseleave", () => {
   mouseStart = null;
+});
+
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState !== "visible") return;
+
+  touchStarts.clear();
+  mouseStart = null;
+
+  if (phase === "revealing") {
+    phase = "found";
+    app.setAttribute(
+      "aria-label",
+      "Audio was interrupted. Find the same hidden area again",
+    );
+    status.textContent = "Audio was interrupted. Find the same hidden area again.";
+    lastAudioAction = "reveal interrupted";
+    draw();
+    updateDebugPanel();
+  } else if (phase === "transitioning") {
+    phase = "revealed";
+    catEyes.classList.remove("is-celebrating");
+    app.setAttribute(
+      "aria-label",
+      "Audio was interrupted. Tap anywhere to complete the round again",
+    );
+    status.textContent = "Audio was interrupted. Tap anywhere to complete the round again.";
+    lastAudioAction = "correct interrupted";
+    draw();
+    updateDebugPanel();
+  }
 });
 
 window.addEventListener("resize", resizeCanvas);

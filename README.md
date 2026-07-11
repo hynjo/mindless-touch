@@ -61,6 +61,8 @@ http://localhost:5173/mindless-touch/?level=8
 
 `reveal` 피드백은 `public/assets/reveal.wav`, 오답 피드백은 `public/assets/wrong.wav`, `found` 피드백은 `public/assets/found.wav`, 완료 피드백은 `public/assets/correct.wav` 파일을 사용합니다. 문제 시작음은 브라우저에서 합성합니다. 라운드를 완료하면 고양이 눈이 잠시 커지고 밝아지며, 완료음이 끝난 뒤 200ms 후 다음 라운드가 시작됩니다.
 
+iOS에서 페이지가 백그라운드로 이동한 뒤 복귀하면 다음 사용자 입력에서 오디오 컨텍스트와 미디어 요소를 다시 생성하여 중단된 오디오 세션을 복구합니다.
+
 ## 디버그
 
 - `?debug` 또는 `?debug=1`: 문제를 푸는 동안에도 정답 도형을 표시하고 정답·오답 터치 위치를 점으로 표시
