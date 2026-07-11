@@ -16,7 +16,7 @@ const requestedLevel = Number.parseInt(params.get("level"), 10);
 const level = Number.isNaN(requestedLevel)
   ? DEFAULT_LEVEL
   : Math.min(MAX_LEVEL, Math.max(MIN_LEVEL, requestedLevel));
-const maxArea = 0.18 * (0.8 ** (level - 1));
+const maxArea = 0.18 * 0.8 ** (level - 1);
 const difficulty = { minArea: maxArea * 0.5, maxArea };
 
 const debugPanel = debug ? document.createElement("output") : null;
@@ -29,7 +29,10 @@ if (debugPanel) {
   });
 
   window.addEventListener("unhandledrejection", (event) => {
-    const message = event.reason instanceof Error ? event.reason.message : String(event.reason);
+    const message =
+      event.reason instanceof Error
+        ? event.reason.message
+        : String(event.reason);
     debugPanel.textContent = `Unhandled rejection:\n${message}`;
   });
 }
@@ -38,7 +41,9 @@ const fallbackSeed = `${Date.now()}-${Math.random()}`;
 const generatedSeed = globalThis.crypto?.randomUUID?.() ?? fallbackSeed;
 const baseSeed = params.get("seed") ?? generatedSeed;
 const sound = new SoundEngine();
-const catSpritePromise = loadCatSprite(`${import.meta.env.BASE_URL}assets/cute-cat-source.png`);
+const catSpritePromise = loadCatSprite(
+  `${import.meta.env.BASE_URL}assets/cute-cat-source.png`,
+);
 
 let phase = "idle";
 let round = 0;
@@ -121,7 +126,8 @@ function drawPoint(point, radius, fill, stroke = null) {
 
 function draw() {
   context.clearRect(0, 0, window.innerWidth, window.innerHeight);
-  const isRevealed = phase === "revealing" || phase === "revealed" || phase === "transitioning";
+  const isRevealed =
+    phase === "revealing" || phase === "revealed" || phase === "transitioning";
   if (!blob || (!isRevealed && !debug)) return;
 
   context.save();
@@ -131,7 +137,7 @@ function draw() {
 
   if (isRevealed && debug) {
     misses.forEach((point) => drawPoint(point, 3, "rgba(255, 255, 255, 0.55)"));
-    drawPoint(correctTap, 7, "#111111", "#ffffff");
+    drawPoint(correctTap, 7, "#000000", "#ffffff");
   }
 }
 
@@ -184,7 +190,10 @@ function handleTap(point, startedPhase = phase, startedRound = round) {
 
     correctTap = point;
     phase = "revealing";
-    app.setAttribute("aria-label", "Shape revealed. Wait for the sound to finish");
+    app.setAttribute(
+      "aria-label",
+      "Shape revealed. Wait for the sound to finish",
+    );
     status.textContent = "Shape revealed. Wait for the sound to finish.";
     lastAudioAction = "playReveal";
     draw();
@@ -203,7 +212,10 @@ function handleTap(point, startedPhase = phase, startedRound = round) {
     if (phase !== "revealed" || round !== startedRound) return;
 
     phase = "transitioning";
-    app.setAttribute("aria-label", "Correct. The next round will start after the sound");
+    app.setAttribute(
+      "aria-label",
+      "Correct. The next round will start after the sound",
+    );
     status.textContent = "Correct. The next round will start after the sound.";
     lastAudioAction = "playCorrect";
     updateDebugPanel();
@@ -218,7 +230,10 @@ function handleTap(point, startedPhase = phase, startedRound = round) {
   if (pointInCat(point, blob, catSprite)) {
     correctTap = point;
     phase = "found";
-    app.setAttribute("aria-label", "Target found. Find the same hidden area again");
+    app.setAttribute(
+      "aria-label",
+      "Target found. Find the same hidden area again",
+    );
     status.textContent = "Target found. Find the same hidden area again.";
     lastAudioAction = "playFound";
     updateDebugPanel();
@@ -248,41 +263,57 @@ function finishTap(start, x, y, inputType, maxMovement) {
   handleTap(normalizePoint(x, y), start.phase, start.round);
 }
 
-canvas.addEventListener("touchstart", (event) => {
-  event.preventDefault();
-  lastTouchAt = performance.now();
+canvas.addEventListener(
+  "touchstart",
+  (event) => {
+    event.preventDefault();
+    lastTouchAt = performance.now();
 
-  for (const touch of event.changedTouches) {
-    touchStarts.set(touch.identifier, {
-      x: touch.clientX,
-      y: touch.clientY,
-      phase,
-      round,
-    });
-  }
+    for (const touch of event.changedTouches) {
+      touchStarts.set(touch.identifier, {
+        x: touch.clientX,
+        y: touch.clientY,
+        phase,
+        round,
+      });
+    }
 
-  lastInputAction = `touchstart (${event.changedTouches.length})`;
-  updateDebugPanel();
-}, { passive: false });
+    lastInputAction = `touchstart (${event.changedTouches.length})`;
+    updateDebugPanel();
+  },
+  { passive: false },
+);
 
-canvas.addEventListener("touchend", (event) => {
-  event.preventDefault();
-  lastTouchAt = performance.now();
+canvas.addEventListener(
+  "touchend",
+  (event) => {
+    event.preventDefault();
+    lastTouchAt = performance.now();
 
-  for (const touch of event.changedTouches) {
-    const start = touchStarts.get(touch.identifier);
-    touchStarts.delete(touch.identifier);
-    if (!start) continue;
-    finishTap(start, touch.clientX, touch.clientY, "touchend", MAX_TOUCH_MOVEMENT);
-  }
-}, { passive: false });
+    for (const touch of event.changedTouches) {
+      const start = touchStarts.get(touch.identifier);
+      touchStarts.delete(touch.identifier);
+      if (!start) continue;
+      finishTap(
+        start,
+        touch.clientX,
+        touch.clientY,
+        "touchend",
+        MAX_TOUCH_MOVEMENT,
+      );
+    }
+  },
+  { passive: false },
+);
 
 canvas.addEventListener("touchcancel", (event) => {
-  for (const touch of event.changedTouches) touchStarts.delete(touch.identifier);
+  for (const touch of event.changedTouches)
+    touchStarts.delete(touch.identifier);
 });
 
 canvas.addEventListener("mousedown", (event) => {
-  if (event.button !== 0 || mouseStart || performance.now() - lastTouchAt < 800) return;
+  if (event.button !== 0 || mouseStart || performance.now() - lastTouchAt < 800)
+    return;
   mouseStart = { x: event.clientX, y: event.clientY, phase, round };
   lastInputAction = "mousedown";
   updateDebugPanel();

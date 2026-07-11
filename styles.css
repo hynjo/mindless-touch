@@ -1,6 +1,6 @@
 :root {
   color-scheme: dark;
-  background: #111111;
+  background: #000000;
   font-family: system-ui, sans-serif;
   -webkit-tap-highlight-color: transparent;
 }
@@ -20,7 +20,7 @@ body,
 }
 
 body {
-  background: #111111;
+  background: #000000;
   user-select: none;
   -webkit-user-select: none;
 }
@@ -57,7 +57,11 @@ body {
   border-radius: 8px;
   background: rgba(0, 0, 0, 0.82);
   color: #ffffff;
-  font: 12px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace;
+  font:
+    12px/1.5 ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    monospace;
   white-space: pre;
   pointer-events: none;
 }
