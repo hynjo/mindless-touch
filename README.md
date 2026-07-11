@@ -59,7 +59,7 @@ http://localhost:5173/mindless-touch/?level=8
 
 ## 사운드 에셋
 
-`reveal` 피드백은 `public/assets/reveal.wav`, 오답 피드백은 `public/assets/wrong.wav`, `found` 피드백은 `public/assets/found.wav`, 완료 피드백은 `public/assets/correct.wav` 파일을 사용합니다. 문제 시작음은 브라우저에서 합성합니다. 라운드를 완료하면 고양이 눈이 잠시 커지고 밝아지면서 감기며, 마지막 200ms 동안 남은 눈매가 천천히 닫힙니다. 완료음이 끝난 뒤 200ms 후 다음 라운드가 시작됩니다.
+`reveal` 피드백은 `public/assets/reveal.wav`, 오답 피드백은 `public/assets/wrong.wav`, `found` 피드백은 `public/assets/found.wav`, 완료 피드백은 `public/assets/correct.wav` 파일을 사용합니다. 문제 시작음은 브라우저에서 합성합니다. 두 번째 연속 성공으로 reveal이 시작되면 감긴 고양이 눈이 빠르게 열립니다. 라운드를 완료하면 눈이 잠시 커지고 밝아지면서 감기며, 마지막 200ms 동안 남은 눈매가 천천히 닫힙니다. 완료음이 끝난 뒤 200ms 후 다음 라운드가 시작됩니다.
 
 iOS에서 페이지가 백그라운드로 이동한 뒤 복귀하면 다음 사용자 입력에서 오디오 컨텍스트와 미디어 요소를 다시 생성하여 중단된 오디오 세션을 복구합니다.
 

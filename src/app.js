@@ -132,6 +132,7 @@ function draw() {
   const isVisible = Boolean(blob) && (isRevealed || debug);
   catEyes.classList.toggle("is-visible", isVisible);
   catEyes.classList.toggle("is-debug", isVisible && !isRevealed);
+  catEyes.classList.toggle("is-revealing", isVisible && phase === "revealing");
 
   if (!blob) return;
   catEyes.style.left = `${blob.x * window.innerWidth}px`;
@@ -220,6 +221,7 @@ function handleTap(point, startedPhase = phase, startedRound = round) {
       phase = "revealed";
       app.setAttribute("aria-label", "Tap anywhere to complete the round");
       status.textContent = "Tap anywhere to complete the round.";
+      draw();
       updateDebugPanel();
     });
     return;

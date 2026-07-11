@@ -81,6 +81,11 @@ body {
   will-change: clip-path;
 }
 
+.cat-eyes.is-revealing .cat-eye {
+  animation: cat-eye-close 180ms cubic-bezier(0.45, 0, 0.55, 1) reverse both;
+  will-change: clip-path;
+}
+
 @keyframes cat-eye-close {
   0%,
   24% {
@@ -102,6 +107,10 @@ body {
   }
 
   .cat-eyes.is-celebrating .cat-eye {
+    animation: none;
+  }
+
+  .cat-eyes.is-revealing .cat-eye {
     animation: none;
   }
 
