@@ -56,11 +56,13 @@ catEyes.innerHTML = '<span class="cat-eye"></span><span class="cat-eye"></span>'
 app.append(catEyes);
 
 const PAW_MARKUP = `
-  <span class="intro-paw-pad"></span>
-  <span class="intro-paw-toe intro-paw-toe-1"></span>
-  <span class="intro-paw-toe intro-paw-toe-2"></span>
-  <span class="intro-paw-toe intro-paw-toe-3"></span>
-  <span class="intro-paw-toe intro-paw-toe-4"></span>
+  <span class="paw-glyph">
+    <span class="intro-paw-pad"></span>
+    <span class="intro-paw-toe intro-paw-toe-1"></span>
+    <span class="intro-paw-toe intro-paw-toe-2"></span>
+    <span class="intro-paw-toe intro-paw-toe-3"></span>
+    <span class="intro-paw-toe intro-paw-toe-4"></span>
+  </span>
 `;
 const tapFeedbackLayer = document.createElement("div");
 tapFeedbackLayer.className = "tap-feedback-layer";
@@ -132,16 +134,18 @@ function showIntroTap(x, y, successful = false) {
   introTouch.classList.add("is-tapping");
 }
 
-function showTapFeedback(point, successful) {
+function showTapFeedback(point, successful, completion) {
   const paw = document.createElement("span");
   paw.className = "paw-touch game-paw is-tapping";
   paw.classList.toggle("is-success", successful);
+  paw.classList.toggle("is-completion", completion);
   paw.style.left = `${point.x * 100}%`;
   paw.style.top = `${point.y * 100}%`;
   paw.innerHTML = PAW_MARKUP;
   tapFeedbackLayer.append(paw);
-  paw.addEventListener("animationend", () => paw.remove(), { once: true });
-  window.setTimeout(() => paw.remove(), 600);
+  if (!completion)
+    paw.addEventListener("animationend", () => paw.remove(), { once: true });
+  window.setTimeout(() => paw.remove(), completion ? 1000 : 600);
 }
 
 function resetIntro() {
@@ -443,7 +447,7 @@ function finishTap(start, x, y, inputType, maxMovement) {
     ((start.phase === "playing" || start.phase === "found") && targetWasHit)
     || start.phase === "revealed";
   if (start.phase !== "intro" && start.phase !== "demo")
-    showTapFeedback(point, successful);
+    showTapFeedback(point, successful, start.phase === "revealed");
   lastInputAction = inputType;
   updateDebugPanel();
   handleTap(point, start.phase, start.round);

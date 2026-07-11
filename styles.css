@@ -100,6 +100,26 @@ body {
   --paw-glow: rgba(255, 248, 117, 0.3);
 }
 
+.paw-glyph {
+  position: absolute;
+  inset: 0;
+  display: block;
+  transform-origin: 50% 88%;
+  pointer-events: none;
+}
+
+.paw-touch.is-completion.is-tapping {
+  animation: completion-paw-container 900ms ease-out both;
+}
+
+.paw-touch.is-completion .paw-glyph {
+  animation: completion-paw-goodbye 620ms 150ms ease-in-out both;
+}
+
+.paw-touch.is-completion::after {
+  animation: none;
+}
+
 .intro-touch {
   top: 68%;
   left: 50%;
@@ -281,6 +301,47 @@ body {
   100% {
     opacity: 0;
     transform: scale(2.2);
+  }
+}
+
+@keyframes completion-paw-container {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1.15);
+  }
+
+  14%,
+  76% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(0.88);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.65);
+  }
+}
+
+@keyframes completion-paw-goodbye {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+
+  18% {
+    transform: rotate(-18deg);
+  }
+
+  38% {
+    transform: rotate(16deg);
+  }
+
+  58% {
+    transform: rotate(-13deg);
+  }
+
+  78% {
+    transform: rotate(9deg);
   }
 }
 
