@@ -1,6 +1,7 @@
 :root {
   color-scheme: dark;
   background: #000000;
+  --cat-eye-color: #fff875;
   font-family: system-ui, sans-serif;
   -webkit-tap-highlight-color: transparent;
 }
@@ -36,6 +37,52 @@ body {
   height: 100%;
 }
 
+.cat-eyes {
+  --eye-size: 38%;
+  --half-eye-gap: 4.5%;
+  position: fixed;
+  z-index: 3;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.cat-eyes.is-visible {
+  opacity: 1;
+}
+
+.cat-eyes.is-debug {
+  opacity: 0.35;
+}
+
+.cat-eye {
+  position: absolute;
+  top: 50%;
+  width: var(--eye-size);
+  height: auto;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border-radius: 50%;
+  background: var(--cat-eye-color);
+  transform: translateY(-50%);
+}
+
+.cat-eye:first-child {
+  left: calc(50% - var(--half-eye-gap) - var(--eye-size));
+}
+
+.cat-eye:last-child {
+  left: calc(50% + var(--half-eye-gap));
+}
+
+.cat-eye::after {
+  position: absolute;
+  margin-left: 5px;
+  inset: 10% 27%;
+  border-radius: 60%;
+  background: #000000;
+  content: "";
+}
+
 .visually-hidden {
   position: fixed;
   width: 1px;
@@ -52,7 +99,7 @@ body {
   position: fixed;
   top: max(12px, env(safe-area-inset-top));
   left: max(12px, env(safe-area-inset-left));
-  z-index: 1;
+  z-index: 4;
   padding: 10px 12px;
   border-radius: 8px;
   background: rgba(0, 0, 0, 0.82);

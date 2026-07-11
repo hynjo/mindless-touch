@@ -12,11 +12,6 @@ const SOUND_DEFINITIONS = {
     { frequency: 587.33, start: 0, duration: 0.1, gain: 0.28 },
     { frequency: 698.46, start: 0.08, duration: 0.14, gain: 0.3 },
   ],
-  reveal: [
-    { frequency: 392, start: 0, duration: 0.12, gain: 0.24 },
-    { frequency: 523.25, start: 0.06, duration: 0.16, gain: 0.28 },
-    { frequency: 659.25, start: 0.12, duration: 0.2, gain: 0.3 },
-  ],
   wrong: [
     { frequency: 164.81, start: 0, duration: 0.11, type: "triangle", gain: 0.24 },
   ],
@@ -90,8 +85,15 @@ function createAudio(samples) {
   return audio;
 }
 
+function createFileAudio(url) {
+  const audio = new Audio(url);
+  audio.preload = "auto";
+  audio.playsInline = true;
+  return audio;
+}
+
 export class SoundEngine {
-  constructor() {
+  constructor({ revealUrl = null } = {}) {
     this.lastError = null;
     this.playbackLatency = null;
     this.stateListener = null;
@@ -99,12 +101,17 @@ export class SoundEngine {
     this.activeBufferSource = null;
     this.context = null;
     this.buffers = {};
+    this.externalBuffersStarted = false;
     this.samples = Object.fromEntries(
       Object.entries(SOUND_DEFINITIONS).map(([name, events]) => [name, createSamples(events)]),
     );
     this.sounds = Object.fromEntries(
       Object.entries(this.samples).map(([name, samples]) => [name, createAudio(samples)]),
     );
+    this.externalAudioUrls = revealUrl ? { reveal: revealUrl } : {};
+    for (const [name, url] of Object.entries(this.externalAudioUrls)) {
+      this.sounds[name] = createFileAudio(url);
+    }
   }
 
   unlock() {
@@ -121,6 +128,25 @@ export class SoundEngine {
         const buffer = this.context.createBuffer(1, samples.length, SAMPLE_RATE);
         buffer.copyToChannel(samples, 0);
         this.buffers[name] = buffer;
+      }
+    }
+
+    if (!this.externalBuffersStarted) {
+      this.externalBuffersStarted = true;
+      for (const [name, url] of Object.entries(this.externalAudioUrls)) {
+        void fetch(url)
+          .then((response) => {
+            if (!response.ok) throw new Error(`Failed to load ${name} sound`);
+            return response.arrayBuffer();
+          })
+          .then((data) => this.context.decodeAudioData(data))
+          .then((buffer) => {
+            this.buffers[name] = buffer;
+          })
+          .catch((error) => {
+            this.lastError = error instanceof Error ? error.message : String(error);
+            this.notifyState();
+          });
       }
     }
 
@@ -152,7 +178,7 @@ export class SoundEngine {
   play(name, onEnded = null) {
     const requestedAt = performance.now();
 
-    if (this.context?.state === "running") {
+    if (this.context?.state === "running" && this.buffers[name]) {
       if (this.activeSound) {
         this.activeSound.pause();
         this.activeSound = null;

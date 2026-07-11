@@ -1,12 +1,13 @@
 import { SoundEngine } from "./audio.js";
-import { generateCatTarget, loadCatSprite, pointInCat } from "./cat-target.js";
+import { generateCatTarget, pointInCat } from "./cat-target.js";
 
 const canvas = document.querySelector("#playfield");
 const context = canvas.getContext("2d");
 const app = document.querySelector("#app");
 const status = document.querySelector("#status");
 const params = new URLSearchParams(window.location.search);
-const debug = params.get("debug") === "1";
+const debugValue = params.get("debug");
+const debug = params.has("debug") && debugValue !== "0" && debugValue !== "false";
 const MAX_MOUSE_MOVEMENT = 10;
 const MAX_TOUCH_MOVEMENT = 24;
 const DEFAULT_LEVEL = 5;
@@ -40,15 +41,18 @@ if (debugPanel) {
 const fallbackSeed = `${Date.now()}-${Math.random()}`;
 const generatedSeed = globalThis.crypto?.randomUUID?.() ?? fallbackSeed;
 const baseSeed = params.get("seed") ?? generatedSeed;
-const sound = new SoundEngine();
-const catSpritePromise = loadCatSprite(
-  `${import.meta.env.BASE_URL}assets/cute-cat-source.png`,
-);
+const sound = new SoundEngine({
+  revealUrl: `${import.meta.env.BASE_URL}assets/reveal.wav`,
+});
+app.querySelectorAll(".cat-eyes").forEach((element) => element.remove());
+const catEyes = document.createElement("div");
+catEyes.className = "cat-eyes";
+catEyes.innerHTML = '<span class="cat-eye"></span><span class="cat-eye"></span>';
+app.append(catEyes);
 
 let phase = "idle";
 let round = 0;
 let blob = null;
-let catSprite = null;
 let misses = [];
 let correctTap = null;
 let mouseStart = null;
@@ -74,6 +78,7 @@ function updateDebugPanel() {
     `Target area: ${blob ? `${(blob.targetArea * 100).toFixed(1)}%` : "n/a"}`,
     `Found chain: ${phase === "found" ? "active" : "inactive"}`,
     `Game phase: ${phase}`,
+    `Eyes visible: ${catEyes.classList.contains("is-visible") ? "yes" : "no"}`,
     `Last input: ${lastInputAction}`,
     `Last action: ${lastAudioAction}`,
     `Error: ${audioDebug.error ?? "none"}`,
@@ -101,16 +106,6 @@ function toPixels(point) {
   return { x: point.x * window.innerWidth, y: point.y * window.innerHeight };
 }
 
-function traceBlob() {
-  context.drawImage(
-    catSprite.canvas,
-    blob.x * window.innerWidth,
-    blob.y * window.innerHeight,
-    blob.width * window.innerWidth,
-    blob.height * window.innerHeight,
-  );
-}
-
 function drawPoint(point, radius, fill, stroke = null) {
   const pixel = toPixels(point);
   context.beginPath();
@@ -128,12 +123,15 @@ function draw() {
   context.clearRect(0, 0, window.innerWidth, window.innerHeight);
   const isRevealed =
     phase === "revealing" || phase === "revealed" || phase === "transitioning";
-  if (!blob || (!isRevealed && !debug)) return;
+  const isVisible = Boolean(blob) && (isRevealed || debug);
+  catEyes.classList.toggle("is-visible", isVisible);
+  catEyes.classList.toggle("is-debug", isVisible && !isRevealed);
 
-  context.save();
-  context.globalAlpha = isRevealed ? 1 : 0.35;
-  traceBlob();
-  context.restore();
+  if (!blob) return;
+  catEyes.style.left = `${blob.x * window.innerWidth}px`;
+  catEyes.style.top = `${blob.y * window.innerHeight}px`;
+  catEyes.style.width = `${blob.width * window.innerWidth}px`;
+  catEyes.style.height = `${blob.height * window.innerHeight}px`;
 
   if (isRevealed && debug) {
     misses.forEach((point) => drawPoint(point, 3, "rgba(255, 255, 255, 0.55)"));
@@ -145,7 +143,6 @@ function beginRound() {
   round += 1;
   blob = generateCatTarget(
     `${baseSeed}:${round}`,
-    catSprite,
     difficulty,
     window.innerWidth / window.innerHeight,
   );
@@ -164,20 +161,14 @@ function handleTap(point, startedPhase = phase, startedRound = round) {
   sound.unlock();
 
   if (startedPhase === "idle") {
-    if (phase === "idle") {
-      phase = "loading";
-      void catSpritePromise.then((sprite) => {
-        catSprite = sprite;
-        if (phase === "loading") beginRound();
-      });
-    }
+    if (phase === "idle") beginRound();
     return;
   }
 
   if (startedPhase === "found") {
     if (phase !== "found" || round !== startedRound) return;
 
-    if (!pointInCat(point, blob, catSprite)) {
+    if (!pointInCat(point, blob)) {
       phase = "playing";
       misses.push(point);
       app.setAttribute("aria-label", "Missed. Find the hidden shape again");
@@ -227,7 +218,7 @@ function handleTap(point, startedPhase = phase, startedRound = round) {
 
   if (phase !== "playing" || round !== startedRound) return;
 
-  if (pointInCat(point, blob, catSprite)) {
+  if (pointInCat(point, blob)) {
     correctTap = point;
     phase = "found";
     app.setAttribute(
