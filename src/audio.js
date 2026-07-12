@@ -86,7 +86,7 @@ function createFileAudio(url) {
 }
 
 export class SoundEngine {
-  constructor({ revealUrl = null, wrongUrl = null, foundUrl = null, correctUrl = null } = {}) {
+  constructor({ revealUrl = null, wrongUrl = null, foundUrl = null, correctUrl = null, failureUrl = null } = {}) {
     this.lastError = null;
     this.playbackLatency = null;
     this.stateListener = null;
@@ -108,6 +108,7 @@ export class SoundEngine {
         wrong: wrongUrl,
         found: foundUrl,
         correct: correctUrl,
+        failure: failureUrl,
       })
         .filter(([, url]) => url),
     );
@@ -277,6 +278,25 @@ export class SoundEngine {
       .finally(() => this.notifyState());
   }
 
+  playOverlay(name) {
+    const buffer = this.buffers[name];
+    if (this.context?.state === "running" && buffer) {
+      const source = this.context.createBufferSource();
+      source.buffer = buffer;
+      source.connect(this.context.destination);
+      source.start();
+      return;
+    }
+
+    const audio = this.sounds[name]?.cloneNode();
+    if (!audio) return;
+    audio.playsInline = true;
+    void audio.play().catch((error) => {
+      this.lastError = error instanceof Error ? error.message : String(error);
+      this.notifyState();
+    });
+  }
+
   playProblem() {
     this.play("problem");
   }
@@ -295,5 +315,9 @@ export class SoundEngine {
 
   playWrong() {
     this.play("wrong");
+  }
+
+  playFailure() {
+    this.playOverlay("failure");
   }
 }

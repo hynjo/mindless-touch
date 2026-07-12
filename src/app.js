@@ -21,6 +21,7 @@ const CAT_NUDGE_DURATION_MIN = 300;
 const CAT_NUDGE_DURATION_MAX = 600;
 const CAT_DOUBLE_BLINK_CHANCE = 0.3;
 const CAT_DOUBLE_BLINK_DURATION_MULTIPLIER = 1.75;
+const FAILURE_SHATTER_DELAY = 600;
 const NUDGE_EDGE_PADDING = 32;
 const DEFAULT_LEVEL = 5;
 const MIN_LEVEL = 1;
@@ -58,6 +59,7 @@ const sound = new SoundEngine({
   wrongUrl: `${import.meta.env.BASE_URL}assets/wrong.wav`,
   foundUrl: `${import.meta.env.BASE_URL}assets/found.wav`,
   correctUrl: `${import.meta.env.BASE_URL}assets/correct.wav`,
+  failureUrl: `${import.meta.env.BASE_URL}assets/failure.wav`,
 });
 app.querySelectorAll(".cat-eyes").forEach((element) => element.remove());
 const catEyes = document.createElement("div");
@@ -79,6 +81,10 @@ const tapFeedbackLayer = document.createElement("div");
 tapFeedbackLayer.className = "tap-feedback-layer";
 tapFeedbackLayer.setAttribute("aria-hidden", "true");
 app.append(tapFeedbackLayer);
+const failureEffectLayer = document.createElement("div");
+failureEffectLayer.className = "failure-effect-layer";
+failureEffectLayer.setAttribute("aria-hidden", "true");
+app.append(failureEffectLayer);
 const nudgePaw = document.createElement("span");
 nudgePaw.className = "paw-touch nudge-paw is-success";
 nudgePaw.innerHTML = PAW_MARKUP;
@@ -110,6 +116,7 @@ let phase = introEnabled ? "intro" : "idle";
 let round = 0;
 let blob = null;
 let misses = [];
+let consecutiveFailures = 0;
 let correctTap = null;
 let mouseStart = null;
 const touchStarts = new Map();
@@ -124,6 +131,7 @@ let lastAudioAction = "waiting for first tap";
 let lastInputAction = "none";
 let lastTouchAt = 0;
 let nudgeTimer = null;
+let failureEffectTimer = null;
 let introRun = 0;
 const introTimers = new Set();
 
@@ -167,6 +175,86 @@ function showTapFeedback(point, successful, completion) {
   if (!completion)
     paw.addEventListener("animationend", () => paw.remove(), { once: true });
   window.setTimeout(() => paw.remove(), completion ? 1000 : 600);
+}
+
+function createCrackPath(originX, originY, angle, length, bend) {
+  const middleX = originX + Math.cos(angle) * length * 0.48;
+  const middleY = originY + Math.sin(angle) * length * 0.48;
+  const endX = originX + Math.cos(angle + bend) * length;
+  const endY = originY + Math.sin(angle + bend) * length;
+  return `M ${originX} ${originY} L ${middleX} ${middleY} L ${endX} ${endY}`;
+}
+
+function showFailureShatter(point) {
+  const width = window.innerWidth;
+  const height = window.innerHeight;
+  const originX = point.x * width;
+  const originY = point.y * height;
+  const effect = document.createElement("div");
+  effect.className = "failure-shatter";
+  effect.style.setProperty("--impact-x", `${point.x * 100}%`);
+  effect.style.setProperty("--impact-y", `${point.y * 100}%`);
+
+  const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  svg.classList.add("failure-cracks");
+  svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
+  svg.setAttribute("preserveAspectRatio", "none");
+
+  const rayCount = 14;
+  const baseLength = Math.hypot(width, height) * 1.05;
+  for (let index = 0; index < rayCount; index += 1) {
+    const angle =
+      (Math.PI * 2 * index) / rayCount + (Math.random() - 0.5) * 0.2;
+    const length = baseLength * (0.78 + Math.random() * 0.35);
+    const bend = (Math.random() - 0.5) * 0.24;
+    const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    path.classList.add("failure-crack");
+    path.setAttribute("pathLength", "1");
+    path.setAttribute("d", createCrackPath(originX, originY, angle, length, bend));
+    svg.append(path);
+
+    if (index % 2 === 0) {
+      const branch = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      const branchOriginX = originX + Math.cos(angle) * length * 0.48;
+      const branchOriginY = originY + Math.sin(angle) * length * 0.48;
+      branch.classList.add("failure-crack", "failure-crack-branch");
+      branch.setAttribute("pathLength", "1");
+      branch.setAttribute(
+        "d",
+        createCrackPath(
+          branchOriginX,
+          branchOriginY,
+          angle + (index % 4 === 0 ? 0.7 : -0.7),
+          length * 0.32,
+          bend,
+        ),
+      );
+      svg.append(branch);
+    }
+  }
+
+  const punch = document.createElement("span");
+  punch.className = "paw-touch failure-punch";
+  punch.style.left = `${originX}px`;
+  punch.style.top = `${originY}px`;
+  punch.innerHTML = PAW_MARKUP;
+  effect.append(svg, punch);
+  failureEffectLayer.append(effect);
+  window.setTimeout(() => effect.remove(), 900);
+}
+
+function registerFailure(point) {
+  consecutiveFailures += 1;
+  if (consecutiveFailures < 3) return false;
+  consecutiveFailures = 0;
+  const failedRound = round;
+  sound.playFailure();
+  if (failureEffectTimer !== null) window.clearTimeout(failureEffectTimer);
+  failureEffectTimer = window.setTimeout(() => {
+    failureEffectTimer = null;
+    if (phase === "playing" && round === failedRound) showFailureShatter(point);
+  }, FAILURE_SHATTER_DELAY);
+  return true;
 }
 
 function cancelNudge() {
@@ -326,6 +414,7 @@ function updateDebugPanel() {
     `Level: ${level}`,
     `Target area: ${blob ? `${(blob.targetArea * 100).toFixed(1)}%` : "n/a"}`,
     `Found chain: ${phase === "found" ? "active" : "inactive"}`,
+    `Failure streak: ${consecutiveFailures}`,
     `Game phase: ${phase}`,
     `Eyes visible: ${catEyes.classList.contains("is-visible") ? "yes" : "no"}`,
     `Last input: ${lastInputAction}`,
@@ -417,6 +506,7 @@ function beginRound() {
     window.innerWidth / window.innerHeight,
   );
   misses = [];
+  consecutiveFailures = 0;
   correctTap = null;
   phase = "playing";
   app.setAttribute("aria-label", "Find the hidden shape");
@@ -449,6 +539,7 @@ function handleTap(point, startedPhase = phase, startedRound = round) {
     if (!pointInCat(point, blob)) {
       phase = "playing";
       misses.push(point);
+      registerFailure(point);
       app.setAttribute("aria-label", "Missed. Find the hidden shape again");
       status.textContent = "Missed. Find the hidden shape again.";
       lastAudioAction = "playWrong";
@@ -509,6 +600,7 @@ function handleTap(point, startedPhase = phase, startedRound = round) {
   if (phase !== "playing" || round !== startedRound) return;
 
   if (pointInCat(point, blob)) {
+    consecutiveFailures = 0;
     correctTap = point;
     phase = "found";
     app.setAttribute(
@@ -523,9 +615,10 @@ function handleTap(point, startedPhase = phase, startedRound = round) {
   }
 
   misses.push(point);
-  lastAudioAction = "playWrong";
+  const triggeredFailureEffect = registerFailure(point);
+  lastAudioAction = triggeredFailureEffect ? "playFailure" : "playWrong";
   updateDebugPanel();
-  sound.playWrong();
+  if (!triggeredFailureEffect) sound.playWrong();
   draw();
 }
 
