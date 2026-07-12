@@ -13,6 +13,9 @@ const MAX_MOUSE_MOVEMENT = 10;
 const MAX_TOUCH_MOVEMENT = 24;
 const NEXT_ROUND_DELAY = 200;
 const EYE_CLOSE_DELAY = 250;
+const NUDGE_DELAY = 3000;
+const NUDGE_DURATION = 1100;
+const NUDGE_EDGE_PADDING = 32;
 const DEFAULT_LEVEL = 5;
 const MIN_LEVEL = 1;
 const MAX_LEVEL = 10;
@@ -69,6 +72,11 @@ const tapFeedbackLayer = document.createElement("div");
 tapFeedbackLayer.className = "tap-feedback-layer";
 tapFeedbackLayer.setAttribute("aria-hidden", "true");
 app.append(tapFeedbackLayer);
+const nudgePaw = document.createElement("span");
+nudgePaw.className = "paw-touch nudge-paw is-success";
+nudgePaw.innerHTML = PAW_MARKUP;
+tapFeedbackLayer.append(nudgePaw);
+const desktopPointer = window.matchMedia("(hover: hover) and (pointer: fine)");
 
 const intro = document.createElement("div");
 intro.className = "intro";
@@ -108,6 +116,7 @@ let audioDebug = {
 let lastAudioAction = "waiting for first tap";
 let lastInputAction = "none";
 let lastTouchAt = 0;
+let nudgeTimer = null;
 let introRun = 0;
 const introTimers = new Set();
 
@@ -147,6 +156,45 @@ function showTapFeedback(point, successful, completion) {
   if (!completion)
     paw.addEventListener("animationend", () => paw.remove(), { once: true });
   window.setTimeout(() => paw.remove(), completion ? 1000 : 600);
+}
+
+function cancelNudge() {
+  if (nudgeTimer !== null) window.clearTimeout(nudgeTimer);
+  nudgeTimer = null;
+  nudgePaw.classList.remove("is-nudging");
+}
+
+function scheduleNudge() {
+  cancelNudge();
+  if (desktopPointer.matches) return;
+  if (phase !== "playing" && phase !== "found" && phase !== "revealed") return;
+
+  nudgeTimer = window.setTimeout(() => {
+    if (phase !== "playing" && phase !== "found" && phase !== "revealed") return;
+    nudgeTimer = null;
+    void nudgePaw.offsetWidth;
+    nudgePaw.classList.add("is-nudging");
+    nudgeTimer = window.setTimeout(() => {
+      nudgePaw.classList.remove("is-nudging");
+      nudgeTimer = null;
+      scheduleNudge();
+    }, NUDGE_DURATION);
+  }, NUDGE_DELAY);
+}
+
+function followDesktopPointer(x, y) {
+  if (!desktopPointer.matches) return;
+  const clampedX = Math.min(
+    window.innerWidth - NUDGE_EDGE_PADDING,
+    Math.max(NUDGE_EDGE_PADDING, x),
+  );
+  const clampedY = Math.min(
+    window.innerHeight - NUDGE_EDGE_PADDING,
+    Math.max(NUDGE_EDGE_PADDING, y),
+  );
+  nudgePaw.style.left = `${clampedX}px`;
+  nudgePaw.style.top = `${clampedY}px`;
+  nudgePaw.classList.add("is-pointer-following");
 }
 
 function resetIntro() {
@@ -333,6 +381,7 @@ function beginRound() {
   lastAudioAction = "playProblem";
   updateDebugPanel();
   sound.playProblem();
+  scheduleNudge();
 }
 
 function handleTap(point, startedPhase = phase, startedRound = round) {
@@ -381,6 +430,7 @@ function handleTap(point, startedPhase = phase, startedRound = round) {
       status.textContent = "Tap anywhere to complete the round.";
       draw();
       updateDebugPanel();
+      scheduleNudge();
     });
     return;
   }
@@ -455,12 +505,14 @@ function finishTap(start, x, y, inputType, maxMovement) {
   lastInputAction = inputType;
   updateDebugPanel();
   handleTap(point, start.phase, start.round);
+  scheduleNudge();
 }
 
 canvas.addEventListener(
   "touchstart",
   (event) => {
     event.preventDefault();
+    cancelNudge();
     lastTouchAt = performance.now();
 
     for (const touch of event.changedTouches) {
@@ -503,14 +555,26 @@ canvas.addEventListener(
 canvas.addEventListener("touchcancel", (event) => {
   for (const touch of event.changedTouches)
     touchStarts.delete(touch.identifier);
+  scheduleNudge();
 });
 
 canvas.addEventListener("mousedown", (event) => {
   if (event.button !== 0 || mouseStart || performance.now() - lastTouchAt < 800)
     return;
+  cancelNudge();
   mouseStart = { x: event.clientX, y: event.clientY, phase, round };
   lastInputAction = "mousedown";
   updateDebugPanel();
+});
+
+window.addEventListener("mousemove", (event) => {
+  followDesktopPointer(event.clientX, event.clientY);
+});
+
+desktopPointer.addEventListener("change", () => {
+  nudgePaw.classList.remove("is-pointer-following");
+  nudgePaw.removeAttribute("style");
+  scheduleNudge();
 });
 
 canvas.addEventListener("mouseup", (event) => {
@@ -522,6 +586,7 @@ canvas.addEventListener("mouseup", (event) => {
 
 canvas.addEventListener("mouseleave", () => {
   mouseStart = null;
+  scheduleNudge();
 });
 
 document.addEventListener("visibilitychange", () => {

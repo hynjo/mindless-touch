@@ -32,6 +32,10 @@ body {
   touch-action: none;
 }
 
+#app {
+  cursor: pointer;
+}
+
 #playfield {
   width: 100%;
   height: 100%;
@@ -127,6 +131,24 @@ body {
 .intro-touch {
   top: 68%;
   left: 50%;
+}
+
+.nudge-paw {
+  top: 78%;
+  left: 50%;
+}
+
+.nudge-paw.is-pointer-following {
+  opacity: 0.32;
+  transform: translate(-50%, -50%) scale(0.62);
+}
+
+.nudge-paw.is-nudging {
+  animation: touch-nudge 1100ms ease-in-out both;
+}
+
+.nudge-paw.is-nudging::after {
+  animation: touch-nudge-ripple 1100ms ease-out both;
 }
 
 .intro:not(.is-demo) .intro-touch {
@@ -340,6 +362,47 @@ body {
   100% {
     opacity: 0;
     transform: scale(2.2);
+  }
+}
+
+@keyframes touch-nudge {
+  0%,
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.72);
+  }
+
+  22% {
+    opacity: 0.75;
+    transform: translate(-50%, -50%) scale(0.94);
+  }
+
+  42% {
+    opacity: 0.9;
+    transform: translate(-50%, -50%) scale(0.68);
+  }
+
+  62% {
+    opacity: 0.55;
+    transform: translate(-50%, -50%) scale(0.82);
+  }
+}
+
+@keyframes touch-nudge-ripple {
+  0%,
+  35% {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+
+  42% {
+    opacity: 0.55;
+    transform: scale(0.8);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(2.4);
   }
 }
 
