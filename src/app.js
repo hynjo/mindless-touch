@@ -7,14 +7,20 @@ const app = document.querySelector("#app");
 const status = document.querySelector("#status");
 const params = new URLSearchParams(window.location.search);
 const debugValue = params.get("debug");
-const debug = params.has("debug") && debugValue !== "0" && debugValue !== "false";
+const debug =
+  params.has("debug") && debugValue !== "0" && debugValue !== "false";
 const introEnabled = params.get("intro") !== "0";
 const MAX_MOUSE_MOVEMENT = 10;
 const MAX_TOUCH_MOVEMENT = 24;
 const NEXT_ROUND_DELAY = 200;
 const EYE_CLOSE_DELAY = 250;
-const NUDGE_DELAY = 3000;
+const NUDGE_DELAY_MIN = 1500;
+const NUDGE_DELAY_MAX = 4000;
 const NUDGE_DURATION = 1100;
+const CAT_NUDGE_DURATION_MIN = 300;
+const CAT_NUDGE_DURATION_MAX = 600;
+const CAT_DOUBLE_BLINK_CHANCE = 0.3;
+const CAT_DOUBLE_BLINK_DURATION_MULTIPLIER = 1.75;
 const NUDGE_EDGE_PADDING = 32;
 const DEFAULT_LEVEL = 5;
 const MIN_LEVEL = 1;
@@ -56,7 +62,8 @@ const sound = new SoundEngine({
 app.querySelectorAll(".cat-eyes").forEach((element) => element.remove());
 const catEyes = document.createElement("div");
 catEyes.className = "cat-eyes";
-catEyes.innerHTML = '<span class="cat-eye"></span><span class="cat-eye"></span>';
+catEyes.innerHTML =
+  '<span class="cat-eye"></span><span class="cat-eye"></span>';
 app.append(catEyes);
 
 const PAW_MARKUP = `
@@ -120,6 +127,10 @@ let nudgeTimer = null;
 let introRun = 0;
 const introTimers = new Set();
 
+function randomDuration(minimum, maximum) {
+  return Math.round(minimum + Math.random() * (maximum - minimum));
+}
+
 function scheduleIntro(callback, delay) {
   const timer = window.setTimeout(() => {
     introTimers.delete(timer);
@@ -162,24 +173,46 @@ function cancelNudge() {
   if (nudgeTimer !== null) window.clearTimeout(nudgeTimer);
   nudgeTimer = null;
   nudgePaw.classList.remove("is-nudging");
+  catEyes.classList.remove("is-nudging");
+  catEyes.classList.remove("is-double-blink");
+  catEyes.style.removeProperty("--cat-nudge-duration");
 }
 
 function scheduleNudge() {
   cancelNudge();
-  if (desktopPointer.matches) return;
   if (phase !== "playing" && phase !== "found" && phase !== "revealed") return;
+  const scheduledPhase = phase;
+  const nudgeRevealedCat = scheduledPhase === "revealed";
+  if (desktopPointer.matches && !nudgeRevealedCat) return;
+  const inactivityDelay = randomDuration(NUDGE_DELAY_MIN, NUDGE_DELAY_MAX);
 
   nudgeTimer = window.setTimeout(() => {
-    if (phase !== "playing" && phase !== "found" && phase !== "revealed") return;
     nudgeTimer = null;
-    void nudgePaw.offsetWidth;
-    nudgePaw.classList.add("is-nudging");
+    if (phase !== scheduledPhase) return;
+    const target = nudgeRevealedCat ? catEyes : nudgePaw;
+    const doubleBlink = nudgeRevealedCat && Math.random() < CAT_DOUBLE_BLINK_CHANCE;
+    const singleBlinkDuration = randomDuration(
+      CAT_NUDGE_DURATION_MIN,
+      CAT_NUDGE_DURATION_MAX,
+    );
+    const nudgeDuration = nudgeRevealedCat
+      ? Math.round(
+          singleBlinkDuration
+            * (doubleBlink ? CAT_DOUBLE_BLINK_DURATION_MULTIPLIER : 1),
+        )
+      : NUDGE_DURATION;
+    if (nudgeRevealedCat) {
+      catEyes.classList.toggle("is-double-blink", doubleBlink);
+      catEyes.style.setProperty("--cat-nudge-duration", `${nudgeDuration}ms`);
+    }
+    void target.offsetWidth;
+    target.classList.add("is-nudging");
     nudgeTimer = window.setTimeout(() => {
-      nudgePaw.classList.remove("is-nudging");
+      target.classList.remove("is-nudging");
       nudgeTimer = null;
       scheduleNudge();
-    }, NUDGE_DURATION);
-  }, NUDGE_DELAY);
+    }, nudgeDuration);
+  }, inactivityDelay);
 }
 
 function followDesktopPointer(x, y) {
@@ -205,8 +238,15 @@ function resetIntro() {
   introTouch.classList.remove("is-tapping");
   introTouch.classList.add("is-success");
   introTouch.removeAttribute("style");
-  introDemoEyes.classList.remove("is-visible", "is-revealing", "is-celebrating");
-  app.setAttribute("aria-label", "Tap anywhere to start the sound demonstration");
+  introDemoEyes.classList.remove(
+    "is-visible",
+    "is-revealing",
+    "is-celebrating",
+  );
+  app.setAttribute(
+    "aria-label",
+    "Tap anywhere to start the sound demonstration",
+  );
   status.textContent = "Tap anywhere to start the sound demonstration.";
   lastAudioAction = "waiting for intro tap";
   updateDebugPanel();
@@ -216,7 +256,11 @@ function finishIntro(run) {
   if (phase !== "demo" || run !== introRun) return;
   clearIntroTimers();
   intro.hidden = true;
-  introDemoEyes.classList.remove("is-visible", "is-revealing", "is-celebrating");
+  introDemoEyes.classList.remove(
+    "is-visible",
+    "is-revealing",
+    "is-celebrating",
+  );
   beginRound();
 }
 
@@ -498,8 +542,8 @@ function finishTap(start, x, y, inputType, maxMovement) {
   const point = normalizePoint(x, y);
   const targetWasHit = Boolean(blob) && pointInCat(point, blob);
   const successful =
-    ((start.phase === "playing" || start.phase === "found") && targetWasHit)
-    || start.phase === "revealed";
+    ((start.phase === "playing" || start.phase === "found") && targetWasHit) ||
+    start.phase === "revealed";
   if (start.phase !== "intro" && start.phase !== "demo")
     showTapFeedback(point, successful, start.phase === "revealed");
   lastInputAction = inputType;
@@ -590,7 +634,10 @@ canvas.addEventListener("mouseleave", () => {
 });
 
 document.addEventListener("visibilitychange", () => {
-  if (document.visibilityState !== "visible") return;
+  if (document.visibilityState !== "visible") {
+    cancelNudge();
+    return;
+  }
 
   touchStarts.clear();
   mouseStart = null;
@@ -603,7 +650,8 @@ document.addEventListener("visibilitychange", () => {
       "aria-label",
       "Audio was interrupted. Find the same hidden area again",
     );
-    status.textContent = "Audio was interrupted. Find the same hidden area again.";
+    status.textContent =
+      "Audio was interrupted. Find the same hidden area again.";
     lastAudioAction = "reveal interrupted";
     draw();
     updateDebugPanel();
@@ -614,11 +662,14 @@ document.addEventListener("visibilitychange", () => {
       "aria-label",
       "Audio was interrupted. Tap anywhere to complete the round again",
     );
-    status.textContent = "Audio was interrupted. Tap anywhere to complete the round again.";
+    status.textContent =
+      "Audio was interrupted. Tap anywhere to complete the round again.";
     lastAudioAction = "correct interrupted";
     draw();
     updateDebugPanel();
   }
+
+  scheduleNudge();
 });
 
 window.addEventListener("resize", resizeCanvas);

@@ -496,6 +496,15 @@ body {
   will-change: clip-path;
 }
 
+.cat-eyes.is-nudging .cat-eye {
+  animation: cat-eye-nudge-blink var(--cat-nudge-duration, 450ms) ease-in-out both;
+  will-change: clip-path;
+}
+
+.cat-eyes.is-nudging.is-double-blink .cat-eye {
+  animation-name: cat-eye-nudge-double-blink;
+}
+
 @keyframes cat-eye-close {
   0%,
   24% {
@@ -511,6 +520,34 @@ body {
   }
 }
 
+@keyframes cat-eye-nudge-blink {
+  0%,
+  20%,
+  80%,
+  100% {
+    clip-path: inset(0 0 0 0 round 50%);
+  }
+
+  46%,
+  56% {
+    clip-path: inset(48% 0 48% 0 round 50%);
+  }
+}
+
+@keyframes cat-eye-nudge-double-blink {
+  0%,
+  30%,
+  70%,
+  100% {
+    clip-path: inset(0 0 0 0 round 50%);
+  }
+
+  16%,
+  52% {
+    clip-path: inset(48% 0 48% 0 round 50%);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .cat-eyes.is-celebrating {
     animation: cat-eyes-celebrate-reduced 300ms ease-out both;
@@ -521,6 +558,10 @@ body {
   }
 
   .cat-eyes.is-revealing .cat-eye {
+    animation: none;
+  }
+
+  .cat-eyes.is-nudging .cat-eye {
     animation: none;
   }
 
