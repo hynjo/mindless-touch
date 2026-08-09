@@ -14,7 +14,7 @@ const introEnabled = params.get("intro") !== "0";
 const MAX_MOUSE_MOVEMENT = 10;
 const MAX_TOUCH_MOVEMENT = 24;
 const NEXT_ROUND_DELAY = 200;
-const EYE_CLOSE_DELAY = 250;
+const EYE_CLOSE_DELAY = 780;
 const NUDGE_DELAY_MIN = 1500;
 const NUDGE_DELAY_MAX = 4000;
 const NUDGE_DURATION = 1100;
@@ -134,12 +134,56 @@ let lastAudioAction = "waiting for first tap";
 let lastInputAction = "none";
 let lastTouchAt = 0;
 let nudgeTimer = null;
+let foundConfirmationEndHandler = null;
+let foundConfirmationAccepting = false;
 let failureEffectTimer = null;
 let introRun = 0;
 const introTimers = new Set();
 
 function randomDuration(minimum, maximum) {
   return Math.round(minimum + Math.random() * (maximum - minimum));
+}
+
+function stopFoundConfirmation() {
+  if (foundConfirmationEndHandler !== null)
+    catEyes.removeEventListener("animationend", foundConfirmationEndHandler);
+  foundConfirmationEndHandler = null;
+  foundConfirmationAccepting = false;
+  catEyes.classList.remove(
+    "is-found-visible",
+    "is-found-opening",
+    "is-found-closing",
+  );
+}
+
+function showFoundConfirmation() {
+  stopFoundConfirmation();
+  const confirmingRound = round;
+  void catEyes.offsetWidth;
+  foundConfirmationAccepting = true;
+  foundConfirmationEndHandler = (event) => {
+    if (event.animationName === "cat-eye-found-open") {
+      if (!catEyes.classList.contains("is-found-opening")) return;
+      foundConfirmationAccepting = false;
+      catEyes.classList.remove("is-found-opening");
+      void catEyes.offsetWidth;
+      catEyes.classList.add("is-found-closing");
+      return;
+    }
+    if (event.animationName !== "cat-eye-found-close") return;
+    catEyes.removeEventListener("animationend", foundConfirmationEndHandler);
+    foundConfirmationEndHandler = null;
+    catEyes.classList.remove("is-found-visible", "is-found-closing");
+    if (phase !== "found" || round !== confirmingRound) return;
+    phase = "playing";
+    correctTap = null;
+    app.setAttribute("aria-label", "The eyes closed. Find the target again");
+    status.textContent = "The eyes closed. Find the target again.";
+    updateDebugPanel();
+    scheduleNudge();
+  };
+  catEyes.addEventListener("animationend", foundConfirmationEndHandler);
+  catEyes.classList.add("is-found-visible", "is-found-opening");
 }
 
 function scheduleIntro(callback, delay) {
@@ -213,11 +257,17 @@ function showFailureShatter(point) {
     const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
     path.classList.add("failure-crack");
     path.setAttribute("pathLength", "1");
-    path.setAttribute("d", createCrackPath(originX, originY, angle, length, bend));
+    path.setAttribute(
+      "d",
+      createCrackPath(originX, originY, angle, length, bend),
+    );
     svg.append(path);
 
     if (index % 2 === 0) {
-      const branch = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      const branch = document.createElementNS(
+        "http://www.w3.org/2000/svg",
+        "path",
+      );
       const branchOriginX = originX + Math.cos(angle) * length * 0.48;
       const branchOriginY = originY + Math.sin(angle) * length * 0.48;
       branch.classList.add("failure-crack", "failure-crack-branch");
@@ -289,15 +339,16 @@ function scheduleNudge() {
     nudgeTimer = null;
     if (phase !== scheduledPhase) return;
     const target = nudgeRevealedCat ? catEyes : nudgePaw;
-    const doubleBlink = nudgeRevealedCat && Math.random() < CAT_DOUBLE_BLINK_CHANCE;
+    const doubleBlink =
+      nudgeRevealedCat && Math.random() < CAT_DOUBLE_BLINK_CHANCE;
     const singleBlinkDuration = randomDuration(
       CAT_NUDGE_DURATION_MIN,
       CAT_NUDGE_DURATION_MAX,
     );
     const nudgeDuration = nudgeRevealedCat
       ? Math.round(
-          singleBlinkDuration
-            * (doubleBlink ? CAT_DOUBLE_BLINK_DURATION_MULTIPLIER : 1),
+          singleBlinkDuration *
+            (doubleBlink ? CAT_DOUBLE_BLINK_DURATION_MULTIPLIER : 1),
         )
       : NUDGE_DURATION;
     if (nudgeRevealedCat) {
@@ -509,6 +560,7 @@ function draw() {
 }
 
 function beginRound() {
+  stopFoundConfirmation();
   catEyes.classList.remove("is-celebrating");
   round += 1;
   completedFailureStreaks = 0;
@@ -550,6 +602,9 @@ function handleTap(point, startedPhase = phase, startedRound = round) {
 
   if (startedPhase === "found") {
     if (phase !== "found" || round !== startedRound) return;
+    if (!foundConfirmationAccepting) return;
+
+    stopFoundConfirmation();
 
     if (!pointInCat(point, blob)) {
       phase = "playing";
@@ -571,6 +626,8 @@ function handleTap(point, startedPhase = phase, startedRound = round) {
     );
     status.textContent = "Shape revealed. Wait for the sound to finish.";
     lastAudioAction = "playReveal";
+    catEyes.classList.remove("is-revealing");
+    void catEyes.offsetWidth;
     draw();
     updateDebugPanel();
     sound.playReveal(() => {
@@ -620,10 +677,12 @@ function handleTap(point, startedPhase = phase, startedRound = round) {
     phase = "found";
     app.setAttribute(
       "aria-label",
-      "Target found. Find the same hidden area again",
+      "Target found. Tap the same area while the eyes are partly open",
     );
-    status.textContent = "Target found. Find the same hidden area again.";
+    status.textContent =
+      "Target found. Tap the same area while the eyes are partly open.";
     lastAudioAction = "playFound";
+    showFoundConfirmation();
     updateDebugPanel();
     sound.playFound();
     return;

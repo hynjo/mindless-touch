@@ -565,6 +565,48 @@ body {
   opacity: 0.35;
 }
 
+.cat-eyes.is-found-visible {
+  opacity: 1;
+}
+
+.cat-eyes.is-found-opening .cat-eye {
+  animation: cat-eye-found-open 700ms ease-out both;
+  will-change: clip-path;
+}
+
+@keyframes cat-eye-found-open {
+  0% {
+    clip-path: inset(48.5% 0 48.5% 0 round 50%);
+  }
+
+  100% {
+    clip-path: inset(41% 0 41% 0 round 50%);
+  }
+}
+
+.cat-eyes.is-found-closing .cat-eye {
+  animation: cat-eye-found-close 420ms ease-in-out both;
+  will-change: clip-path;
+}
+
+@keyframes cat-eye-found-close {
+  0% {
+    clip-path: inset(41% 0 41% 0 round 50%);
+  }
+
+  18% {
+    clip-path: inset(41% 0 41% 0 round 50%);
+  }
+
+  48% {
+    clip-path: inset(37.5% 0 37.5% 0 round 50%);
+  }
+
+  100% {
+    clip-path: inset(48.5% 0 48.5% 0 round 50%);
+  }
+}
+
 .cat-eyes.is-celebrating {
   animation: cat-eyes-celebrate 520ms cubic-bezier(0.2, 0.8, 0.3, 1) both;
 }
@@ -591,9 +633,69 @@ body {
   will-change: clip-path;
 }
 
+#app > .cat-eyes.is-celebrating {
+  animation-duration: 280ms;
+}
+
+#app > .cat-eyes.is-celebrating .cat-eye {
+  animation: cat-eye-finish-close 280ms cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+@keyframes cat-eye-finish-close {
+  0% {
+    clip-path: inset(0 0 0 0 round 50%);
+  }
+
+  25% {
+    clip-path: inset(8% 0 8% 0 round 50%);
+  }
+
+  50% {
+    clip-path: inset(22% 0 22% 0 round 50%);
+  }
+
+  75% {
+    clip-path: inset(38% 0 38% 0 round 50%);
+  }
+
+  92% {
+    clip-path: inset(48% 0 48% 0 round 50%);
+  }
+
+  100% {
+    clip-path: inset(50% 0 50% 0 round 50%);
+  }
+}
+
 .cat-eyes.is-revealing .cat-eye {
-  animation: cat-eye-close 180ms cubic-bezier(0.45, 0, 0.55, 1) reverse both;
+  animation: cat-eye-reveal 420ms cubic-bezier(0.2, 0.8, 0.3, 1) both;
   will-change: clip-path;
+}
+
+@keyframes cat-eye-reveal {
+  0% {
+    clip-path: inset(48% 0 48% 0 round 50%);
+  }
+
+  100% {
+    clip-path: inset(0 0 0 0 round 50%);
+  }
+}
+
+#app > .cat-eyes.is-revealing {
+  animation: cat-reveal-glow 420ms ease-out both;
+}
+
+@keyframes cat-reveal-glow {
+  0%,
+  45% {
+    filter: brightness(1);
+  }
+
+  100% {
+    filter: brightness(1.55)
+      drop-shadow(0 0 9px rgba(255, 248, 117, 0.58));
+  }
 }
 
 .cat-eyes.is-nudging .cat-eye {
@@ -670,6 +772,21 @@ body {
 
   .cat-eyes.is-celebrating .cat-eye {
     animation: none;
+  }
+
+  #app > .cat-eyes.is-celebrating .cat-eye {
+    animation: none;
+  }
+
+  .cat-eyes.is-found-opening .cat-eye,
+  .cat-eyes.is-found-closing .cat-eye {
+    animation-duration: 1ms;
+  }
+
+  #app > .cat-eyes.is-revealing {
+    animation: none;
+    filter: brightness(1.4)
+      drop-shadow(0 0 6px rgba(255, 248, 117, 0.45));
   }
 
   .cat-eyes.is-revealing .cat-eye {
