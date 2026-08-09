@@ -15,3 +15,11 @@ test("failure thresholds stay between four and seven attempts", () => {
     assert.ok(threshold >= 4 && threshold <= 7);
   }
 });
+
+test("a rerolled threshold can exclude the previous streak", () => {
+  for (let previous = 4; previous <= 7; previous += 1) {
+    const threshold = generateFailureThreshold("next-streak", 4, 7, previous);
+    assert.notEqual(threshold, previous);
+    assert.ok(threshold >= 4 && threshold <= 7);
+  }
+});

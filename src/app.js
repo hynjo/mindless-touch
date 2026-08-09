@@ -119,6 +119,7 @@ let blob = null;
 let misses = [];
 let consecutiveFailures = 0;
 let failureThreshold = 4;
+let completedFailureStreaks = 0;
 let correctTap = null;
 let mouseStart = null;
 const touchStarts = new Map();
@@ -249,6 +250,14 @@ function registerFailure(point) {
   consecutiveFailures += 1;
   if (consecutiveFailures < failureThreshold) return false;
   consecutiveFailures = 0;
+  completedFailureStreaks += 1;
+  const previousFailureThreshold = failureThreshold;
+  failureThreshold = generateFailureThreshold(
+    `${baseSeed}:${round}:failure-threshold:${completedFailureStreaks}`,
+    4,
+    7,
+    previousFailureThreshold,
+  );
   const failedRound = round;
   sound.playFailure();
   if (failureEffectTimer !== null) window.clearTimeout(failureEffectTimer);
@@ -502,8 +511,9 @@ function draw() {
 function beginRound() {
   catEyes.classList.remove("is-celebrating");
   round += 1;
+  completedFailureStreaks = 0;
   failureThreshold = generateFailureThreshold(
-    `${baseSeed}:${round}:failure-threshold`,
+    `${baseSeed}:${round}:failure-threshold:${completedFailureStreaks}`,
   );
   blob = generateCatTarget(
     `${baseSeed}:${round}`,
