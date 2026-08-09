@@ -1,5 +1,6 @@
 import { SoundEngine } from "./audio.js";
 import { generateCatTarget, pointInCat } from "./cat-target.js";
+import { generateFailureThreshold } from "./failure-threshold.js";
 
 const canvas = document.querySelector("#playfield");
 const context = canvas.getContext("2d");
@@ -117,6 +118,7 @@ let round = 0;
 let blob = null;
 let misses = [];
 let consecutiveFailures = 0;
+let failureThreshold = 4;
 let correctTap = null;
 let mouseStart = null;
 const touchStarts = new Map();
@@ -245,7 +247,7 @@ function showFailureShatter(point) {
 
 function registerFailure(point) {
   consecutiveFailures += 1;
-  if (consecutiveFailures < 3) return false;
+  if (consecutiveFailures < failureThreshold) return false;
   consecutiveFailures = 0;
   const failedRound = round;
   sound.playFailure();
@@ -414,7 +416,7 @@ function updateDebugPanel() {
     `Level: ${level}`,
     `Target area: ${blob ? `${(blob.targetArea * 100).toFixed(1)}%` : "n/a"}`,
     `Found chain: ${phase === "found" ? "active" : "inactive"}`,
-    `Failure streak: ${consecutiveFailures}`,
+    `Failure streak: ${consecutiveFailures}/${failureThreshold}`,
     `Game phase: ${phase}`,
     `Eyes visible: ${catEyes.classList.contains("is-visible") ? "yes" : "no"}`,
     `Last input: ${lastInputAction}`,
@@ -500,6 +502,9 @@ function draw() {
 function beginRound() {
   catEyes.classList.remove("is-celebrating");
   round += 1;
+  failureThreshold = generateFailureThreshold(
+    `${baseSeed}:${round}:failure-threshold`,
+  );
   blob = generateCatTarget(
     `${baseSeed}:${round}`,
     difficulty,
