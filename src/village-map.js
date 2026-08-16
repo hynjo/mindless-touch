@@ -304,7 +304,22 @@ function updateMotionPreference() {
   draw(performance.now());
 }
 
+function restoreMapFromHistory(event) {
+  if (!event.persisted && !isLeavingMap) return;
+
+  if (animationFrame !== null) cancelAnimationFrame(animationFrame);
+  animationFrame = null;
+  departure = null;
+  isLeavingMap = false;
+  document.body.classList.remove("is-leaving-map");
+  villageMap.classList.remove("is-zooming");
+  villageMap.querySelector(".map-transition")?.remove();
+  positionMilestones();
+  draw(performance.now());
+}
+
 window.addEventListener("resize", resize);
+window.addEventListener("pageshow", restoreMapFromHistory);
 reducedMotion.addEventListener("change", updateMotionPreference);
 activeMilestone.addEventListener("click", leaveMap);
 resize();
