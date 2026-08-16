@@ -1,0 +1,395 @@
+:root {
+  color-scheme: dark;
+  background: #000000;
+  --window-light: #fff875;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+.window-journey {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+
+body {
+  background: #000000;
+}
+
+.window-journey {
+  position: relative;
+  isolation: isolate;
+  background:
+    radial-gradient(circle at 50% 38%, rgba(255, 248, 117, 0.055), transparent 34%),
+    #000000;
+}
+
+.window-journey::after {
+  position: fixed;
+  inset: 0;
+  z-index: 8;
+  background: radial-gradient(circle, transparent 38%, rgba(0, 0, 0, 0.76) 100%);
+  pointer-events: none;
+  content: "";
+}
+
+.window-journey__haze {
+  position: absolute;
+  top: 14%;
+  left: 50%;
+  z-index: 0;
+  width: min(86vw, 580px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: rgba(255, 248, 117, 0.055);
+  filter: blur(48px);
+  opacity: 0;
+  transform: translate(-50%, -50%);
+}
+
+.window-frame {
+  position: absolute;
+  top: 5%;
+  left: 50%;
+  z-index: 2;
+  width: min(66vw, 340px);
+  height: min(62vh, 560px);
+  overflow: visible;
+  opacity: 0;
+  filter: saturate(0.65) brightness(0.62);
+  transform: translateX(-50%);
+  transform-origin: 50% 66%;
+  transition: filter 500ms ease-out;
+}
+
+.has-arrived-at-window .window-journey__haze {
+  animation: window-haze-arrive 1500ms ease-out forwards;
+}
+
+.has-arrived-at-window .window-frame {
+  animation: window-reveal 1500ms cubic-bezier(0.24, 0.72, 0.22, 1) forwards;
+}
+
+.window-frame__aura {
+  fill: none;
+  stroke: rgba(255, 248, 117, 0.2);
+  stroke-width: 14;
+}
+
+.window-frame__wood,
+.window-frame__sash,
+.window-frame__sill {
+  fill: url("#window-wood");
+  stroke: rgba(151, 119, 69, 0.4);
+  stroke-width: 3;
+  stroke-linejoin: round;
+}
+
+.window-frame__pane {
+  fill: url("#window-night");
+  stroke: rgba(255, 248, 117, 0.13);
+  stroke-width: 2;
+}
+
+.window-frame__reflection {
+  fill: url("#window-glass");
+}
+
+.window-frame__panel {
+  transform-box: fill-box;
+  transition: transform 900ms cubic-bezier(0.22, 0.72, 0.22, 1),
+    filter 900ms ease-out;
+}
+
+.window-frame__panel--left {
+  transform-origin: left center;
+}
+
+.window-frame__panel--right {
+  transform-origin: right center;
+}
+
+.window-frame.is-open .window-frame__panel--left {
+  filter: brightness(0.72);
+  transform: scaleX(0.32) skewY(3deg);
+}
+
+.window-frame.is-open .window-frame__panel--right {
+  filter: brightness(0.72);
+  transform: scaleX(0.32) skewY(-3deg);
+}
+
+.window-frame__hinge {
+  fill: #17140f;
+  stroke: rgba(197, 158, 94, 0.4);
+  stroke-width: 2;
+}
+
+.window-frame__handle {
+  fill: #c49d5d;
+  stroke: #292116;
+  stroke-width: 3;
+}
+
+.window-frame__handle-stem {
+  fill: none;
+  stroke: #c49d5d;
+  stroke-width: 7;
+  stroke-linecap: round;
+}
+
+.window-frame__cat-eyes {
+  opacity: 0;
+  filter: drop-shadow(0 0 3px rgba(255, 248, 117, 0.42));
+  transition: opacity 120ms linear;
+}
+
+.window-frame.is-open .window-frame__cat-eyes {
+  opacity: 1;
+  transition: opacity 380ms 520ms ease-out;
+}
+
+.window-frame__cat-eye {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: window-cat-blink 4.6s 1.4s ease-in-out infinite;
+}
+
+.window-frame__cat-eye-glow {
+  fill: var(--window-light);
+}
+
+.window-frame__cat-pupil {
+  fill: #000000;
+}
+
+.has-arrived-at-window .window-frame {
+  cursor: pointer;
+}
+
+.window-frame:focus-visible {
+  outline: none;
+  filter: brightness(1.16) drop-shadow(0 0 8px rgba(255, 248, 117, 0.28));
+}
+
+.window-frame__stars {
+  fill: var(--window-light);
+  filter: drop-shadow(0 0 4px rgba(255, 248, 117, 0.55));
+  animation: window-stars 2.8s ease-in-out infinite alternate;
+}
+
+.window-frame__grain {
+  fill: none;
+  stroke: rgba(188, 150, 91, 0.2);
+  stroke-width: 4;
+  stroke-linecap: round;
+}
+
+.window-frame__sill-light {
+  fill: rgba(255, 248, 117, 0.1);
+}
+
+.paw-steps {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  pointer-events: none;
+}
+
+.paw-step {
+  position: absolute;
+  top: var(--step-y);
+  left: var(--step-x);
+  width: clamp(24px, 7vw, 38px);
+  aspect-ratio: 56 / 52;
+  background: var(--window-light);
+  filter: drop-shadow(0 0 5px rgba(255, 248, 117, 0.3));
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 56 52'%3E%3Cpath d='M28.5 24C36.4 24 42 29.1 42 36.6S36.5 47 28.5 47 15 44.1 15 36.6 20.6 24 28.5 24Z'/%3E%3Cellipse cx='8.5' cy='22.5' rx='5.5' ry='7.5' transform='rotate(-28 8.5 22.5)'/%3E%3Cellipse cx='20.5' cy='10.5' rx='5.5' ry='7.5' transform='rotate(-10 20.5 10.5)'/%3E%3Cellipse cx='35.5' cy='10.5' rx='5.5' ry='7.5' transform='rotate(10 35.5 10.5)'/%3E%3Cellipse cx='47.5' cy='22.5' rx='5.5' ry='7.5' transform='rotate(28 47.5 22.5)'/%3E%3C/svg%3E") center / contain no-repeat;
+  opacity: 0;
+  transform: translate(-50%, -50%) rotate(var(--step-angle)) scale(1.35);
+  animation: paw-step-land 900ms var(--step-delay) cubic-bezier(0.2, 0.8, 0.3, 1) forwards;
+}
+
+.paw-step--last {
+  animation-name: paw-step-last;
+  transition: background-color 420ms ease-out, filter 420ms ease-out;
+}
+
+.has-opened-window .paw-step--last {
+  background-color: #5b5937;
+  filter: drop-shadow(0 0 3px rgba(91, 89, 55, 0.22));
+}
+
+.is-entering-window .paw-step:first-child {
+  animation: window-first-paw-arrive 1000ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@keyframes paw-step-land {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) rotate(var(--step-angle)) scale(1.35);
+  }
+
+  32% {
+    opacity: 0.92;
+    transform: translate(-50%, -50%) rotate(var(--step-angle)) scale(0.78);
+  }
+
+  52% {
+    opacity: 0.64;
+    transform: translate(-50%, -50%) rotate(var(--step-angle)) scale(0.9);
+  }
+
+  100% {
+    opacity: 0.22;
+    transform: translate(-50%, -50%) rotate(var(--step-angle)) scale(0.84);
+  }
+}
+
+@keyframes paw-step-last {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) rotate(var(--step-angle)) scale(1.35);
+  }
+
+  34% {
+    opacity: 1;
+    transform: translate(-50%, -50%) rotate(var(--step-angle)) scale(0.78);
+  }
+
+  58%,
+  100% {
+    opacity: 0.9;
+    transform: translate(-50%, -50%) rotate(var(--step-angle)) scale(0.92);
+  }
+}
+
+@keyframes window-first-paw-arrive {
+  0% {
+    top: 50%;
+    left: 50%;
+    width: 316px;
+    opacity: 1;
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+
+  100% {
+    top: var(--step-y);
+    left: var(--step-x);
+    width: clamp(24px, 7vw, 38px);
+    opacity: 0.22;
+    transform: translate(-50%, -50%) rotate(var(--step-angle));
+  }
+}
+
+@keyframes window-reveal {
+  0% {
+    opacity: 0;
+    filter: saturate(0.65) brightness(0.62);
+    transform: translateX(-50%);
+  }
+
+  54% {
+    opacity: 0.76;
+  }
+
+  100% {
+    opacity: 1;
+    filter: saturate(1) brightness(1);
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes window-haze-arrive {
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+
+@keyframes window-stars {
+  from {
+    opacity: 0.42;
+  }
+
+  to {
+    opacity: 0.95;
+  }
+}
+
+@keyframes window-cat-blink {
+  0%,
+  42%,
+  50%,
+  100% {
+    transform: scaleY(1);
+  }
+
+  46% {
+    transform: scaleY(0.08);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .window-journey__haze,
+  .window-frame,
+  .has-arrived-at-window .window-frame,
+  .paw-step,
+  .window-frame__stars {
+    animation: none;
+  }
+
+  .window-frame__cat-eye {
+    animation: none;
+  }
+
+  .window-journey__haze,
+  .window-frame {
+    opacity: 1;
+    filter: none;
+    transform: translate(-50%, -50%);
+  }
+
+  .window-frame {
+    transform: translateX(-50%);
+  }
+
+  .window-frame__panel {
+    transition-duration: 1ms;
+  }
+
+  .window-frame__cat-eyes,
+  .window-frame.is-open .window-frame__cat-eyes {
+    transition: none;
+  }
+
+  .paw-step {
+    opacity: 0.35;
+    transform: translate(-50%, -50%) rotate(var(--step-angle)) scale(0.84);
+  }
+
+  .paw-step--last {
+    opacity: 0.9;
+    transition: none;
+  }
+}

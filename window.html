@@ -8,27 +8,110 @@
     />
     <meta name="theme-color" content="#000000" />
     <title>Window — meow.observer</title>
-    <style>
-      :root {
-        color-scheme: dark;
-        background: #000000;
-      }
-
-      html,
-      body,
-      main {
-        width: 100%;
-        height: 100%;
-        margin: 0;
-        overflow: hidden;
-      }
-
-      body {
-        background: #000000;
-      }
-    </style>
+    <script>
+      try {
+        if (sessionStorage.getItem("window-paw-transition") === "pending") {
+          sessionStorage.removeItem("window-paw-transition");
+          document.documentElement.classList.add("is-entering-window");
+        }
+      } catch {}
+    </script>
+    <link rel="stylesheet" href="/window.css" />
   </head>
   <body>
-    <main aria-label="Window"></main>
+    <main class="window-journey" aria-label="Follow the cat's pawprints to the window">
+      <div class="window-journey__haze" aria-hidden="true"></div>
+      <svg
+        class="window-frame"
+        viewBox="0 0 400 560"
+        role="button"
+        tabindex="0"
+        aria-disabled="true"
+        aria-label="Closed double glass window"
+      >
+        <defs>
+          <linearGradient id="window-wood" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#554329" />
+            <stop offset="0.45" stop-color="#2e261a" />
+            <stop offset="1" stop-color="#665035" />
+          </linearGradient>
+          <radialGradient id="window-night" cx="55%" cy="36%" r="76%">
+            <stop offset="0" stop-color="#000000" />
+            <stop offset="0.52" stop-color="#000000" />
+            <stop offset="1" stop-color="#000000" />
+          </radialGradient>
+          <linearGradient id="window-glass" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#fff875" stop-opacity="0.16" />
+            <stop offset="0.3" stop-color="#cad7df" stop-opacity="0.04" />
+            <stop offset="1" stop-color="#91a4b3" stop-opacity="0.12" />
+          </linearGradient>
+          <filter id="window-glow" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="10" />
+          </filter>
+        </defs>
+
+        <path
+          class="window-frame__aura"
+          d="M78 478V168C78 77 322 77 322 168V478Z"
+          filter="url(#window-glow)"
+        />
+        <path
+          class="window-frame__wood"
+          d="M54 488V166C54 40 346 40 346 166V488H310V170C310 91 90 91 90 170V488Z"
+        />
+        <g class="window-frame__stars">
+          <circle cx="137" cy="192" r="3" />
+          <circle cx="268" cy="218" r="2.2" />
+          <circle cx="229" cy="163" r="1.7" />
+          <circle cx="161" cy="313" r="1.5" />
+          <circle cx="279" cy="353" r="2.5" />
+        </g>
+        <g class="window-frame__panel window-frame__panel--left">
+          <path class="window-frame__sash" d="M91 462V174C91 121 130 98 190 94V462Z" />
+          <path class="window-frame__pane" d="M109 444V182C109 143 136 122 172 116V444Z" />
+          <path class="window-frame__reflection" d="M121 181C130 145 148 131 164 126L124 413H115V198Z" />
+          <rect class="window-frame__hinge" x="88" y="205" width="12" height="38" rx="4" />
+          <rect class="window-frame__hinge" x="88" y="366" width="12" height="38" rx="4" />
+          <circle class="window-frame__handle" cx="171" cy="288" r="8" />
+          <path class="window-frame__handle-stem" d="M171 288v31" />
+        </g>
+        <g class="window-frame__panel window-frame__panel--right">
+          <path class="window-frame__sash" d="M210 94C270 98 309 121 309 174V462H210Z" />
+          <path class="window-frame__pane" d="M228 116C264 122 291 143 291 182V444H228Z" />
+          <path class="window-frame__reflection" d="M238 126C261 133 275 151 280 185L241 413H234V145Z" />
+          <rect class="window-frame__hinge" x="300" y="205" width="12" height="38" rx="4" />
+          <rect class="window-frame__hinge" x="300" y="366" width="12" height="38" rx="4" />
+          <circle class="window-frame__handle" cx="229" cy="288" r="8" />
+          <path class="window-frame__handle-stem" d="M229 288v31" />
+        </g>
+        <g class="window-frame__cat-eyes" aria-hidden="true">
+          <g class="window-frame__cat-eye">
+            <ellipse class="window-frame__cat-eye-glow" cx="239.5" cy="380" rx="5.6" ry="4.8" />
+            <ellipse class="window-frame__cat-pupil" cx="239.5" cy="380" rx="1.6" ry="4" />
+          </g>
+          <g class="window-frame__cat-eye window-frame__cat-eye--right">
+            <ellipse class="window-frame__cat-eye-glow" cx="252.5" cy="380" rx="5.6" ry="4.8" />
+            <ellipse class="window-frame__cat-pupil" cx="252.5" cy="380" rx="1.6" ry="4" />
+          </g>
+        </g>
+        <path class="window-frame__grain" d="M69 201C76 178 77 143 91 120M329 206C320 165 327 125 307 102M70 357C80 330 73 300 85 278" />
+        <path class="window-frame__sill" d="M30 462H370L346 520H54Z" />
+        <path class="window-frame__sill-light" d="M54 472H346L338 490H62Z" />
+      </svg>
+
+      <ol class="paw-steps" aria-hidden="true">
+        <li class="paw-step" style="--step-x: 48.5%; --step-y: 93%; --step-angle: -5deg; --step-delay: 0ms"></li>
+        <li class="paw-step" style="--step-x: 52%; --step-y: 86%; --step-angle: 4deg; --step-delay: 1000ms"></li>
+        <li class="paw-step" style="--step-x: 49%; --step-y: 80%; --step-angle: -3deg; --step-delay: 1650ms"></li>
+        <li class="paw-step" style="--step-x: 51.5%; --step-y: 75%; --step-angle: 3deg; --step-delay: 2300ms"></li>
+        <li class="paw-step" style="--step-x: 49.5%; --step-y: 70%; --step-angle: -2deg; --step-delay: 2950ms"></li>
+        <li class="paw-step paw-step--last" style="--step-x: 50.5%; --step-y: 66%; --step-angle: 1deg; --step-delay: 3600ms"></li>
+      </ol>
+
+      <p class="visually-hidden" aria-live="polite" id="window-status">
+        The cat is walking toward the window.
+      </p>
+    </main>
+    <script type="module" src="/src/window.js"></script>
   </body>
 </html>

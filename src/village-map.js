@@ -72,6 +72,8 @@ function finishDeparture() {
   departure.finished = true;
   if (departure.introHandoff)
     sessionStorage.setItem("village-paw-transition", "pending");
+  if (departure.windowHandoff)
+    sessionStorage.setItem("window-paw-transition", "pending");
   window.location.assign(departure.destination);
 }
 
@@ -113,7 +115,13 @@ function cameraAt(time) {
   };
 }
 
-function leaveMap(event, milestone, destinationY, introHandoff = false) {
+function leaveMap(
+  event,
+  milestone,
+  destinationY,
+  introHandoff = false,
+  windowHandoff = false,
+) {
   if (
     isLeavingMap ||
     event.defaultPrevented ||
@@ -148,6 +156,7 @@ function leaveMap(event, milestone, destinationY, introHandoff = false) {
     duration: 1100,
     finished: false,
     introHandoff,
+    windowHandoff,
     pawX,
     pawY,
     shiftX: destinationPawX - pawX,
@@ -432,7 +441,7 @@ activeMilestone.addEventListener("click", (event) =>
   leaveMap(event, activeMilestone, 0.68, true),
 );
 nextMilestone.addEventListener("click", (event) =>
-  leaveMap(event, nextMilestone, 0.5),
+  leaveMap(event, nextMilestone, 0.5, false, true),
 );
 if (!consumeMapArrival()) document.documentElement.classList.remove("is-arriving-at-map");
 applyDebugHistory();
