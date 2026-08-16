@@ -87,6 +87,26 @@ body.is-leaving-map {
   animation: milestone-blink 1.7s ease-in-out infinite;
 }
 
+.milestone--unlocked {
+  color: var(--map-active);
+  opacity: 0.94;
+  filter: drop-shadow(0 0 4px rgba(255, 248, 117, 0.24));
+}
+
+.milestone--unlocked::before {
+  animation: milestone-click-nudge 2.2s cubic-bezier(0.2, 0.8, 0.3, 1) infinite;
+}
+
+.milestone--unlocked::after {
+  position: absolute;
+  inset: 8%;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  opacity: 0;
+  content: "";
+  animation: milestone-click-ripple 2.2s ease-out infinite;
+}
+
 .is-leaving-map .milestone--active {
   opacity: 1;
   animation: none;
@@ -96,8 +116,22 @@ body.is-leaving-map {
   z-index: 21;
 }
 
+.is-entering-map .village-map__milestones {
+  z-index: 21;
+}
+
 .is-leaving-map .milestone:not(.milestone--active) {
   opacity: 0;
+}
+
+.is-entering-map .milestone:not(.milestone--arriving) {
+  opacity: 0;
+}
+
+.is-entering-map .milestone--arriving {
+  color: var(--map-active);
+  opacity: 1;
+  animation: none;
 }
 
 .milestone--active::before {
@@ -118,6 +152,18 @@ body.is-leaving-map {
   opacity: 0;
   content: "";
   animation: milestone-halo 1.7s ease-out infinite;
+}
+
+.milestone--finished {
+  opacity: 0.48;
+  filter: none;
+  animation: none;
+}
+
+.milestone--finished::after,
+.is-leaving-map .milestone--finished::after {
+  display: none;
+  animation: none;
 }
 
 .is-leaving-map .milestone--active::after {
@@ -141,6 +187,16 @@ body.is-leaving-map {
   animation: map-transition-backdrop 1100ms ease-in both;
 }
 
+.map-arrival {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.94);
+  pointer-events: auto;
+  animation: map-arrival-backdrop 1100ms ease-out both;
+}
+
 @keyframes milestone-blink {
   0%,
   100% {
@@ -150,6 +206,40 @@ body.is-leaving-map {
   42%,
   62% {
     opacity: 1;
+  }
+}
+
+@keyframes milestone-click-nudge {
+  0%,
+  24%,
+  100% {
+    transform: scale(1);
+  }
+
+  10% {
+    transform: scale(0.72);
+  }
+
+  17% {
+    transform: scale(1.08);
+  }
+}
+
+@keyframes milestone-click-ripple {
+  0%,
+  8% {
+    opacity: 0;
+    transform: scale(0.72);
+  }
+
+  12% {
+    opacity: 0.52;
+  }
+
+  34%,
+  100% {
+    opacity: 0;
+    transform: scale(1.55);
   }
 }
 
@@ -177,8 +267,22 @@ body.is-leaving-map {
   }
 }
 
+@keyframes map-arrival-backdrop {
+  0%,
+  32% {
+    background: rgba(0, 0, 0, 0.94);
+  }
+
+  100% {
+    background: rgba(0, 0, 0, 0);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .milestone--active,
+  .milestone--unlocked,
+  .milestone--unlocked::before,
+  .milestone--unlocked::after,
   .milestone--active::after {
     animation: none;
   }
@@ -189,6 +293,10 @@ body.is-leaving-map {
 
   .map-transition {
     animation: map-transition-backdrop 160ms linear both;
+  }
+
+  .map-arrival {
+    animation: map-arrival-backdrop 160ms linear both;
   }
 
 }

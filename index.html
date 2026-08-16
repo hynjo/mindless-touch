@@ -8,6 +8,23 @@
     />
     <meta name="theme-color" content="#000000" />
     <title>Cat Village — meow.observer</title>
+    <style>
+      html,
+      body {
+        background: #000000;
+      }
+
+      html.is-arriving-at-map .village-map {
+        visibility: hidden;
+      }
+    </style>
+    <script>
+      try {
+        if (sessionStorage.getItem("village-map-arrival") === "pending") {
+          document.documentElement.classList.add("is-arriving-at-map");
+        }
+      } catch {}
+    </script>
     <link rel="stylesheet" href="/map.css" />
   </head>
   <body>
@@ -29,7 +46,7 @@
             <ellipse cx="47.5" cy="22.5" rx="5.5" ry="7.5" transform="rotate(28 47.5 22.5)" />
           </svg>
         </a>
-        <span class="milestone" data-map-x="92" data-map-y="30" aria-hidden="true"></span>
+        <span class="milestone" data-stage="2" data-map-x="92" data-map-y="30" aria-hidden="true"></span>
         <span class="milestone" data-map-x="23" data-map-y="44" aria-hidden="true"></span>
         <span class="milestone" data-map-x="78" data-map-y="76" aria-hidden="true"></span>
         <span class="milestone" data-map-x="24" data-map-y="108" aria-hidden="true"></span>

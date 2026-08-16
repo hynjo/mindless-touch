@@ -100,6 +100,109 @@ body {
   pointer-events: none;
 }
 
+.village-return {
+  position: fixed;
+  top: max(20px, env(safe-area-inset-top));
+  left: max(20px, env(safe-area-inset-left));
+  z-index: 8;
+  display: grid;
+  width: 54px;
+  aspect-ratio: 1;
+  place-items: center;
+  border-radius: 50%;
+  color: var(--cat-eye-color);
+  opacity: 0;
+  filter: drop-shadow(0 0 4px rgba(255, 248, 117, 0.3));
+  transform: scale(0.65);
+  transition: opacity 280ms ease-out, transform 360ms cubic-bezier(0.2, 0.8, 0.3, 1);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.village-return.is-visible {
+  opacity: 0.82;
+  transform: scale(1);
+}
+
+.village-return svg {
+  width: 78%;
+  overflow: visible;
+  fill: currentColor;
+}
+
+.village-return::after {
+  position: absolute;
+  inset: 4px;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  opacity: 0.32;
+  content: "";
+}
+
+.village-return:hover,
+.village-return:focus-visible {
+  opacity: 1;
+  transform: scale(1.06);
+}
+
+body.is-returning-to-village {
+  pointer-events: none;
+}
+
+body.is-returning-to-village .village-return {
+  opacity: 0;
+}
+
+.village-return-transition {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0);
+  animation: village-return-backdrop 1100ms ease-in both;
+}
+
+.village-return-transition__paw {
+  position: absolute;
+  top: var(--return-start-y);
+  left: var(--return-start-x);
+  width: var(--return-start-size);
+  overflow: visible;
+  fill: var(--cat-eye-color);
+  filter: drop-shadow(0 0 4px rgba(255, 248, 117, 0.3));
+  transform: translate(-50%, -50%);
+  animation: village-return-paw-zoom 1100ms cubic-bezier(0.45, 0, 0.2, 1) both;
+}
+
+@keyframes village-return-backdrop {
+  0%,
+  68% {
+    background: rgba(0, 0, 0, 0);
+  }
+
+  100% {
+    background: rgba(0, 0, 0, 0.94);
+  }
+}
+
+@keyframes village-return-paw-zoom {
+  from {
+    top: var(--return-start-y);
+    left: var(--return-start-x);
+    width: var(--return-start-size);
+  }
+
+  to {
+    top: 32%;
+    left: 50%;
+    width: 316px;
+  }
+}
+
+.village-return:focus-visible {
+  outline: 2px solid var(--cat-eye-color);
+  outline-offset: 4px;
+}
+
 .failure-shatter,
 .failure-cracks {
   position: absolute;
@@ -787,6 +890,15 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .village-return {
+    transition: none;
+  }
+
+  .village-return-transition,
+  .village-return-transition__paw {
+    animation-duration: 160ms;
+  }
+
   .failure-shatter {
     animation: failure-shatter-fade-reduced 400ms ease-out both;
   }

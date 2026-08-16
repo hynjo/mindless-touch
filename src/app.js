@@ -93,6 +93,7 @@ tapFeedbackLayer.append(nudgePaw);
 const desktopPointer = window.matchMedia("(hover: hover) and (pointer: fine)");
 
 const intro = document.querySelector(".intro");
+const villageReturn = document.querySelector(".village-return");
 
 const introTouch = intro.querySelector(".intro-touch");
 const introDemoEyes = intro.querySelector(".intro-demo-eyes");
@@ -135,6 +136,59 @@ let foundConfirmationAccepting = false;
 let failureEffectTimer = null;
 let introRun = 0;
 const introTimers = new Set();
+
+function showVillageReturn() {
+  villageReturn.hidden = false;
+  requestAnimationFrame(() => villageReturn.classList.add("is-visible"));
+}
+
+function returnToVillage(event) {
+  if (
+    event.defaultPrevented ||
+    event.button !== 0 ||
+    event.metaKey ||
+    event.ctrlKey ||
+    event.shiftKey ||
+    event.altKey ||
+    document.body.classList.contains("is-returning-to-village")
+  ) {
+    return;
+  }
+
+  event.preventDefault();
+  cancelNudge();
+  const bounds = villageReturn.querySelector("svg").getBoundingClientRect();
+  const transition = document.createElement("div");
+  const paw = villageReturn.querySelector("svg").cloneNode(true);
+  transition.className = "village-return-transition";
+  transition.setAttribute("aria-hidden", "true");
+  paw.classList.add("village-return-transition__paw");
+  paw.style.setProperty("--return-start-x", `${bounds.left + bounds.width / 2}px`);
+  paw.style.setProperty("--return-start-y", `${bounds.top + bounds.height / 2}px`);
+  paw.style.setProperty("--return-start-size", `${bounds.width}px`);
+  transition.append(paw);
+  app.append(transition);
+  document.body.classList.add("is-returning-to-village");
+
+  paw.addEventListener(
+    "animationend",
+    () => {
+      try {
+        sessionStorage.setItem("village-map-arrival", "pending");
+      } catch {
+        // Navigate normally when transition state cannot be persisted.
+      }
+      window.location.assign(villageReturn.href);
+    },
+    { once: true },
+  );
+}
+
+function offerVillageReturn() {
+  window.setTimeout(showVillageReturn, EYE_CLOSE_DELAY + 280);
+}
+
+villageReturn.addEventListener("click", returnToVillage);
 
 function randomDuration(minimum, maximum) {
   return Math.round(minimum + Math.random() * (maximum - minimum));
@@ -648,6 +702,7 @@ function handleTap(point, startedPhase = phase, startedRound = round) {
     );
     status.textContent = "Correct. The next round will start after the sound.";
     lastAudioAction = "playCorrect";
+    offerVillageReturn();
     catEyes.classList.remove("is-celebrating");
     window.setTimeout(() => {
       if (phase !== "transitioning" || round !== startedRound) return;

@@ -4,6 +4,7 @@ const villageMap = document.querySelector(".village-map");
 const milestones = [...document.querySelectorAll(".milestone")];
 const activeMilestone = document.querySelector(".milestone--active");
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+const nextMilestone = document.querySelector('[data-stage="2"]');
 
 const DESIGN_WIDTH = 100;
 const DESIGN_HEIGHT = 150;
@@ -29,6 +30,24 @@ let viewport = { width: 0, height: 0, scale: 1, offsetX: 0, offsetY: 0 };
 let animationFrame = null;
 let isLeavingMap = false;
 let departure = null;
+let arrival = null;
+
+function consumeMapArrival() {
+  try {
+    if (sessionStorage.getItem("village-map-arrival") !== "pending") return false;
+    sessionStorage.removeItem("village-map-arrival");
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function completeVillageJourney() {
+  nextMilestone.classList.remove("milestone--arriving");
+  nextMilestone.classList.add("milestone--unlocked");
+  activeMilestone.classList.add("milestone--finished");
+  activeMilestone.setAttribute("aria-label", "Where is meow — finished");
+}
 
 function finishDeparture() {
   if (!departure || departure.finished) return;
@@ -38,6 +57,27 @@ function finishDeparture() {
 }
 
 function cameraAt(time) {
+  if (arrival && !reducedMotion.matches) {
+    const progress = Math.min(1, (time - arrival.startedAt) / arrival.duration);
+    const eased = progress * progress * (3 - 2 * progress);
+    if (progress === 1 && !arrival.finished) {
+      arrival.finished = true;
+      requestAnimationFrame(() => {
+        villageMap.querySelector(".map-arrival")?.remove();
+        document.body.classList.remove("is-entering-map");
+        completeVillageJourney();
+        arrival = null;
+      });
+    }
+    return {
+      originX: arrival.pawX,
+      originY: arrival.pawY,
+      scale: 6 - eased * 5,
+      shiftX: arrival.shiftX * (1 - eased),
+      shiftY: arrival.shiftY * (1 - eased),
+    };
+  }
+
   if (!departure || reducedMotion.matches) {
     return { scale: 1, shiftX: 0, shiftY: 0 };
   }
@@ -46,6 +86,8 @@ function cameraAt(time) {
   const eased = progress * progress * (3 - 2 * progress);
   if (progress === 1) requestAnimationFrame(finishDeparture);
   return {
+    originX: departure.pawX,
+    originY: departure.pawY,
     scale: 1 + eased * 5,
     shiftX: departure.shiftX * eased,
     shiftY: departure.shiftY * eased,
@@ -244,11 +286,11 @@ function drawAtmosphere(time) {
 function draw(time = 0) {
   const ratio = Math.min(window.devicePixelRatio || 1, 3);
   const camera = cameraAt(time);
-  const cameraOffsetX = departure
-    ? departure.pawX + (viewport.offsetX - departure.pawX) * camera.scale + camera.shiftX
+  const cameraOffsetX = camera.originX !== undefined
+    ? camera.originX + (viewport.offsetX - camera.originX) * camera.scale + camera.shiftX
     : viewport.offsetX;
-  const cameraOffsetY = departure
-    ? departure.pawY + (viewport.offsetY - departure.pawY) * camera.scale + camera.shiftY
+  const cameraOffsetY = camera.originY !== undefined
+    ? camera.originY + (viewport.offsetY - camera.originY) * camera.scale + camera.shiftY
     : viewport.offsetY;
   context.setTransform(1, 0, 0, 1, 0, 0);
   context.clearRect(0, 0, canvas.width, canvas.height);
@@ -294,8 +336,42 @@ function resize() {
   canvas.height = Math.round(height * ratio);
   canvas.style.width = `${width}px`;
   canvas.style.height = `${height}px`;
+  if (arrival === null && document.documentElement.classList.contains("is-arriving-at-map")) {
+    const x = Number(nextMilestone.dataset.mapX);
+    const y = Number(nextMilestone.dataset.mapY);
+    const pawX = viewport.offsetX + x * viewport.scale;
+    const pawY = viewport.offsetY + y * viewport.scale;
+    arrival = {
+      duration: 1100,
+      finished: false,
+      pawX,
+      pawY,
+      shiftX: width / 2 - pawX,
+      shiftY: height * 0.32 - pawY,
+      startedAt: performance.now(),
+    };
+    const transition = document.createElement("div");
+    transition.className = "map-arrival";
+    transition.setAttribute("aria-hidden", "true");
+    villageMap.append(transition);
+    document.body.classList.add("is-entering-map");
+    nextMilestone.classList.add("milestone--arriving");
+    if (reducedMotion.matches) {
+      transition.addEventListener(
+        "animationend",
+        () => {
+          transition.remove();
+          document.body.classList.remove("is-entering-map");
+          completeVillageJourney();
+          arrival = null;
+        },
+        { once: true },
+      );
+    }
+  }
   positionMilestones();
   if (animationFrame === null) draw(performance.now());
+  document.documentElement.classList.remove("is-arriving-at-map");
 }
 
 function updateMotionPreference() {
@@ -310,10 +386,14 @@ function restoreMapFromHistory(event) {
   if (animationFrame !== null) cancelAnimationFrame(animationFrame);
   animationFrame = null;
   departure = null;
+  arrival = null;
   isLeavingMap = false;
-  document.body.classList.remove("is-leaving-map");
+  document.body.classList.remove("is-leaving-map", "is-entering-map");
   villageMap.classList.remove("is-zooming");
-  villageMap.querySelector(".map-transition")?.remove();
+  villageMap
+    .querySelectorAll(".map-transition, .map-arrival")
+    .forEach((element) => element.remove());
+  nextMilestone.classList.remove("milestone--arriving");
   positionMilestones();
   draw(performance.now());
 }
@@ -322,4 +402,5 @@ window.addEventListener("resize", resize);
 window.addEventListener("pageshow", restoreMapFromHistory);
 reducedMotion.addEventListener("change", updateMotionPreference);
 activeMilestone.addEventListener("click", leaveMap);
+if (!consumeMapArrival()) document.documentElement.classList.remove("is-arriving-at-map");
 resize();
