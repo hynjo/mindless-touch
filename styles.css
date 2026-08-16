@@ -699,7 +699,7 @@ body {
 }
 
 .cat-eyes.is-nudging .cat-eye {
-  animation: cat-eye-nudge-blink var(--cat-nudge-duration, 450ms) ease-in-out both;
+  animation: cat-eye-nudge-blink var(--cat-nudge-duration, 450ms) linear both;
   will-change: clip-path;
 }
 
@@ -724,29 +724,45 @@ body {
 
 @keyframes cat-eye-nudge-blink {
   0%,
-  20%,
-  80%,
+  24%,
+  92%,
   100% {
     clip-path: inset(0 0 0 0 round 50%);
   }
 
-  46%,
-  56% {
+  36% {
+    clip-path: inset(18% 0 18% 0 round 50%);
+  }
+
+  45%,
+  55% {
     clip-path: inset(48% 0 48% 0 round 50%);
+  }
+
+  74% {
+    clip-path: inset(16% 0 16% 0 round 50%);
   }
 }
 
 @keyframes cat-eye-nudge-double-blink {
   0%,
-  30%,
-  70%,
+  10%,
+  38%,
+  45%,
+  90%,
   100% {
     clip-path: inset(0 0 0 0 round 50%);
   }
 
-  16%,
-  52% {
+  19%,
+  25%,
+  54%,
+  60% {
     clip-path: inset(48% 0 48% 0 round 50%);
+  }
+
+  75% {
+    clip-path: inset(16% 0 16% 0 round 50%);
   }
 }
 
