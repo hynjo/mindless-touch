@@ -8,6 +8,7 @@ export default defineConfig({
       input: {
         index: resolve(import.meta.dirname, "index.html"),
         intro: resolve(import.meta.dirname, "intro.html"),
+        window: resolve(import.meta.dirname, "window.html"),
       },
     },
   },

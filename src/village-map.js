@@ -5,6 +5,18 @@ const milestones = [...document.querySelectorAll(".milestone")];
 const activeMilestone = document.querySelector(".milestone--active");
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 const nextMilestone = document.querySelector('[data-stage="2"]');
+const mapParams = new URLSearchParams(window.location.search);
+const debugValue = mapParams.get("debug");
+const debugEnabled =
+  mapParams.has("debug") && debugValue !== "0" && debugValue !== "false";
+const debugHistory = new Set(
+  debugEnabled
+    ? (mapParams.get("history") ?? "")
+        .split(",")
+        .map((stage) => stage.trim().toLowerCase())
+        .filter(Boolean)
+    : [],
+);
 
 const DESIGN_WIDTH = 100;
 const DESIGN_HEIGHT = 150;
@@ -45,14 +57,21 @@ function consumeMapArrival() {
 function completeVillageJourney() {
   nextMilestone.classList.remove("milestone--arriving");
   nextMilestone.classList.add("milestone--unlocked");
+  nextMilestone.removeAttribute("aria-disabled");
   activeMilestone.classList.add("milestone--finished");
   activeMilestone.setAttribute("aria-label", "Where is meow — finished");
+}
+
+function applyDebugHistory() {
+  if (debugHistory.has("1") || debugHistory.has("intro"))
+    completeVillageJourney();
 }
 
 function finishDeparture() {
   if (!departure || departure.finished) return;
   departure.finished = true;
-  sessionStorage.setItem("village-paw-transition", "pending");
+  if (departure.introHandoff)
+    sessionStorage.setItem("village-paw-transition", "pending");
   window.location.assign(departure.destination);
 }
 
@@ -94,7 +113,7 @@ function cameraAt(time) {
   };
 }
 
-function leaveMap(event) {
+function leaveMap(event, milestone, destinationY, introHandoff = false) {
   if (
     isLeavingMap ||
     event.defaultPrevented ||
@@ -107,14 +126,19 @@ function leaveMap(event) {
     return;
   }
 
+  if (milestone === nextMilestone && !milestone.classList.contains("milestone--unlocked")) {
+    event.preventDefault();
+    return;
+  }
+
   event.preventDefault();
   isLeavingMap = true;
-  const destination = activeMilestone.href;
-  const bounds = activeMilestone.getBoundingClientRect();
+  const destination = milestone.href;
+  const bounds = milestone.getBoundingClientRect();
   const pawX = bounds.left + bounds.width / 2;
   const pawY = bounds.top + bounds.height / 2;
   const destinationPawX = window.innerWidth / 2;
-  const destinationPawY = window.innerHeight * 0.68;
+  const destinationPawY = window.innerHeight * destinationY;
   const transition = document.createElement("div");
 
   transition.className = "map-transition";
@@ -123,12 +147,14 @@ function leaveMap(event) {
     destination,
     duration: 1100,
     finished: false,
+    introHandoff,
     pawX,
     pawY,
     shiftX: destinationPawX - pawX,
     shiftY: destinationPawY - pawY,
     startedAt: performance.now(),
   };
+  milestone.classList.add("milestone--departing");
   villageMap.classList.add("is-zooming");
   villageMap.append(transition);
   document.body.classList.add("is-leaving-map");
@@ -390,6 +416,7 @@ function restoreMapFromHistory(event) {
   isLeavingMap = false;
   document.body.classList.remove("is-leaving-map", "is-entering-map");
   villageMap.classList.remove("is-zooming");
+  milestones.forEach((milestone) => milestone.classList.remove("milestone--departing"));
   villageMap
     .querySelectorAll(".map-transition, .map-arrival")
     .forEach((element) => element.remove());
@@ -401,6 +428,12 @@ function restoreMapFromHistory(event) {
 window.addEventListener("resize", resize);
 window.addEventListener("pageshow", restoreMapFromHistory);
 reducedMotion.addEventListener("change", updateMotionPreference);
-activeMilestone.addEventListener("click", leaveMap);
+activeMilestone.addEventListener("click", (event) =>
+  leaveMap(event, activeMilestone, 0.68, true),
+);
+nextMilestone.addEventListener("click", (event) =>
+  leaveMap(event, nextMilestone, 0.5),
+);
 if (!consumeMapArrival()) document.documentElement.classList.remove("is-arriving-at-map");
+applyDebugHistory();
 resize();

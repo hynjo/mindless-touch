@@ -11,7 +11,7 @@ npm install
 npm run dev
 ```
 
-터미널에 표시된 로컬 주소를 열면 고양이 마을 지도가 표시됩니다. 빛나는 발자국을 선택하면 `/intro` 게임으로 이동합니다. 게임을 직접 테스트하려면 `/intro` 경로를 열고 Chrome DevTools의 Device Mode를 켭니다.
+터미널에 표시된 로컬 주소를 열면 고양이 마을 지도가 표시됩니다. 첫 번째 빛나는 발자국은 `/intro` 게임으로 이동하며, 여정을 마치면 두 번째 `/window` 프로젝트 발자국이 열립니다. 게임을 직접 테스트하려면 `/intro` 경로를 열고 Chrome DevTools의 Device Mode를 켭니다.
 
 ## 플레이 방법
 
@@ -76,6 +76,8 @@ iOS에서 페이지가 백그라운드로 이동한 뒤 복귀하면 다음 사�
 - `?debug` 또는 `?debug=1`: 문제를 푸는 동안에도 정답 도형을 표시하고 정답·오답 터치 위치를 점으로 표시
 - `?seed=example`: 새로고침해도 같은 문제 순서 재현
 - 함께 사용: `?debug=1&seed=example&level=8`
+- 지도에서 `/?debug&history=1`: 첫 번째 프로젝트를 완료한 상태로 시작해 두 번째 `/window` 발자국 활성화
+- 지도 히스토리는 향후 단계를 함께 지정할 수 있도록 쉼표 목록을 사용합니다. 예: `/?debug&history=1,2`
 
 ## 테스트
 
@@ -93,4 +95,4 @@ npm test
 npm run build
 ```
 
-결과물은 `dist/`에 생성되며 루트의 `index.html`과 `intro.html`을 포함합니다. Vite의 `base`는 커스텀 도메인의 루트 경로인 `/`로 설정되어 있습니다. GitHub Pages에는 `dist/` 결과물을 배포하면 됩니다.
+결과물은 `dist/`에 생성되며 루트의 `index.html`, `intro.html`, `window.html`을 포함합니다. Vite의 `base`는 커스텀 도메인의 루트 경로인 `/`로 설정되어 있습니다. GitHub Pages에는 `dist/` 결과물을 배포하면 됩니다.

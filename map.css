@@ -91,6 +91,8 @@ body.is-leaving-map {
   color: var(--map-active);
   opacity: 0.94;
   filter: drop-shadow(0 0 4px rgba(255, 248, 117, 0.24));
+  pointer-events: auto;
+  cursor: pointer;
 }
 
 .milestone--unlocked::before {
@@ -107,8 +109,13 @@ body.is-leaving-map {
   animation: milestone-click-ripple 2.2s ease-out infinite;
 }
 
-.is-leaving-map .milestone--active {
+.is-leaving-map .milestone--departing {
   opacity: 1;
+  animation: none;
+}
+
+.is-leaving-map .milestone--departing::before,
+.is-leaving-map .milestone--departing::after {
   animation: none;
 }
 
@@ -120,7 +127,7 @@ body.is-leaving-map {
   z-index: 21;
 }
 
-.is-leaving-map .milestone:not(.milestone--active) {
+.is-leaving-map .milestone:not(.milestone--departing) {
   opacity: 0;
 }
 
