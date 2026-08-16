@@ -205,6 +205,14 @@ body {
   animation: intro-tap-prompt var(--intro-pulse-duration) ease-in-out infinite;
 }
 
+.is-entering-from-map .intro:not(.is-demo) .intro-touch {
+  animation: intro-paw-arrive 720ms cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+.has-entered-from-map .intro:not(.is-demo) .intro-touch {
+  animation-delay: -456ms;
+}
+
 .paw-touch::after {
   position: absolute;
   inset: 5px;
@@ -365,6 +373,18 @@ body {
   68% {
     opacity: 0.2;
     transform: translate(-50%, -50%) scale(0.78);
+  }
+}
+
+@keyframes intro-paw-arrive {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(5.65);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(0.92);
   }
 }
 

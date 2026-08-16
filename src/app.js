@@ -62,7 +62,7 @@ const sound = new SoundEngine({
   correctUrl: `${import.meta.env.BASE_URL}assets/correct.wav`,
   failureUrl: `${import.meta.env.BASE_URL}assets/failure.wav`,
 });
-app.querySelectorAll(".cat-eyes").forEach((element) => element.remove());
+app.querySelectorAll(":scope > .cat-eyes").forEach((element) => element.remove());
 const catEyes = document.createElement("div");
 catEyes.className = "cat-eyes";
 catEyes.innerHTML =
@@ -92,26 +92,22 @@ nudgePaw.innerHTML = PAW_MARKUP;
 tapFeedbackLayer.append(nudgePaw);
 const desktopPointer = window.matchMedia("(hover: hover) and (pointer: fine)");
 
-const intro = document.createElement("div");
-intro.className = "intro";
-intro.setAttribute("aria-hidden", "true");
-intro.innerHTML = `
-  <svg class="intro-speaker" viewBox="0 0 64 64" aria-hidden="true">
-    <path d="M10 25h11l14-11v36L21 39H10z"></path>
-    <path class="intro-sound-wave" d="M43 23c5 5 5 13 0 18"></path>
-    <path class="intro-sound-wave intro-sound-wave-outer" d="M50 16c9 9 9 23 0 32"></path>
-  </svg>
-  <span class="paw-touch intro-touch is-success">${PAW_MARKUP}</span>
-  <span class="intro-cat-position">
-    <span class="cat-eyes intro-demo-eyes">
-      <span class="cat-eye"></span><span class="cat-eye"></span>
-    </span>
-  </span>
-`;
-app.append(intro);
+const intro = document.querySelector(".intro");
 
 const introTouch = intro.querySelector(".intro-touch");
 const introDemoEyes = intro.querySelector(".intro-demo-eyes");
+
+if (document.documentElement.classList.contains("is-entering-from-map")) {
+  introTouch.addEventListener(
+    "animationend",
+    (event) => {
+      if (event.animationName !== "intro-paw-arrive") return;
+      document.documentElement.classList.add("has-entered-from-map");
+      document.documentElement.classList.remove("is-entering-from-map");
+    },
+    { once: true },
+  );
+}
 
 let phase = introEnabled ? "intro" : "idle";
 let round = 0;

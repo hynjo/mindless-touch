@@ -4,19 +4,38 @@
     <meta charset="UTF-8" />
     <meta
       name="viewport"
-      content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
     />
-    <meta name="theme-color" content="#111111" />
-    <title>Where is meow</title>
-    <link rel="stylesheet" href="./styles.css" />
+    <meta name="theme-color" content="#000000" />
+    <title>Cat Village — meow.observer</title>
+    <link rel="stylesheet" href="/map.css" />
   </head>
   <body>
-    <main id="app" aria-label="Tap the screen to start">
-      <canvas id="playfield"></canvas>
-      <p id="status" class="visually-hidden" aria-live="polite">
-        Tap the screen to start.
-      </p>
+    <main class="village-map" aria-label="Cat village map">
+      <canvas class="village-map__canvas" aria-hidden="true"></canvas>
+      <nav class="village-map__milestones" aria-label="Village destinations">
+        <a
+          class="milestone milestone--active"
+          href="/intro"
+          data-map-x="17"
+          data-map-y="12"
+          aria-label="Enter Where is meow"
+        >
+          <svg viewBox="0 0 56 52" aria-hidden="true">
+            <path d="M28.5 24C36.4 24 42 29.1 42 36.6S36.5 47 28.5 47 15 44.1 15 36.6 20.6 24 28.5 24Z" />
+            <ellipse cx="8.5" cy="22.5" rx="5.5" ry="7.5" transform="rotate(-28 8.5 22.5)" />
+            <ellipse cx="20.5" cy="10.5" rx="5.5" ry="7.5" transform="rotate(-10 20.5 10.5)" />
+            <ellipse cx="35.5" cy="10.5" rx="5.5" ry="7.5" transform="rotate(10 35.5 10.5)" />
+            <ellipse cx="47.5" cy="22.5" rx="5.5" ry="7.5" transform="rotate(28 47.5 22.5)" />
+          </svg>
+        </a>
+        <span class="milestone" data-map-x="92" data-map-y="30" aria-hidden="true"></span>
+        <span class="milestone" data-map-x="23" data-map-y="44" aria-hidden="true"></span>
+        <span class="milestone" data-map-x="78" data-map-y="76" aria-hidden="true"></span>
+        <span class="milestone" data-map-x="24" data-map-y="108" aria-hidden="true"></span>
+        <span class="milestone" data-map-x="78" data-map-y="140" aria-hidden="true"></span>
+      </nav>
     </main>
-    <script type="module" src="./src/app.js"></script>
+    <script type="module" src="/src/village-map.js"></script>
   </body>
 </html>

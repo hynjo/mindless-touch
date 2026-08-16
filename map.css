@@ -1,0 +1,194 @@
+:root {
+  color-scheme: dark;
+  background: #000000;
+  --map-active: #fff875;
+  --map-dim: #5b5937;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+.village-map {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+
+body {
+  background: #000000;
+}
+
+body.is-leaving-map {
+  pointer-events: none;
+}
+
+.village-map {
+  position: relative;
+  isolation: isolate;
+}
+
+.village-map.is-zooming {
+  pointer-events: none;
+}
+
+.village-map::after {
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  background: radial-gradient(circle, transparent 43%, rgba(0, 0, 0, 0.62) 100%);
+  pointer-events: none;
+  content: "";
+}
+
+.village-map__canvas,
+.village-map__milestones {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.village-map__milestones {
+  z-index: 3;
+  margin: 0;
+  pointer-events: none;
+}
+
+.milestone {
+  position: absolute;
+  display: grid;
+  width: clamp(44px, 10vw, 60px);
+  aspect-ratio: 1;
+  place-items: center;
+  color: var(--map-dim);
+  opacity: 0.4;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+}
+
+.milestone::before {
+  width: 88%;
+  height: 82%;
+  background: currentColor;
+  content: "";
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 56 52'%3E%3Cpath d='M28.5 24C36.4 24 42 29.1 42 36.6S36.5 47 28.5 47 15 44.1 15 36.6 20.6 24 28.5 24Z'/%3E%3Cellipse cx='8.5' cy='22.5' rx='5.5' ry='7.5' transform='rotate(-28 8.5 22.5)'/%3E%3Cellipse cx='20.5' cy='10.5' rx='5.5' ry='7.5' transform='rotate(-10 20.5 10.5)'/%3E%3Cellipse cx='35.5' cy='10.5' rx='5.5' ry='7.5' transform='rotate(10 35.5 10.5)'/%3E%3Cellipse cx='47.5' cy='22.5' rx='5.5' ry='7.5' transform='rotate(28 47.5 22.5)'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+.milestone--active {
+  color: var(--map-active);
+  opacity: 1;
+  pointer-events: auto;
+  cursor: pointer;
+  filter: drop-shadow(0 0 4px rgba(255, 248, 117, 0.3));
+  animation: milestone-blink 1.7s ease-in-out infinite;
+}
+
+.is-leaving-map .milestone--active {
+  opacity: 1;
+  animation: none;
+}
+
+.is-leaving-map .village-map__milestones {
+  z-index: 21;
+}
+
+.is-leaving-map .milestone:not(.milestone--active) {
+  opacity: 0;
+}
+
+.milestone--active::before {
+  display: none;
+}
+
+.milestone--active svg {
+  width: 88%;
+  overflow: visible;
+  fill: currentColor;
+}
+
+.milestone--active::after {
+  position: absolute;
+  inset: 6%;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  opacity: 0;
+  content: "";
+  animation: milestone-halo 1.7s ease-out infinite;
+}
+
+.is-leaving-map .milestone--active::after {
+  opacity: 0;
+  animation: none;
+}
+
+.milestone--active:focus-visible {
+  border-radius: 50%;
+  outline: 2px solid var(--map-active);
+  outline-offset: 5px;
+}
+
+.map-transition {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0);
+  pointer-events: auto;
+  animation: map-transition-backdrop 1100ms ease-in both;
+}
+
+@keyframes milestone-blink {
+  0%,
+  100% {
+    opacity: 0.42;
+  }
+
+  42%,
+  62% {
+    opacity: 1;
+  }
+}
+
+@keyframes milestone-halo {
+  0% {
+    opacity: 0.55;
+    transform: scale(0.65);
+  }
+
+  72%,
+  100% {
+    opacity: 0;
+    transform: scale(1.45);
+  }
+}
+
+@keyframes map-transition-backdrop {
+  0%,
+  68% {
+    background: rgba(0, 0, 0, 0);
+  }
+
+  100% {
+    background: rgba(0, 0, 0, 0.94);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .milestone--active,
+  .milestone--active::after {
+    animation: none;
+  }
+
+  .milestone--active {
+    opacity: 1;
+  }
+
+  .map-transition {
+    animation: map-transition-backdrop 160ms linear both;
+  }
+
+}

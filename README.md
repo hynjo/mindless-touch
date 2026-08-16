@@ -11,7 +11,7 @@ npm install
 npm run dev
 ```
 
-터미널에 표시된 로컬 주소를 열고 Chrome DevTools의 Device Mode를 켭니다.
+터미널에 표시된 로컬 주소를 열면 고양이 마을 지도가 표시됩니다. 빛나는 발자국을 선택하면 `/intro` 게임으로 이동합니다. 게임을 직접 테스트하려면 `/intro` 경로를 열고 Chrome DevTools의 Device Mode를 켭니다.
 
 ## 플레이 방법
 
@@ -49,7 +49,7 @@ reveal 이후 라운드를 완료하는 탭에는 밝은 발자국이 인사하�
 예시:
 
 ```text
-http://localhost:5173/?level=8
+http://localhost:5173/intro?level=8
 ```
 
 ## 고양이 눈 색상
@@ -85,7 +85,7 @@ npm test
 
 ## GitHub Pages
 
-프로덕션 사이트는 커스텀 도메인 `https://meow.observer`에서 서비스합니다.
+프로덕션 사이트는 커스텀 도메인 `https://meow.observer`에서 서비스합니다. 루트 `https://meow.observer/`는 고양이 마을 지도이고, 빛나는 발자국을 통해 `https://meow.observer/intro` 게임으로 이동합니다.
 
 프로덕션 파일을 생성합니다.
 
@@ -93,4 +93,4 @@ npm test
 npm run build
 ```
 
-결과물은 `dist/`에 생성됩니다. Vite의 `base`는 커스텀 도메인의 루트 경로인 `/`로 설정되어 있습니다. GitHub Pages에는 `dist/` 결과물을 배포하면 됩니다.
+결과물은 `dist/`에 생성되며 루트의 `index.html`과 `intro.html`을 포함합니다. Vite의 `base`는 커스텀 도메인의 루트 경로인 `/`로 설정되어 있습니다. GitHub Pages에는 `dist/` 결과물을 배포하면 됩니다.
