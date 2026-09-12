@@ -1,0 +1,983 @@
+{
+  "generatedAt": "2026-09-12T01:53:42.574Z",
+  "scope": "Limb capsules versus nonadjacent limbs; forearms/shins versus expanded torso, waist and pelvis ellipsoids. Within each hand: nonadjacent finger capsules and finger/palm volumes; shared hinges and palm attachment zones are excluded. Between-hand contact, toes, feet and head self-contact are not covered. Surface clearance includes all physical parts. Body contact below 1 mm is omitted from this audit.",
+  "summary": {
+    "total": 167,
+    "flagged": 0,
+    "clear": 167,
+    "surfaceFailures": 0
+  },
+  "library": [
+    {
+      "name": "Archer's",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Banana",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Big Toe",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Bird of Paradise",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Boat",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Bound Angle",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Bow",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Bridge",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Butterfly",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Camel",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Cat",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Caterpillar",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Chair",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Child's",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Chin Stand",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Cobra",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Corpse",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Cow",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Cow Face",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Crane",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Crescent Lunge",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Crescent Lunge on the Knee",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Crescent Moon",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Crooked Monkey",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Crow",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Deaf Man's",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Dolphin",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Downward-Facing Dog",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Eagle",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Easy",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Eight Angle",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Eight Point",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Elbow Balance",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Elephant Trunk",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Embryo",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Embryo in Womb",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Extended Puppy",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Extended Side Angle",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Extended Standing Hand to Big Toe",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Extended Supine Hand to Big Toe",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Fire Log",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Firefly I",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Firefly II",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Firefly III",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Fish",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Floating Stick",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Flying Lizard",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Flying Man",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Flying Pigeon",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Forearm Balance",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Frog",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Front Splits",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Garland",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Gate",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Goddess",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Gorilla",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Grasshopper",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Half Bow",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Half Moon",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Half Pigeon",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Handstand",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Happy Baby",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Head to Knee I",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Head to Knee II",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Head to Knee III",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Hero",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Heron",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Himalayan Duck",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Horse",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Humble Flamingo",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Inverted Staff",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Little Thunderbolt",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Lizard",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Locust I",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Locust II",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Locust III",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Lord of the Fishes",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Lotus",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Low Push-up",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Lunge",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Moon Bird",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Mountain",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Noose",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "One Leg Behind the Head I",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "One Leg Behind the Head II",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Peacock",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Pendant",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Pigeon",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Plank",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Plow",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Pyramid",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Rabbit",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Reverse Corpse",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Revolved Bird of Paradise",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Revolved Flying Man",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Revolved Half Moon",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Revolved Seated Hand to Big Toe",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Revolved Standing Hand to Big Toe",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Revolved Triangle",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Rock the Baby",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Rooster",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Sage Bharadvaja's Twist",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Sage Gheranda's",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Sage Marichi's I",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Sage Marichi's II",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Sage Marichi's III",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Sage Marichi's IV",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Sage Visvamitra's",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Scale",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Scorpion",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Seated Forward Bend I",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Seated Forward Bend II",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Seated Forward Bend III",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Seated Forward Bend IV",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Seated Gate",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Seated Half Bound Lotus Forward Bend",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Seated Three Limbed Forward Bend",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Shiva Squat",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Shoelace",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Shoulder Pressing",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Shoulder Stand with Lotus Legs",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Side Lunge",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Side Plank",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Sleeping Yogi",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Snake",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Sphinx",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Staff",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Standing Bow",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Standing Foot to Head",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Standing Forward Bend",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Standing Half Bound Lotus Forward Bend",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Standing Hand to Big Toe",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Standing Leg Behind the Head",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Standing Leg Behind the Head Forward Bend",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Standing Splits",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Star",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Supine Angle",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Supine Foot to Head",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Supine Hand to Big Toe",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Supine Spinal Twist",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Supine Straddle",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Supported Headstand",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Supported Shoulder Stand",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Tabletop",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Thunderbolt",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Tiger",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Toe Stand",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Tortoise",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Tree",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Triangle",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Tripod Headstand",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Two Legs Behind the Head I",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Two Legs Behind the Head II",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Upward Plank",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Upward-Facing Dog",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Warrior I",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Warrior II",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Warrior III",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Waterfall",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Wheel",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Wide Legged Forward Bend I",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Wide Legged Forward Bend II",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Wide Legged Forward Bend III",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Wide Legged Forward Bend IV",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Wide Splits",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Wild Thing",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    },
+    {
+      "name": "Wind Removing",
+      "contacts": [],
+      "surfaceClearanceMm": 0.7
+    }
+  ],
+  "examples": {
+    "Sun Salutation": {
+      "cards": [
+        {
+          "name": "Mountain",
+          "contacts": [],
+          "surfaceClearanceMm": 0.7
+        },
+        {
+          "name": "Upward Salute",
+          "contacts": [],
+          "surfaceClearanceMm": 0.7
+        },
+        {
+          "name": "Forward Fold",
+          "contacts": [],
+          "surfaceClearanceMm": 0.7
+        },
+        {
+          "name": "Halfway Lift",
+          "contacts": [],
+          "surfaceClearanceMm": 0.7
+        },
+        {
+          "name": "Plant Hands",
+          "contacts": [],
+          "surfaceClearanceMm": 0.7
+        },
+        {
+          "name": "Step Back",
+          "contacts": [],
+          "surfaceClearanceMm": 0.7
+        },
+        {
+          "name": "Plank",
+          "contacts": [],
+          "surfaceClearanceMm": 0.7
+        },
+        {
+          "name": "Low Plank",
+          "contacts": [],
+          "surfaceClearanceMm": 0.7
+        },
+        {
+          "name": "Upward-Facing Dog",
+          "contacts": [],
+          "surfaceClearanceMm": 0.7
+        },
+        {
+          "name": "Downward-Facing Dog",
+          "contacts": [],
+          "surfaceClearanceMm": 0.7
+        },
+        {
+          "name": "Step Forward",
+          "contacts": [],
+          "surfaceClearanceMm": 0.7
+        },
+        {
+          "name": "Step Together",
+          "contacts": [],
+          "surfaceClearanceMm": 0.7
+        },
+        {
+          "name": "Halfway Lift",
+          "contacts": [],
+          "surfaceClearanceMm": 0.7
+        },
+        {
+          "name": "Forward Fold",
+          "contacts": [],
+          "surfaceClearanceMm": 0.7
+        },
+        {
+          "name": "Upward Salute",
+          "contacts": [],
+          "surfaceClearanceMm": 0.7
+        },
+        {
+          "name": "Mountain",
+          "contacts": [],
+          "surfaceClearanceMm": 0.7
+        }
+      ],
+      "samples": 1047,
+      "surfaceFailures": 0,
+      "collisions": []
+    },
+    "Pole Flow": {
+      "cards": [
+        {
+          "name": "Approach",
+          "contacts": [],
+          "surfaceClearanceMm": 2
+        },
+        {
+          "name": "Two-Hand Grip",
+          "contacts": [],
+          "surfaceClearanceMm": 0.7
+        },
+        {
+          "name": "Weight Shift",
+          "contacts": [],
+          "surfaceClearanceMm": 0.7
+        },
+        {
+          "name": "Tuck",
+          "contacts": [],
+          "surfaceClearanceMm": 0.7
+        },
+        {
+          "name": "Turn Around",
+          "contacts": [],
+          "surfaceClearanceMm": 0.7
+        },
+        {
+          "name": "Open Shape",
+          "contacts": [],
+          "surfaceClearanceMm": 0.7
+        },
+        {
+          "name": "Return to Floor",
+          "contacts": [],
+          "surfaceClearanceMm": 0.7
+        },
+        {
+          "name": "Finish",
+          "contacts": [],
+          "surfaceClearanceMm": 2
+        }
+      ],
+      "samples": 600,
+      "surfaceFailures": 0,
+      "collisions": []
+    }
+  }
+}

@@ -1,0 +1,203 @@
+{
+  "Butterfly": {
+    "leftShoulder": [-60, 0, -12],
+    "leftHip": [-107, -48, 50],
+    "rightShoulder": [-60, 0, 12],
+    "rightHip": [-107, 48, -50]
+  },
+  "Caterpillar": {
+    "leftShoulder": [-90, 0, 7.4],
+    "leftHip": [-143, 0, 0],
+    "rightShoulder": [-90, 0, -7.4],
+    "rightHip": [-143, 0, 0]
+  },
+  "KneePileBind": {
+    "leftHip": [-90, 0, -4.3],
+    "rightHip": [-90, 0, 3.3]
+  },
+  "DeafMan": {
+    "leftShoulder": [15.4, 0, 0],
+    "rightShoulder": [15.4, 0, 0]
+  },
+  "Eagle": {
+    "leftHip": [-25, 0, 9]
+  },
+  "Easy": {
+    "leftShoulder": [-25.7, 0, 0],
+    "rightShoulder": [-25.7, 0, 0]
+  },
+  "EightAngle": {
+    "leftShoulder": [-36.4, 0, 12],
+    "leftHip": [-88, -87, 50]
+  },
+  "ElephantTrunk": {
+    "leftShoulder": [22, 11.4, 27],
+    "leftHip": [-138, -60, 35]
+  },
+  "Embryo": {
+    "leftShoulder": [-84.7, 0, 0],
+    "rightShoulder": [-84.7, 0, 0]
+  },
+  "EmbryoWomb": {
+    "leftShoulder": [-69, 0, 0],
+    "rightShoulder": [-69, 0, 0]
+  },
+  "FireLog": {
+    "leftShoulder": [-12.6, 0, 12],
+    "rightShoulder": [-12.6, 0, -12]
+  },
+  "TortoiseBindII": {
+    "leftShoulder": [20, 9, 12],
+    "rightShoulder": [20, -9, -12]
+  },
+  "FloatingStick": {
+    "leftShoulder": [-10, 0, 3.4],
+    "rightShoulder": [-10, 0, -3.4]
+  },
+  "LungeHandsOnMatFlying": {
+    "leftShoulder": [-47, 0, -6]
+  },
+  "PigeonFlying": {
+    "leftShoulder": [-40, 0, -12]
+  },
+  "SplitsFront": {
+    "rightShoulder": [-3.4, 0, 0]
+  },
+  "Grasshopper": {
+    "rightHip": [-78, -65, 45]
+  },
+  "HalfMoon": {
+    "leftHip": [-21.9, 9, -4.1],
+    "rightHip": [21.6, 24, 104]
+  },
+  "PigeonHalf": {
+    "rightShoulder": [-3.4, 0, 0]
+  },
+  "HeadToKnee": {
+    "leftShoulder": [-90, 0, 5]
+  },
+  "HeadToKneeII": {
+    "leftShoulder": [-90, 0, 5]
+  },
+  "HeadToKneeIII": {
+    "leftShoulder": [-90, 0, 5],
+    "rightHip": [-118, 68, -55]
+  },
+  "LittleThunderbolt": {
+    "leftShoulder": [19.3, 0, 0],
+    "rightShoulder": [19.3, 0, 0]
+  },
+  "LotusFull": {
+    "leftShoulder": [-37, 0, -12],
+    "rightShoulder": [-37, 0, 12]
+  },
+  "FootBehindHeadElevated": {
+    "leftShoulder": [22, 11.4, 27],
+    "leftHip": [-138, -60, 35]
+  },
+  "FootBehindHead": {
+    "leftHip": [-161.4, -60, 35]
+  },
+  "FootBehindHeadForward": {
+    "rightShoulder": [-80, 0, -5.4]
+  },
+  "Pendant": {
+    "leftShoulder": [6.7, 0, 0],
+    "rightShoulder": [6.7, 0, 0]
+  },
+  "Rabbit": {
+    "leftHip": [-138, 0, 4],
+    "rightHip": [-138, 0, -4]
+  },
+  "Rooster": {
+    "leftShoulder": [-22, 7.7, -23],
+    "leftElbow": [-1, 0, 0],
+    "rightShoulder": [-22, -9.7, 15],
+    "rightElbow": [-12, 0, 0],
+    "rightHip": [-73, 43, -52]
+  },
+  "Bharadvaja": {
+    "rightElbow": [-111.7, 0, 0],
+    "rightHip": [-78, 50, -40]
+  },
+  "MarichiIVTraditional": {
+    "rightElbow": [-111.7, 0, 0],
+    "rightHip": [-78, 50, -40]
+  },
+  "SeatedForwardBend": {
+    "leftShoulder": [-90, 0, 5],
+    "rightShoulder": [-90, 0, -5]
+  },
+  "SeatedForwardBendIII": {
+    "leftShoulder": [-100, 0, 4.4],
+    "rightShoulder": [-100, 0, -4.4]
+  },
+  "SeatedForwardBendIV": {
+    "leftShoulder": [-100, 0, 0.7],
+    "leftHip": [-151.3, 0, 0],
+    "rightShoulder": [-100, 0, -0.7],
+    "rightHip": [-151.3, 0, 0]
+  },
+  "SeatedForwardBendHalfLotus": {
+    "leftShoulder": [-90, 0, 5]
+  },
+  "SeatedForwardBendThreeLimbs": {
+    "leftShoulder": [-90, 0, 5]
+  },
+  "KneePile": {
+    "leftShoulder": [-25, 0, 0.7],
+    "leftHip": [-90, 0, -4],
+    "rightHip": [-85.6, 0, 4]
+  },
+  "YogicSleep": {
+    "leftHip": [-144, -54, 35],
+    "rightHip": [-144, 54, -35]
+  },
+  "TrivikramaI": {
+    "leftHip": [-160.3, 0, 0]
+  },
+  "StandingFootBehindHead": {
+    "leftHip": [-161.4, -60, 35]
+  },
+  "SupineTrivikrama": {
+    "leftHip": [-160.3, 0, 0]
+  },
+  "FootBehindHeadTwoLegged": {
+    "leftHip": [-155.7, -65, 40],
+    "rightHip": [-155.7, 65, -40]
+  },
+  "FootBehindHeadTwoLeggedElevated": {
+    "leftShoulder": [10, 0, 18.1],
+    "leftHip": [-138, -65, 28],
+    "rightShoulder": [10, 0, -18.1],
+    "rightHip": [-138, 65, -28]
+  },
+  "WideLeggedForwardBendII": {
+    "leftShoulder": [42, 5.7, 9],
+    "rightShoulder": [42, -5.7, -9]
+  },
+  "Lunge": {
+    "pelvis": [69.7, 0, 0],
+    "leftHip": [-123, 0, 0]
+  },
+  "Bridge": {
+    "leftShoulder": [4.3, 0, 0],
+    "rightShoulder": [4.3, 0, 0]
+  },
+  "StandingHandToToeExtended": {
+    "rightShoulder": [-3.4, 0, 0]
+  },
+  "SupineHandToToeExtended": {
+    "rightShoulder": [-3.4, 0, 0]
+  },
+  "StandingHandToToeFull": {
+    "rightShoulder": [-3.4, 0, 0]
+  },
+  "SupineHandToToeFull": {
+    "rightShoulder": [-3.4, 0, 0]
+  },
+  "CorpseDoubleLegRaise": {
+    "leftShoulder": [3.4, 0, 0],
+    "rightShoulder": [3.4, 0, 0]
+  }
+}
