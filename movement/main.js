@@ -551,7 +551,14 @@ function renderPlayback() {
     if((sequence.steps[sample.index].floorSupport&&sequence.steps[sample.next].floorSupport)||floorConstraints.clearance()<.0007)floorConstraints.settle();
     updateFloorContacts();
   }
-  if(!selfConstraints.commit()){surface.restore(surfaceBefore);selfConstraints.restore(selfBefore);playback.time=lastSelfPlaybackTime;playback.index=timeline.sample(playback.time).index;pausePlayback();updateSelfContactUI(true);updateFloorContacts();sequenceMessage('Transition blocked by body contact or a wrist limit. Adjust the arm and hand, or add an intermediate pose.',true);return;}
+  if(!selfConstraints.commit()){
+    const failure=selfConstraints.failure();
+    const label=id=>joints.find(joint=>joint.id===id)?.label||id;
+    const reason=failure?.joint?`${label(failure.joint)} ${failure.axis} limit`:failure?`${label(failure.a)} / ${label(failure.b)} contact`:'body contact';
+    const transition=`${sequence.steps[sample.index].name} → ${sequence.steps[sample.next].name}`;
+    surface.restore(surfaceBefore);selfConstraints.restore(selfBefore);playback.time=lastSelfPlaybackTime;playback.index=timeline.sample(playback.time).index;pausePlayback();updateSelfContactUI(true);updateFloorContacts();
+    sequenceMessage(`Transition blocked: ${reason} (${transition}). Adjust the pose or add an intermediate pose.`,true);return;
+  }
   lastSelfPlaybackTime=playback.time;
   root.updateWorldMatrix(true,true);
   playback.index = sample.index;
@@ -614,22 +621,51 @@ function updateCardFields(){
   document.querySelector('#move-pose-right').disabled=!step||playback.index>=sequence.steps.length-1;
   if(step){document.querySelector('#pose-name').value=step.name;document.querySelector('#pose-hold').value=step.holdSeconds;document.querySelector('#pose-transition').value=step.transitionSeconds;}
 }
+let draggedStepId=null;
+function clearCardDropState(){
+  document.querySelectorAll('.pose-card').forEach(card=>card.classList.remove('drop-before','drop-after'));
+  document.querySelector('#pose-gallery').classList.remove('drop-at-end');
+}
+function finishCardDrag(){document.querySelectorAll('.pose-card').forEach(card=>card.classList.remove('is-dragging'));clearCardDropState();}
+function cardDropBoundary(card,event){
+  const bounds=card.getBoundingClientRect();
+  return Number(card.dataset.index)+(event.clientX>=bounds.left+bounds.width/2?1:0);
+}
+function moveDraggedStep(boundary){
+  if(!draggedStepId)return;
+  flushPendingPose();
+  const from=sequence.steps.findIndex(step=>step.id===draggedStepId);
+  if(from<0)return;
+  const destination=Math.max(0,Math.min(sequence.steps.length-1,boundary-(from<boundary?1:0)));
+  if(destination===from)return;
+  rememberSequence();
+  const [step]=sequence.steps.splice(from,1);sequence.steps.splice(destination,0,step);
+  playback.index=destination;playback.edited=false;rebuildSequence();selectExampleStep(destination,false);
+  sequenceMessage(`Moved ${step.name} to step ${destination+1}. Undo restores the previous order.`);
+}
 function rebuildSequence(){
   closeHand();pausePlayback();timeline=createTimeline(sequence.steps);
   thumbnails=makeThumbnails();
   const cards=sequence.steps.map((step,index)=>{
-    const card=document.createElement('button');card.className='pose-card';card.type='button';card.dataset.kind=step.kind;
+    const card=document.createElement('button');card.className='pose-card';card.type='button';card.dataset.kind=step.kind;card.dataset.index=String(index);card.draggable=true;
     card.setAttribute('aria-pressed',String(index===playback.index));card.setAttribute('aria-label',`Step ${index+1}: ${step.name}`);
     const image=document.createElement('img');image.src=thumbnails[index];image.alt='';image.width=288;image.height=240;
     const label=document.createElement('span');label.className='pose-label';label.textContent=`${String(index+1).padStart(2,'0')}  ${step.name}`;
     const cue=document.createElement('small');cue.textContent=`Hold ${step.holdSeconds}s / Move ${step.transitionSeconds}s`;label.append(cue);
-    card.append(image,label);card.onclick=()=>selectExampleStep(index);return card;
+    card.append(image,label);card.onclick=()=>selectExampleStep(index);
+    card.ondragstart=event=>{draggedStepId=step.id;card.classList.add('is-dragging');event.dataTransfer.effectAllowed='move';event.dataTransfer.setData('text/plain',step.id);};
+    card.ondragover=event=>{if(!draggedStepId)return;event.preventDefault();event.dataTransfer.dropEffect='move';clearCardDropState();card.classList.add(cardDropBoundary(card,event)===index?'drop-before':'drop-after');};
+    card.ondrop=event=>{event.preventDefault();event.stopPropagation();const boundary=cardDropBoundary(card,event);clearCardDropState();moveDraggedStep(boundary);draggedStepId=null;};
+    card.ondragend=()=>{draggedStepId=null;finishCardDrag();};
+    return card;
   });
   const gallery=document.querySelector('#pose-gallery');gallery.replaceChildren(...cards);
+  gallery.ondragover=event=>{if(!draggedStepId||event.target.closest('.pose-card'))return;event.preventDefault();clearCardDropState();gallery.classList.add('drop-at-end');};
+  gallery.ondrop=event=>{if(!draggedStepId||event.target.closest('.pose-card'))return;event.preventDefault();clearCardDropState();moveDraggedStep(sequence.steps.length);draggedStepId=null;};
   if(!cards.length){const empty=document.createElement('p');empty.className='sequence-empty';empty.textContent='Create a pose, then choose Add current pose. You can also start with an example.';gallery.append(empty);statusText('');}
   document.querySelector('#example-gallery').hidden=false;document.querySelector('main').classList.add('has-example');
   document.querySelector('#sequence-name').value=sequence.name;document.querySelector('#sequence-heading').textContent=sequence.name;
-  document.querySelector('#sequence-description').textContent=`${sequence.steps.length} poses / Select a card to edit its pose and timing.`;
+  document.querySelector('#sequence-description').textContent=`${sequence.steps.length} poses / Select a card to edit, or drag it to reorder.`;
   playback.time=sequence.steps.length?timeline.startOf(Math.max(0,playback.index)):0;
   updateCardFields();updatePlaybackUI();
 }

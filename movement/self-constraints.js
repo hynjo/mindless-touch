@@ -42,10 +42,12 @@ export function createSelfConstraints({root,joints}){
  const pairNames=pairs.map(([a,b])=>({a:a.id,b:b.id})).concat(handPairs.pairs);
  let safe=capturePose(root,joints);
  let baseline=distances();
+ let lastFailure=null;
  function sync(){safe=capturePose(root,joints);baseline=distances();}
  function contacts(minDepth=.001){return distances().slice(0,pairNames.length).flatMap((distance,i)=>distance< -minDepth?[{a:pairNames[i].a,b:pairNames[i].b,depth:-distance}]:[]);}
  function jointViolations(){return wrists.flatMap(joint=>wristMargins(joint).some(margin=>margin<-.0002)?[{id:joint.id}]:[]);}
  function commit(){
+  lastFailure=null;
   const from=safe,to=capturePose(root,joints),original=baseline;
   const angle=Math.max(...from.rotations.map((q,i)=>q.angleTo(to.rotations[i])));
   const steps=Math.max(1,Math.ceil(angle*2/.008));
@@ -55,6 +57,9 @@ export function createSelfConstraints({root,joints}){
   for(let i=1;i<=steps;i++){
    const t=i/steps;blend(t);
    if(!valid()){
+    const values=distances();
+    const index=values.findIndex((d,i)=>d<Math.min(0,original[i])-(i<pairNames.length?.00001:1e-10));
+    lastFailure=index<pairNames.length?{...pairNames[index],depth:-values[index]}:{joint:wrists[Math.floor((index-pairNames.length)/2)].id,axis:(index-pairNames.length)%2?'side tilt':'bend'};
     let low=accepted,high=t;
     for(let j=0;j<12;j++){const mid=(low+high)/2;blend(mid);if(valid())low=mid;else high=mid;}
     blend(low);sync();return false;
@@ -63,5 +68,5 @@ export function createSelfConstraints({root,joints}){
   }
   restorePose(root,joints,to);sync();return true;
  }
- return {contacts,jointViolations,commit,sync,snapshot:()=>({safe,baseline:[...baseline]}),restore(state){safe=state.safe;baseline=[...state.baseline];}};
+ return {contacts,jointViolations,commit,sync,failure:()=>lastFailure,snapshot:()=>({safe,baseline:[...baseline]}),restore(state){safe=state.safe;baseline=[...state.baseline];}};
 }

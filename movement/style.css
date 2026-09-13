@@ -42,6 +42,7 @@ header a span{color:#a6a89a}
 button:disabled{opacity:.5}
 input,select{accent-color:#fff875}
 .pose-card[aria-pressed=true]{box-shadow:0 0 0 1px #fff875}
+.pose-card[draggable=true]{cursor:grab}.pose-card.is-dragging{cursor:grabbing;opacity:.42}.pose-card.drop-before,.pose-card.drop-after{position:relative}.pose-card.drop-before::before,.pose-card.drop-after::after{content:"";position:absolute;z-index:2;top:0;bottom:0;width:4px;border-radius:4px;background:#fff875;box-shadow:0 0 12px rgba(255,248,117,.65)}.pose-card.drop-before::before{left:-3px}.pose-card.drop-after::after{right:-3px}.pose-gallery.drop-at-end::after{content:"";flex:0 0 4px;align-self:stretch;border-radius:4px;background:#fff875;box-shadow:0 0 12px rgba(255,248,117,.65)}
 ::selection{background:#fff875;color:#111208}
 
 #open-poses{margin:0 0 24px;text-align:left;color:#fff875}#open-poses span{float:right}
