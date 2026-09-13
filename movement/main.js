@@ -9,6 +9,7 @@ import {colorBody,bodyParts} from './body-colors.js';
 import {createPoleConstraints,POLE,capturePose} from './pole-constraints.js';
 import {SEQUENCE_FORMAT,SEQUENCE_VERSION,MAX_STEPS,parseSequence,serializeSequence} from './sequence-file.js';
 import { sunSalutation } from './examples.js';
+import {neckStretching} from './neck-example.js';
 import {yogaPoses} from './poses.js';
 import { createTimeline } from './playback.js';
 import { poleFlow } from './pole-example.js';
@@ -16,7 +17,7 @@ import {samplePoleMotion} from './pole-motion.js';
 import {createFloorConstraints} from './floor-constraints.js';
 import {placeHandsAndKnees,placePalmsOnFloor,palmsAreSupported,preparePalmLanding} from './palm-support.js';
 const poleStudio = document.body.dataset.studio === 'pole';
-const example = poleStudio ? poleFlow : sunSalutation;
+const examples = poleStudio ? [poleFlow] : [sunSalutation,neckStretching];
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 // Dimensions remain separate from pose data so proportions can become editable.
@@ -636,14 +637,21 @@ function flushPendingPose(){
   if(!playback.edited||!sequence.steps[playback.index])return;
   rememberSequence();sequence.steps[playback.index]=capturedStep(sequence.steps[playback.index]);playback.edited=false;rebuildSequence();
 }
-function replaceSequence(next,index=0){sequence=next;playback.index=next.steps.length?Math.max(0,Math.min(index,next.steps.length-1)):-1;playback.edited=false;rebuildSequence();if(sequence.steps.length)selectExampleStep(playback.index,false);}
+function updateExampleNote(){
+ const note=document.querySelector('#example-note');if(!note)return;
+ const example=examples.find(item=>item.id===document.querySelector('#example').value);
+ note.replaceChildren();note.hidden=!example?.description;
+ if(example?.description){note.append(document.createTextNode(example.description+' '));if(example.source){const link=document.createElement('a');link.href=example.source;link.textContent='Reference: Shape and Strength';link.target='_blank';link.rel='noopener noreferrer';note.append(link);}}
+}
+function replaceSequence(next,index=0){sequence=next;playback.index=next.steps.length?Math.max(0,Math.min(index,next.steps.length-1)):-1;playback.edited=false;rebuildSequence();if(sequence.steps.length)selectExampleStep(playback.index,false);updateExampleNote();}
 function validatePoses(next){
   const saved=poleConstraints?.snapshot()||floorConstraints.snapshot();
   try{for(const [index,step] of next.steps.entries()){applyExamplePose(step);const clearance=poleStudio?poleConstraints.clearance():floorConstraints.clearance();if(clearance<-.0001)throw new Error(`Pose ${index+1} intersects the ${poleStudio?'pole':'floor'}. The current sequence has not been replaced.`);}}
   finally{if(poleStudio)poleConstraints.restore(saved);else floorConstraints.restore(saved);}
 }
 document.querySelector('#example').addEventListener('change',event=>{
-  if(event.target.value!==example.id)return;
+  const example=examples.find(item=>item.id===event.target.value);
+  if(!example){updateExampleNote();return;}
   flushPendingPose();rememberSequence();closeHand();pausePlayback();
   const steps=example.steps.map(template=>{applyExamplePose(template);return capturedStep(template);});
   replaceSequence({...emptySequence(),name:example.name,steps});sequenceMessage('Example loaded as an editable sequence.');

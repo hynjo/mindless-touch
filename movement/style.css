@@ -59,3 +59,5 @@ input,select{accent-color:#fff875}
 .body-key span::before{width:14px;height:10px;border-radius:3px}.body-key-note{grid-column:1 / -1;font-size:10px;margin:2px 0 0;line-height:1.6}
 
 #self-contact-status{font-size:11px;color:#c6cf8a}#self-contact-status[data-error=true]{color:#ffaaa0}
+
+#example-note{font-size:12px;line-height:1.6;color:#c5c7b7;margin:12px 0 0}#example-note a{color:#fff875;text-underline-offset:3px}

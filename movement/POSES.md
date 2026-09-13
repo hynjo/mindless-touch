@@ -41,3 +41,9 @@ Caterpillar retains flat palms with approximately 70° wrist extension; regressi
 Run `node movement/scripts/audit-pose-validity.mjs` for the separate support and joint-range audit. `POSE-VALIDITY-AUDIT.md`, `pose-validity-audit.html`, and `pose-validity-audit.json` contain all 167 rows, expected support profiles, measured gaps and local joint measurements. The report is diagnostic and does not alter authored poses. In particular, the existing Cat–Cow test verifies anchor constancy, while the expanded audit finds that subsequent floor settling raises those anchors; these are different guarantees.
 
 The current editor ranges are not clinical human limits. Whole-body root orientation is excluded, and shoulder/forearm coupling, internal body-on-body support and force/balance validation remain explicitly unverified. Minimum floor-support checks do not certify complete pose fidelity.
+
+## Neck Stretching example
+
+`neck-example.js` adds a 61-second, nine-card standing sequence under Example. It adapts rotation and side-bend movements from [Shape and Strength](https://shapeandstrength.com/neck-pain-exercises/) into one shortened round, with neutral cards between directions. It does not reproduce the complete daily routine. Chin retraction and scapular movement are omitted because the current rig does not model them independently.
+
+The authored neck angles are ±35° yaw and ±20° tilt, not prescribed human limits. The static 8° foot-arch setting aligns this mannequin's heel and forefoot pads. Tests sample the full timeline for sole support, unchanged body joints, direction labels, range checks and swept collisions. The preset uses the existing sequence format, so card editing and JSON save/load require no migration.
