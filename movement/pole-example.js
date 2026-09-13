@@ -1,11 +1,11 @@
 // Raised, open hands approach along the pole normal, avoiding a sweep through it.
 const readyArms={
-  leftShoulder:[-123.98223949, -16.52905869, 9.46972837],
-  leftElbow:[-28.77231979, 8.03555168, -59.93000745],
-  leftWrist:[-22.55379242, -16.9463298, -31.02808604],
-  rightShoulder:[-45.04691967, -4.33037279, 10.41852045],
-  rightElbow:[-41.15026122, -15.00464755, 59.10951031],
-  rightWrist:[-100.21636449, 61.94171821, -55.81813051]
+  leftShoulder:[-123.9822394876918,-16.5290586896309,9.469728365126867],
+  leftElbow:[-91.22430589528335,-24.376993320581093,-70.18443740312102],
+  leftWrist:[-31.896520425350957,46.02292372806586,0],
+  rightShoulder:[-45.76969808396403,-4.351164265941549,-7.113652366041121],
+  rightElbow:[-167.9554778172978,30.286042680466778,82.56417686793004],
+  rightWrist:[-35.82527199760809,-37.519227990626874,0]
 };
 // An illustrative pole flow, with explicit grip targets and an orbital body path.
 // This is authored animation data, not a simulation of load-bearing contact.

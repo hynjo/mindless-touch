@@ -66,6 +66,7 @@ test('full pole flow reaches the finish without penetration or blocked motion',(
     assert(physics.commit(),`Blocked at ${time.toFixed(2)}s`);
     assert(physics.clearance()>=POLE.skin-.00002);
     assert.deepEqual(self.contacts(0),[],`Body overlap at ${time.toFixed(2)}s`);
+    assert.deepEqual(self.jointViolations(),[],`Wrist limit at ${time.toFixed(2)}s`);
     assert(self.commit(),`Body sweep blocked at ${time.toFixed(2)}s`);
   }
   assert(root.position.distanceTo(new THREE.Vector3().fromArray(poleFlow.steps.at(-1).rootPosition))<1e-8);

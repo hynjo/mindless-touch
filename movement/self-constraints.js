@@ -1,5 +1,7 @@
+import {blendHandOffsets} from './hand-offsets.js';
 import * as THREE from 'three';
 import {createHandCollisionPairs} from './hand-collisions.js';
+import {wristMargins} from './wrist-constraints.js';
 import {capturePose,restorePose} from './pole-constraints.js';
 // Closest distance between finite segments (including degenerate segments).
 export function segmentDistance(a,b,c,d){
@@ -27,6 +29,7 @@ export function createSelfConstraints({root,joints}){
  }
  for(const body of bodies)for(const core of cores){if(/Elbow|Knee/.test(body.id))pairs.push([body,core]);}
  const handPairs=createHandCollisionPairs(joints,segmentDistance);
+ const wrists=joints.filter(joint=>joint.id.endsWith('Wrist'));
  const capsule=({mesh})=>{const half=mesh.geometry.parameters.height/2;return {a:mesh.localToWorld(new THREE.Vector3(0,-half,0)),b:mesh.localToWorld(new THREE.Vector3(0,half,0)),r:mesh.geometry.parameters.radius};};
  function coreDistance(cap,body){
   const mesh=body.mesh,center=mesh.getWorldPosition(new THREE.Vector3()),inverse=mesh.getWorldQuaternion(new THREE.Quaternion()).invert(),scale=mesh.getWorldScale(new THREE.Vector3());
@@ -35,18 +38,19 @@ export function createSelfConstraints({root,joints}){
   const t=d.lengthSq()?THREE.MathUtils.clamp(-a.dot(d)/d.lengthSq(),0,1):0;
   return (a.addScaledVector(d,t).length()-1)*Math.min(scale.x,scale.y,scale.z);
  }
- function distances(){root.updateWorldMatrix(true,true);const caps=new Map(bodies.map(body=>[body,capsule(body)]));return pairs.map(([a,b])=>{const x=caps.get(a);if(b.core)return coreDistance(x,b);const y=caps.get(b);return segmentDistance(x.a,x.b,y.a,y.b)-x.r-y.r;}).concat(handPairs.distances());}
+ function distances(){root.updateWorldMatrix(true,true);const caps=new Map(bodies.map(body=>[body,capsule(body)]));return pairs.map(([a,b])=>{const x=caps.get(a);if(b.core)return coreDistance(x,b);const y=caps.get(b);return segmentDistance(x.a,x.b,y.a,y.b)-x.r-y.r;}).concat(handPairs.distances(),wrists.flatMap(joint=>wristMargins(joint).map(margin=>margin*.1)));}
  const pairNames=pairs.map(([a,b])=>({a:a.id,b:b.id})).concat(handPairs.pairs);
  let safe=capturePose(root,joints);
  let baseline=distances();
  function sync(){safe=capturePose(root,joints);baseline=distances();}
- function contacts(minDepth=.001){return distances().flatMap((distance,i)=>distance< -minDepth?[{a:pairNames[i].a,b:pairNames[i].b,depth:-distance}]:[]);}
+ function contacts(minDepth=.001){return distances().slice(0,pairNames.length).flatMap((distance,i)=>distance< -minDepth?[{a:pairNames[i].a,b:pairNames[i].b,depth:-distance}]:[]);}
+ function jointViolations(){return wrists.flatMap(joint=>wristMargins(joint).some(margin=>margin<-.0002)?[{id:joint.id}]:[]);}
  function commit(){
   const from=safe,to=capturePose(root,joints),original=baseline;
   const angle=Math.max(...from.rotations.map((q,i)=>q.angleTo(to.rotations[i])));
   const steps=Math.max(1,Math.ceil(angle*2/.008));
-  const blend=t=>{root.position.lerpVectors(from.position,to.position,t);joints.forEach(({group},i)=>group.quaternion.slerpQuaternions(from.rotations[i],to.rotations[i],t));};
-  const valid=()=>distances().every((d,i)=>d>=Math.min(0,original[i])-.00001);
+  const blend=t=>{blendHandOffsets(root,from.handOffsets,to.handOffsets,t);root.position.lerpVectors(from.position,to.position,t);joints.forEach(({group},i)=>group.quaternion.slerpQuaternions(from.rotations[i],to.rotations[i],t));};
+  const valid=()=>distances().every((d,i)=>d>=Math.min(0,original[i])-(i<pairNames.length?.00001:1e-10));
   let accepted=0;
   for(let i=1;i<=steps;i++){
    const t=i/steps;blend(t);
@@ -59,5 +63,5 @@ export function createSelfConstraints({root,joints}){
   }
   restorePose(root,joints,to);sync();return true;
  }
- return {contacts,commit,sync,snapshot:()=>({safe,baseline:[...baseline]}),restore(state){safe=state.safe;baseline=[...state.baseline];}};
+ return {contacts,jointViolations,commit,sync,snapshot:()=>({safe,baseline:[...baseline]}),restore(state){safe=state.safe;baseline=[...state.baseline];}};
 }

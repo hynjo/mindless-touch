@@ -40,13 +40,14 @@ export function createHandCollisionPairs(joints,segmentDistance){
     }});
    }
   }
-  groups.push({pairs:pairs.slice(first),joints:fingers.map(f=>f.joint),key:[],values:[]});
+  groups.push({pairs:pairs.slice(first),joints:fingers.map(f=>f.joint),palm,key:[],values:[]});
  }
  return {pairs,distances(){
   // Whole-hand translation/rotation cannot change internal contact. Reuse the
   // result while only the body or wrist moves; invalidate on any finger rotation.
   return groups.flatMap(group=>{
-   const key=group.joints.flatMap(j=>j.group.quaternion.toArray());
+   const offset=group.palm?.parent.position.toArray()||[];
+   const key=offset.concat(group.joints.flatMap(j=>j.group.quaternion.toArray()));
    if(key.length!==group.key.length||key.some((v,i)=>v!==group.key[i])){
     group.values=group.pairs.map(p=>p.distance());group.key=key;
    }

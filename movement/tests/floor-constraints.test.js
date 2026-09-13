@@ -2,6 +2,7 @@ import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import * as THREE from 'three';
 import {createBody} from '../body.js';
+import {createSelfConstraints} from '../self-constraints.js';
 import {createFloorConstraints,floorClearance,FLOOR_SKIN} from '../floor-constraints.js';
 import {createTimeline} from '../playback.js';
 import {sunSalutation} from '../examples.js';
@@ -32,6 +33,7 @@ test('the complete yoga timeline stays above the floor, including support change
     floor.settle();return floor.snapshot().pose;
   });
   const timeline=createTimeline(sunSalutation.steps);
+  const self=createSelfConstraints(rig);
   for(let time=0;time<=timeline.duration+.05;time+=.05) {
     const sample=timeline.sample(time),from=frames[sample.index],to=frames[sample.next];
     root.position.lerpVectors(from.position,to.position,sample.mix);
@@ -39,6 +41,8 @@ test('the complete yoga timeline stays above the floor, including support change
     const a=palmsAreSupported(sunSalutation.steps[sample.index]),b=palmsAreSupported(sunSalutation.steps[sample.next]);
     if(a&&b)placePalmsOnFloor(rig);else if(a||b)preparePalmLanding(rig);
     floor.settle();assert(floor.clearance()>=FLOOR_SKIN-1e-8);
+    assert.deepEqual(self.jointViolations(),[],`Wrist limit at ${time.toFixed(2)}s`);
+    if(time===0)self.sync();else assert(self.commit(),`Body/wrist sweep blocked at ${time.toFixed(2)}s`);
     if(a&&b)for(const hand of Object.values(rig.hands)){
       assert(Math.abs(floorClearance(hand.palm)-FLOOR_SKIN)<.0001,`Palm detached at ${time}`);
       const normal=new THREE.Vector3(0,0,-1).applyQuaternion(hand.wrist.getWorldQuaternion(new THREE.Quaternion()));

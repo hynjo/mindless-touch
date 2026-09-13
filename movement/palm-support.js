@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import {aim,solve} from './rig.js';
 import {applyHandPreset} from './hands.js';
 import {floorClearance,FLOOR_SKIN} from './floor-constraints.js';
+import {wristMargins} from './wrist-constraints.js';
 const position=group=>group.getWorldPosition(new THREE.Vector3());
 const flatPalm=new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1,0,0),-Math.PI/2);
 const palmHeight=.015+FLOOR_SKIN;
@@ -27,12 +28,12 @@ export function placePalmsOnFloor({root,hands,byId,dimensions,meshes}) {
     worldOrientation(hands[side].wrist,flatPalm);
   }
   const maxShoulder=Math.max(...['left','right'].map(side=>position(byId[side+'Shoulder'].group).y));
-  root.position.y-=Math.max(0,maxShoulder-(dimensions.upperArm+dimensions.forearm+palmHeight-.002));
+  root.position.y-=Math.max(0,maxShoulder-(dimensions.upperArm+dimensions.forearm+palmHeight-.014));
   root.updateWorldMatrix(true,true);
   for(let pass=0;pass<5;pass++) {
     for(const side of ['left','right']) {
       const upper=byId[side+'Shoulder'].group,middle=byId[side+'Elbow'].group;
-      const target=groundTarget(upper,position(hands[side].wrist),palmHeight,dimensions.upperArm+dimensions.forearm);
+      const target=groundTarget(upper,position(hands[side].wrist),palmHeight-hands[side].root.position.z,dimensions.upperArm+dimensions.forearm);
       const bend=position(middle).add(new THREE.Vector3(0,.1,-.2));
       solve({upper,middle,a:dimensions.upperArm,b:dimensions.forearm},target,bend);
       worldOrientation(hands[side].wrist,flatPalm);
@@ -54,7 +55,16 @@ export function preparePalmLanding({root,hands}) {
   root.updateWorldMatrix(true,true);
   for(const hand of Object.values(hands)) {
     if(Math.min(...hand.meshes.map(floorClearance))<.025) {
-      applyHandPreset(hand,'open');worldOrientation(hand.wrist,flatPalm);
+      applyHandPreset(hand,'open');
+      const previous=hand.wrist.quaternion.clone();worldOrientation(hand.wrist,flatPalm);
+      const joint={group:hand.wrist};
+      if(wristMargins(joint).some(margin=>margin<0)){
+        // While lifting/landing, allow the palm to tilt instead of overextending
+        // the wrist to force a flat hand. The floor guard handles clearance.
+        const desired=hand.wrist.quaternion.clone();let low=0,high=1;
+        for(let i=0;i<20;i++){const mid=(low+high)/2;hand.wrist.quaternion.slerpQuaternions(previous,desired,mid);if(wristMargins(joint).every(margin=>margin>=0))low=mid;else high=mid;}
+        hand.wrist.quaternion.slerpQuaternions(previous,desired,low);
+      }
     }
   }
 }
@@ -65,7 +75,7 @@ export function placeHandsAndKnees({root,hands,byId,dimensions}) {
  const kneeHeight=.086+FLOOR_SKIN;
  const hip=byId.leftHip.group;
  const hipPosition=position(hip);
- const kneeZ=root.position.z-.04;
+ const kneeZ=root.position.z-.15;
  const dz=hipPosition.z-kneeZ;
  root.position.y+=kneeHeight+Math.sqrt(Math.max(.001,dimensions.thigh**2-dz**2))-hipPosition.y;
  root.updateWorldMatrix(true,true);
@@ -76,7 +86,7 @@ export function placeHandsAndKnees({root,hands,byId,dimensions}) {
   aim(knee,new THREE.Vector3(0,-1,0),new THREE.Vector3(0,0,-1));
   worldOrientation(ankle,new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1,0,0),Math.PI/2));
   const shoulder=byId[side+'Shoulder'].group,elbow=byId[side+'Elbow'].group;
-  const handTarget=new THREE.Vector3(root.position.x+(side==='left'?1:-1)*dimensions.shoulderWidth/2,palmHeight,root.position.z+.46);
+  const handTarget=new THREE.Vector3(root.position.x+(side==='left'?1:-1)*dimensions.shoulderWidth/2,palmHeight,root.position.z+.52);
   solve({upper:shoulder,middle:elbow,a:dimensions.upperArm,b:dimensions.forearm},handTarget,handTarget.clone().add(new THREE.Vector3(0,.2,-.2)));
   applyHandPreset(hands[side],'open');worldOrientation(hands[side].wrist,flatPalm);
  }

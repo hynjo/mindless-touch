@@ -34,3 +34,9 @@ test('legacy Download pose files become a one-card sequence',()=>{
   const restored=validateSequence(legacy,context);
   assert.equal(restored.steps.length,1);assert.deepEqual(restored.steps[0].pose.rotations.neck,[.1,.2,.3]);assert.deepEqual(restored.steps[0].pose.rotations.leftThumb1,[0,0,0]);
 });
+
+test('forearm support offsets survive save/load and reject oversized or unknown offsets',()=>{
+ const original=document();original.steps[0].floorSupport='forearms';original.steps[0].pose.handOffsets={left:[0,0,-.035],right:[0,0,-.035]};
+ assert.deepEqual(parseSequence(serializeSequence(original,context),context).steps[0].pose.handOffsets,original.steps[0].pose.handOffsets);
+ for(const offsets of [{left:[0,0,-2]},{other:[0,0,0]},{left:[0,NaN,0]}]){const bad=structuredClone(original);bad.steps[0].pose.handOffsets=offsets;assert.throws(()=>validateSequence(bad,context));}
+});

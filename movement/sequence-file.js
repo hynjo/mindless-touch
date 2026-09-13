@@ -26,6 +26,14 @@ export function validateSequence(input,{studio,dimensions,jointIds}) {
     const rotationKeys=Object.keys(step.pose.rotations);
     if(jointIds.some(key=>key!=='waist'&&!key.includes('Toe')&&!key.includes('FootArch')&&!rotationKeys.includes(key))||rotationKeys.some(key=>!known.has(key)))fail(`Pose ${index+1} has an incomplete or unknown skeleton.`);
     const rotations=Object.fromEntries(jointIds.map(key=>[key,vector((key==='waist'||key.includes('Toe')||key.includes('FootArch')) && step.pose.rotations[key]===undefined ? [0,0,0] : step.pose.rotations[key],key)]));
+    const handOffsets={};
+    if(step.pose.handOffsets!==undefined){
+      if(!plain(step.pose.handOffsets))fail('Invalid hand support offsets.');
+      for(const [side,value] of Object.entries(step.pose.handOffsets)){
+        if(!['left','right'].includes(side))fail('Invalid hand support side.');
+        const offset=vector(value,'Hand support offset');if(offset.some(v=>Math.abs(v)>.05))fail('Hand support offset is out of range.');handOffsets[side]=offset;
+      }
+    }
     const rootPosition=vector(step.pose.rootPosition,'Body position');
     if(rootPosition.some(v=>Math.abs(v)>20))fail('Body position is outside the supported editing area.');
     const contacts=step.pose.poleContacts??{};if(!plain(contacts))fail('Invalid pole contacts.');
@@ -34,7 +42,7 @@ export function validateSequence(input,{studio,dimensions,jointIds}) {
       if(!['left','right'].includes(side)||!plain(grip)||studio!=='pole')fail('Invalid pole contact.');
       poleContacts[side]={height:number(grip.height,.18,2.45,'Grip height'),angle:number(grip.angle,-1000,1000,'Grip angle'),radius:number(grip.radius,.03,.2,'Grip radius')};
     }
-    if(step.floorSupport!==undefined&&!['palms','palms-knees','ground'].includes(step.floorSupport))fail('Unknown floor support.');
+    if(step.floorSupport!==undefined&&!['palms','palms-knees','ground','forearms','knees-shins'].includes(step.floorSupport))fail('Unknown floor support.');
     let orbit;
     if(studio==='pole') {
       const fallback={angle:Math.atan2(rootPosition[0],rootPosition[2]),radius:Math.hypot(rootPosition[0],rootPosition[2])};
@@ -42,7 +50,7 @@ export function validateSequence(input,{studio,dimensions,jointIds}) {
       orbit={angle:number((step.orbit||fallback).angle,-1000,1000,'Orbit angle'),radius:number((step.orbit||fallback).radius,0,20,'Orbit radius')};
       if(Math.abs(Math.sin(orbit.angle)*orbit.radius-rootPosition[0])>.001||Math.abs(Math.cos(orbit.angle)*orbit.radius-rootPosition[2])>.001)fail('Orbit does not match the saved body position.');
     }
-    return {id,name:text(step.name,'Pose name'),kind:step.kind==='transition'?'transition':'pose',cue:typeof step.cue==='string'?step.cue.slice(0,120):'',holdSeconds:number(step.holdSeconds,0,120,'Hold time'),transitionSeconds:number(step.transitionSeconds,.05,120,'Transition time'),...(step.floorSupport?{floorSupport:step.floorSupport}:{}),...(orbit?{orbit}:{}),pose:{rootPosition,rotations,poleContacts}};
+    return {id,name:text(step.name,'Pose name'),kind:step.kind==='transition'?'transition':'pose',cue:typeof step.cue==='string'?step.cue.slice(0,120):'',holdSeconds:number(step.holdSeconds,0,120,'Hold time'),transitionSeconds:number(step.transitionSeconds,.05,120,'Transition time'),...(step.floorSupport?{floorSupport:step.floorSupport}:{}),...(orbit?{orbit}:{}),pose:{rootPosition,rotations,poleContacts,...(Object.keys(handOffsets).length?{handOffsets}:{})}};
   });
   return {format:SEQUENCE_FORMAT,version:SEQUENCE_VERSION,studio,dimensions:{...dimensions},name:text(data.name,'Sequence name'),steps};
 }

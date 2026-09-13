@@ -1,3 +1,4 @@
+import {captureHandOffsets,applyHandOffsets,blendHandOffsets,handOffsetTravel} from './hand-offsets.js';
 import * as THREE from 'three';
 import {solve} from './rig.js';
 import {setFingerBend} from './hands.js';
@@ -73,13 +74,14 @@ export function minPoleClearance(root,meshes,pole=POLE) {
   return min;
 }
 export function capturePose(root,joints) {
-  return {position:root.position.clone(),rotations:joints.map(({group})=>group.quaternion.clone())};
+  return {handOffsets:captureHandOffsets(root),position:root.position.clone(),rotations:joints.map(({group})=>group.quaternion.clone())};
 }
 export function restorePose(root,joints,pose) {
-  root.position.copy(pose.position);joints.forEach(({group},i)=>group.quaternion.copy(pose.rotations[i]));
+  applyHandOffsets(root,pose.handOffsets);root.position.copy(pose.position);joints.forEach(({group},i)=>group.quaternion.copy(pose.rotations[i]));
   root.updateWorldMatrix(true,true);
 }
 function blendPose(root,joints,from,to,mix) {
+  blendHandOffsets(root,from.handOffsets,to.handOffsets,mix);
   root.position.lerpVectors(from.position,to.position,mix);
   joints.forEach(({group},i)=>group.quaternion.slerpQuaternions(from.rotations[i],to.rotations[i],mix));
 }
@@ -91,11 +93,23 @@ export function createPoleConstraints({root,joints,hands,chain,meshes}) {
     const limb=chain(`${hand.side}Wrist`);
     const normal=new THREE.Vector3(Math.sin(grip.angle),0,Math.cos(grip.angle));
     const tangent=new THREE.Vector3().crossVectors(normal,new THREE.Vector3(0,1,0));
+    if(hand.side==='right')tangent.negate();
     const target=normal.clone().multiplyScalar(grip.radius).addScaledVector(tangent,.045);target.y=grip.height;
     if(point(limb.upper).distanceTo(target)>limb.a+limb.b-.0002)return false;
     solve(limb,target,point(limb.upper).addScaledVector(normal,.15).add(new THREE.Vector3(hand.side==='left'?.3:-.3,-.15,0).applyQuaternion(root.getWorldQuaternion(new THREE.Quaternion()))));
-    const basis=new THREE.Matrix4().makeBasis(new THREE.Vector3(0,1,0),tangent,normal);
+    const basis=new THREE.Matrix4().makeBasis(new THREE.Vector3(0,hand.side==='left'?1:-1,0),tangent,normal);
     const orientation=new THREE.Quaternion().setFromRotationMatrix(basis);
+    // Roll the forearm around its length to face the grip, rather than compensating
+    // with a sideways wrist bend. This leaves the elbow and wrist positions intact.
+    const forearmY=point(limb.middle).sub(point(hand.wrist)).normalize();
+    const forearmX=new THREE.Vector3().crossVectors(forearmY,tangent);
+    if(forearmX.lengthSq()>1e-8){
+      forearmX.normalize();if(forearmX.y*(hand.side==='left'?1:-1)<0)forearmX.negate();
+      const forearmZ=new THREE.Vector3().crossVectors(forearmX,forearmY);
+      const world=new THREE.Quaternion().setFromRotationMatrix(new THREE.Matrix4().makeBasis(forearmX,forearmY,forearmZ));
+      limb.middle.quaternion.copy(limb.middle.parent.getWorldQuaternion(new THREE.Quaternion()).invert().multiply(world));
+      limb.middle.updateWorldMatrix(false,true);
+    }
     hand.wrist.quaternion.copy(hand.wrist.parent.getWorldQuaternion(new THREE.Quaternion()).invert().multiply(orientation));
     return true;
   }
@@ -138,7 +152,7 @@ export function createPoleConstraints({root,joints,hands,chain,meshes}) {
   }
   function commit() {
     const desired=capturePose(root,joints),from=safe;
-    const distance=from.position.distanceTo(desired.position);
+    const distance=from.position.distanceTo(desired.position)+handOffsetTravel(from.handOffsets,desired.handOffsets);
     const rotation=Math.max(...from.rotations.map((q,i)=>q.angleTo(desired.rotations[i])));
     const steps=Math.max(1,Math.ceil((distance+rotation*2)/.012));
     let accepted=0;

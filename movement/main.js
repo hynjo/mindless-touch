@@ -1,3 +1,4 @@
+import {captureHandOffsets,applyHandOffsets,blendHandOffsets} from './hand-offsets.js';
 import * as THREE from 'three';
 import { aim, solve } from './rig.js';
 import { applyHandPreset, setFingerBend, setFingerSpread, applyFingerSpread } from './hands.js';
@@ -267,7 +268,7 @@ const floorConstraints = !poleStudio ? createFloorConstraints({root,joints,meshe
 const selfConstraints=createSelfConstraints({root,joints});
 let lastSelfPlaybackTime=0;
 const selfStatus=document.createElement('p');selfStatus.id='self-contact-status';selfStatus.setAttribute('role','status');document.querySelector('label[for=joint]').before(selfStatus);
-function updateSelfContactUI(blocked=false){const overlaps=selfConstraints.contacts();selfStatus.textContent=overlaps.length?`Body overlap: ${overlaps[0].a} / ${overlaps[0].b}. Move the parts apart before playback.`:blocked?'Movement stopped at body contact.':'Body and hand collision on';selfStatus.dataset.error=String(blocked||overlaps.length>0);}
+function updateSelfContactUI(blocked=false){const overlaps=selfConstraints.contacts(),limits=selfConstraints.jointViolations();selfStatus.textContent=limits.length?`${limits[0].id}: wrist bend or tilt exceeds its range. Adjust the hand or arm before playback.`:overlaps.length?`Body overlap: ${overlaps[0].a} / ${overlaps[0].b}. Move the parts apart before playback.`:blocked?'Movement stopped at contact or a wrist limit.':'Body and hand collision · Wrist limits on';selfStatus.dataset.error=String(blocked||overlaps.length>0||limits.length>0);}
 const palmRig = {root,hands,byId,dimensions,meshes:physicalMeshes};
 const floorContactMarkers = new THREE.Group();floorContactMarkers.visible=!poleStudio;scene.add(floorContactMarkers);
 for (let i=0;i<4;i++) {const marker = new THREE.Mesh(new THREE.RingGeometry(.057,.064,32),new THREE.MeshBasicMaterial({color:'#397b5a',side:THREE.DoubleSide,transparent:true,opacity:.8,depthWrite:false,depthTest:false}));marker.rotation.x=-Math.PI/2;marker.renderOrder=3;floorContactMarkers.add(marker);}
@@ -378,6 +379,7 @@ renderer.domElement.addEventListener('pointermove',event => {
     drag.joint.group.quaternion.copy(drag.quaternion).multiply(new THREE.Quaternion().setFromAxisAngle(axisVectors[drag.axis],angle));
     if(drag.joint.id.endsWith('Ankle')&&drag.axis==='x'){const foot=feet[drag.joint.id.startsWith('left')?'left':'right'];setFootShape(foot,drag.archAngle+angle*.45);}
     const rotation = drag.joint.group.rotation;
+    // Wrist direction limits are swept in enforcePole, including changes made by IK.
     if(!/Wrist|Ankle/.test(drag.joint.id))['x','y','z'].forEach((axis,i) => {rotation[axis] = THREE.MathUtils.clamp(rotation[axis],...drag.joint.limits[i].map(THREE.MathUtils.degToRad));});
     if(!poleStudio&&sequence.steps[playback.index]?.floorSupport==='palms-knees'&&['waist','torso','neck'].includes(drag.joint.id))placeHandsAndKnees(palmRig);
     enforcePole();return;
@@ -407,7 +409,7 @@ document.querySelector('#reset-joint').onclick = () => {
   else {selected.group.rotation.set(0,0,0);if (selected.id === 'pelvis') root.position.set(0,dimensions.pelvisHeight,0);}
   enforcePole();
 };
-document.querySelector('#reset').onclick = () => {closeHand();pausePlayback();playback.edited = true;endDrag();for (const item of joints) item.group.rotation.set(0,0,0);root.position.set(0,dimensions.pelvisHeight,poleStudio ? .58:0);if (poleStudio) {poleConstraints.settle();updateContactUI();}else{floorConstraints.settle();updateFloorContacts();}selfConstraints.sync();updateSelfContactUI();};
+document.querySelector('#reset').onclick = () => {closeHand();pausePlayback();playback.edited = true;endDrag();for (const item of joints) item.group.rotation.set(0,0,0);applyHandOffsets(root);root.position.set(0,dimensions.pelvisHeight,poleStudio ? .58:0);if (poleStudio) {poleConstraints.settle();updateContactUI();}else{floorConstraints.settle();updateFloorContacts();}selfConstraints.sync();updateSelfContactUI();};
 function setView(view) {closeHand();endDrag();camera.position.set(...({front:[0,1.3,4.2],side:[4.2,1.3,0],perspective:[2.6,1.9,3.7]}[view]));controls.update();}
 document.querySelectorAll('[data-view]').forEach(button => {button.onclick = () => setView(button.dataset.view);});
 function applyPoleContacts(step) {
@@ -417,7 +419,7 @@ function applyPoleContacts(step) {
   }
 }
 function applyExamplePose(step) {
-  endDrag();
+  endDrag();applyHandOffsets(root,step.pose?.handOffsets||step.handOffsets);
   if(step.pose) {
     root.position.fromArray(step.pose.rootPosition);
     joints.forEach(({id,group})=>group.rotation.set(...step.pose.rotations[id]));
@@ -478,7 +480,7 @@ function makeThumbnails(steps=sequence.steps,collectFrames=true) {
     headRings.visible = false;
     return steps.map(step => {
       applyExamplePose(step);
-      if(collectFrames){sequenceFrames.push({position:root.position.clone(),rotations:joints.map(({group}) => group.quaternion.clone()),grips:poleStudio ? [...poleConstraints.grips].map(([side,grip])=>[side,{...grip}]):[]});
+      if(collectFrames){sequenceFrames.push({...capturePose(root,joints),grips:poleStudio ? [...poleConstraints.grips].map(([side,grip])=>[side,{...grip}]):[]});
       sequenceBounds.union(bodyBounds());}
       framePose(previewCamera,1.2);
       renderer.render(scene,previewCamera);
@@ -531,12 +533,14 @@ function renderPlayback() {
   const selfBefore=selfConstraints.snapshot(),surface=poleConstraints||floorConstraints,surfaceBefore=surface.snapshot();
   if (poleStudio) {
     const motion=samplePoleMotion(sequence.steps,sequenceFrames,sample.index,sample.next,sample.mix,joints.map((j,i)=>j.isFinger ? i:-1).filter(i=>i>=0));
+    blendHandOffsets(root,from.handOffsets,to.handOffsets,sample.mix);
     root.position.copy(motion.position);
     joints.forEach(({group},i)=>group.quaternion.copy(motion.rotations[i]));
     poleConstraints.grips.clear();
     for (const [side,grip] of motion.grips) poleConstraints.grips.set(side,{...grip});
     if(!poleConstraints.commit()){pausePlayback();sequenceMessage('Transition blocked by pole contact. Add an intermediate pose.',true);}
   } else {
+    blendHandOffsets(root,from.handOffsets,to.handOffsets,sample.mix);
     root.position.lerpVectors(from.position,to.position,sample.mix);
     joints.forEach(({group},i)=>group.quaternion.slerpQuaternions(from.rotations[i],to.rotations[i],sample.mix));
     const startSupport=palmsAreSupported(sequence.steps[sample.index]),endSupport=palmsAreSupported(sequence.steps[sample.next]);
@@ -546,7 +550,7 @@ function renderPlayback() {
     if((sequence.steps[sample.index].floorSupport&&sequence.steps[sample.next].floorSupport)||floorConstraints.clearance()<.0007)floorConstraints.settle();
     updateFloorContacts();
   }
-  if(!selfConstraints.commit()){surface.restore(surfaceBefore);selfConstraints.restore(selfBefore);playback.time=lastSelfPlaybackTime;playback.index=timeline.sample(playback.time).index;pausePlayback();updateSelfContactUI(true);updateFloorContacts();sequenceMessage('Transition blocked by body contact. Add an intermediate pose to move around the other body part.',true);return;}
+  if(!selfConstraints.commit()){surface.restore(surfaceBefore);selfConstraints.restore(selfBefore);playback.time=lastSelfPlaybackTime;playback.index=timeline.sample(playback.time).index;pausePlayback();updateSelfContactUI(true);updateFloorContacts();sequenceMessage('Transition blocked by body contact or a wrist limit. Adjust the arm and hand, or add an intermediate pose.',true);return;}
   lastSelfPlaybackTime=playback.time;
   root.updateWorldMatrix(true,true);
   playback.index = sample.index;
@@ -570,6 +574,7 @@ function playSequence(restart=false) {
   if (restart || playback.time >= timeline.duration){playback.time=0;applyExamplePose(sequence.steps[0]);selfConstraints.sync();}
   else if (playback.edited) playback.time = timeline.startOf(playback.index);
   playback.edited = false;
+  if(selfConstraints.jointViolations().length){updateSelfContactUI();sequenceMessage('This pose exceeds a wrist limit. Adjust the hand or arm before playback.',true);return;}
   if(selfConstraints.contacts().length){updateSelfContactUI();sequenceMessage('This pose has overlapping body parts. Separate them before playback.',true);return;}
   selfConstraints.sync();lastSelfPlaybackTime=playback.time;
   setMode('view');
@@ -583,7 +588,7 @@ document.addEventListener('visibilitychange',() => {if (document.hidden) pausePl
 function statusText(message){document.querySelector('#sequence-status').textContent=message;}
 function sequenceMessage(message,error=false){const node=document.querySelector('#sequence-message');node.textContent=message;node.dataset.error=String(error);}
 function rememberSequence(){sequenceHistory.push({sequence:structuredClone(sequence),index:playback.index});if(sequenceHistory.length>20)sequenceHistory.shift();document.querySelector('#undo-sequence').disabled=false;}
-function storedPose(){return {rootPosition:root.position.toArray(),rotations:Object.fromEntries(joints.map(({id,group})=>[id,[group.rotation.x,group.rotation.y,group.rotation.z]])),poleContacts:poleStudio?Object.fromEntries([...poleConstraints.grips].map(([side,grip])=>[side,{...grip}])):{}};}
+function storedPose(){const offsets=Object.fromEntries(Object.entries(captureHandOffsets(root)).filter(([,v])=>v.lengthSq()>0).map(([side,v])=>[side,v.toArray()]));return {...(Object.keys(offsets).length?{handOffsets:offsets}:{}),rootPosition:root.position.toArray(),rotations:Object.fromEntries(joints.map(({id,group})=>[id,[group.rotation.x,group.rotation.y,group.rotation.z]])),poleContacts:poleStudio?Object.fromEntries([...poleConstraints.grips].map(([side,grip])=>[side,{...grip}])):{}};}
 function capturedStep(previous={}) {
   const pose=storedPose();
   const step={id:previous.id||crypto.randomUUID(),name:previous.name||`Pose ${sequence.steps.length+1}`,kind:previous.kind||'pose',cue:previous.cue||'',holdSeconds:previous.holdSeconds??1.4,transitionSeconds:previous.transitionSeconds??2.2,pose};
@@ -596,8 +601,8 @@ function capturedStep(previous={}) {
     const normal=new THREE.Vector3(0,0,-1).applyQuaternion(hand.wrist.getWorldQuaternion(new THREE.Quaternion()));
     const surface=hand.palm.localToWorld(new THREE.Vector3(0,0,-.015));
     return normal.distanceTo(new THREE.Vector3(0,-1,0))<.001&&Math.abs(surface.y-.0007)<.001;
-  }))step.floorSupport=previous.floorSupport==='palms-knees'?'palms-knees':'palms';
-  else if(floorConstraints.clearance()<.002)step.floorSupport='ground';
+  }))step.floorSupport=previous.floorSupport==='forearms'?'forearms':previous.floorSupport==='palms-knees'?'palms-knees':'palms';
+  else if(floorConstraints.clearance()<.002)step.floorSupport=previous.floorSupport==='knees-shins'?'knees-shins':'ground';
   return step;
 }
 function updateCardFields(){

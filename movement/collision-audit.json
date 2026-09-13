@@ -1,8 +1,9 @@
 {
-  "generatedAt": "2026-09-12T01:53:42.574Z",
+  "generatedAt": "2026-09-12T14:10:55.005Z",
   "scope": "Limb capsules versus nonadjacent limbs; forearms/shins versus expanded torso, waist and pelvis ellipsoids. Within each hand: nonadjacent finger capsules and finger/palm volumes; shared hinges and palm attachment zones are excluded. Between-hand contact, toes, feet and head self-contact are not covered. Surface clearance includes all physical parts. Body contact below 1 mm is omitted from this audit.",
   "summary": {
     "total": 167,
+    "wristLimitFlagged": 0,
     "flagged": 0,
     "clear": 167,
     "surfaceFailures": 0
@@ -10,836 +11,1003 @@
   "library": [
     {
       "name": "Archer's",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Banana",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Big Toe",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Bird of Paradise",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Boat",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Bound Angle",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Bow",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Bridge",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Butterfly",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Camel",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Cat",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Caterpillar",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Chair",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Child's",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Chin Stand",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Cobra",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Corpse",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Cow",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Cow Face",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Crane",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Crescent Lunge",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Crescent Lunge on the Knee",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Crescent Moon",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Crooked Monkey",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Crow",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Deaf Man's",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Dolphin",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Downward-Facing Dog",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Eagle",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Easy",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Eight Angle",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Eight Point",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Elbow Balance",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Elephant Trunk",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Embryo",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Embryo in Womb",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Extended Puppy",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Extended Side Angle",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Extended Standing Hand to Big Toe",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Extended Supine Hand to Big Toe",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Fire Log",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Firefly I",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Firefly II",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Firefly III",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Fish",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Floating Stick",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Flying Lizard",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Flying Man",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Flying Pigeon",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Forearm Balance",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Frog",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Front Splits",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Garland",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Gate",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Goddess",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Gorilla",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Grasshopper",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Half Bow",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Half Moon",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Half Pigeon",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Handstand",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Happy Baby",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Head to Knee I",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Head to Knee II",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Head to Knee III",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Hero",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Heron",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Himalayan Duck",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Horse",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Humble Flamingo",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Inverted Staff",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Little Thunderbolt",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Lizard",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Locust I",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Locust II",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Locust III",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Lord of the Fishes",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Lotus",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Low Push-up",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Lunge",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Moon Bird",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Mountain",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Noose",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "One Leg Behind the Head I",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "One Leg Behind the Head II",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Peacock",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Pendant",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Pigeon",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Plank",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Plow",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Pyramid",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Rabbit",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Reverse Corpse",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Revolved Bird of Paradise",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Revolved Flying Man",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Revolved Half Moon",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Revolved Seated Hand to Big Toe",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Revolved Standing Hand to Big Toe",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Revolved Triangle",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Rock the Baby",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Rooster",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Sage Bharadvaja's Twist",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Sage Gheranda's",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Sage Marichi's I",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Sage Marichi's II",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Sage Marichi's III",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Sage Marichi's IV",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Sage Visvamitra's",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Scale",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Scorpion",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Seated Forward Bend I",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Seated Forward Bend II",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Seated Forward Bend III",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Seated Forward Bend IV",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Seated Gate",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Seated Half Bound Lotus Forward Bend",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Seated Three Limbed Forward Bend",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Shiva Squat",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Shoelace",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Shoulder Pressing",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Shoulder Stand with Lotus Legs",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Side Lunge",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Side Plank",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Sleeping Yogi",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Snake",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Sphinx",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Staff",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Standing Bow",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Standing Foot to Head",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Standing Forward Bend",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Standing Half Bound Lotus Forward Bend",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Standing Hand to Big Toe",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Standing Leg Behind the Head",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Standing Leg Behind the Head Forward Bend",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Standing Splits",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Star",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Supine Angle",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Supine Foot to Head",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Supine Hand to Big Toe",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Supine Spinal Twist",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Supine Straddle",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Supported Headstand",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Supported Shoulder Stand",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Tabletop",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Thunderbolt",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Tiger",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Toe Stand",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Tortoise",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Tree",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Triangle",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Tripod Headstand",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Two Legs Behind the Head I",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Two Legs Behind the Head II",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Upward Plank",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Upward-Facing Dog",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Warrior I",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Warrior II",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Warrior III",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Waterfall",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Wheel",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Wide Legged Forward Bend I",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Wide Legged Forward Bend II",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Wide Legged Forward Bend III",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Wide Legged Forward Bend IV",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Wide Splits",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Wild Thing",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     },
     {
       "name": "Wind Removing",
+      "wristLimitViolations": [],
       "contacts": [],
       "surfaceClearanceMm": 0.7
     }
@@ -849,134 +1017,160 @@
       "cards": [
         {
           "name": "Mountain",
+          "wristLimitViolations": [],
           "contacts": [],
           "surfaceClearanceMm": 0.7
         },
         {
           "name": "Upward Salute",
+          "wristLimitViolations": [],
           "contacts": [],
           "surfaceClearanceMm": 0.7
         },
         {
           "name": "Forward Fold",
+          "wristLimitViolations": [],
           "contacts": [],
           "surfaceClearanceMm": 0.7
         },
         {
           "name": "Halfway Lift",
+          "wristLimitViolations": [],
           "contacts": [],
           "surfaceClearanceMm": 0.7
         },
         {
           "name": "Plant Hands",
+          "wristLimitViolations": [],
           "contacts": [],
           "surfaceClearanceMm": 0.7
         },
         {
           "name": "Step Back",
+          "wristLimitViolations": [],
           "contacts": [],
           "surfaceClearanceMm": 0.7
         },
         {
           "name": "Plank",
+          "wristLimitViolations": [],
           "contacts": [],
           "surfaceClearanceMm": 0.7
         },
         {
           "name": "Low Plank",
+          "wristLimitViolations": [],
           "contacts": [],
           "surfaceClearanceMm": 0.7
         },
         {
           "name": "Upward-Facing Dog",
+          "wristLimitViolations": [],
           "contacts": [],
           "surfaceClearanceMm": 0.7
         },
         {
           "name": "Downward-Facing Dog",
+          "wristLimitViolations": [],
           "contacts": [],
           "surfaceClearanceMm": 0.7
         },
         {
           "name": "Step Forward",
+          "wristLimitViolations": [],
           "contacts": [],
           "surfaceClearanceMm": 0.7
         },
         {
           "name": "Step Together",
+          "wristLimitViolations": [],
           "contacts": [],
           "surfaceClearanceMm": 0.7
         },
         {
           "name": "Halfway Lift",
+          "wristLimitViolations": [],
           "contacts": [],
           "surfaceClearanceMm": 0.7
         },
         {
           "name": "Forward Fold",
+          "wristLimitViolations": [],
           "contacts": [],
           "surfaceClearanceMm": 0.7
         },
         {
           "name": "Upward Salute",
+          "wristLimitViolations": [],
           "contacts": [],
           "surfaceClearanceMm": 0.7
         },
         {
           "name": "Mountain",
+          "wristLimitViolations": [],
           "contacts": [],
           "surfaceClearanceMm": 0.7
         }
       ],
       "samples": 1047,
       "surfaceFailures": 0,
+      "wristLimitFailures": 0,
       "collisions": []
     },
     "Pole Flow": {
       "cards": [
         {
           "name": "Approach",
+          "wristLimitViolations": [],
           "contacts": [],
           "surfaceClearanceMm": 2
         },
         {
           "name": "Two-Hand Grip",
+          "wristLimitViolations": [],
           "contacts": [],
           "surfaceClearanceMm": 0.7
         },
         {
           "name": "Weight Shift",
+          "wristLimitViolations": [],
           "contacts": [],
           "surfaceClearanceMm": 0.7
         },
         {
           "name": "Tuck",
+          "wristLimitViolations": [],
           "contacts": [],
           "surfaceClearanceMm": 0.7
         },
         {
           "name": "Turn Around",
+          "wristLimitViolations": [],
           "contacts": [],
           "surfaceClearanceMm": 0.7
         },
         {
           "name": "Open Shape",
+          "wristLimitViolations": [],
           "contacts": [],
           "surfaceClearanceMm": 0.7
         },
         {
           "name": "Return to Floor",
+          "wristLimitViolations": [],
           "contacts": [],
           "surfaceClearanceMm": 0.7
         },
         {
           "name": "Finish",
+          "wristLimitViolations": [],
           "contacts": [],
           "surfaceClearanceMm": 2
         }
       ],
       "samples": 600,
       "surfaceFailures": 0,
+      "wristLimitFailures": 0,
       "collisions": []
     }
   }

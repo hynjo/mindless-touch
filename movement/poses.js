@@ -1,3 +1,4 @@
+import supportedPoses from './supported-poses.json' with {type:'json'};
 import catalog from './pose-catalog.json' with {type:'json'};
 // Reviewed clearance offsets for the mannequin proportions; stored poses are not rewritten.
 import corrections from './pose-corrections.json' with {type:'json'};
@@ -32,5 +33,5 @@ export const yogaPoses=catalog.map(entry=>{
  if(existing)return {...existing,category:entry.category,difficulty:entry.difficulty,draft:false};
  const rotations=poseShapes[entry.key];
  if(!rotations)throw new Error(`Missing pose: ${entry.key}`);
- return {id:`library-${entry.key}`,name:entry.name,category:entry.category,difficulty:entry.difficulty,draft:true,source:`https://www.pocketyoga.com/pose/${entry.key}`,rootPosition:[0,.97,0],rotations:normalizeRotations({...rotations,...corrections[entry.key]}),...(entry.key==='Lizard'?{rootPosition:[0, 0.28, 0],floorSupport:'ground'}:entry.key==='Lunge'?{floorSupport:'palms'}:{}),holdSeconds:3,transitionSeconds:2.2};
+ return {id:`library-${entry.key}`,name:entry.name,category:entry.category,difficulty:entry.difficulty,draft:true,source:`https://www.pocketyoga.com/pose/${entry.key}`,rootPosition:[0,.97,0],rotations:normalizeRotations({...rotations,...corrections[entry.key]}),...(entry.key==='Lizard'?{rootPosition:[0, 0.28, 0],floorSupport:'ground'}:entry.key==='Caterpillar'?{rootPosition:[0, 0.48976218889074685, 0],floorSupport:'ground'}:entry.key==='Lunge'?{floorSupport:'palms'}:{}),...supportedPoses[entry.key],holdSeconds:3,transitionSeconds:2.2};
 }).sort((a,b)=>a.name.localeCompare(b.name));

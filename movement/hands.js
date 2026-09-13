@@ -20,7 +20,7 @@ export function applyFingerSpread(hand,amount) {
 }
 export function createHand(wrist, side, material) {
   const sign = side === 'left' ? 1:-1;
-  const root = new THREE.Group();wrist.add(root);
+  const root = new THREE.Group();root.userData.handMount=side;wrist.add(root);
   const joints = [], meshes = [];
   const palmGeometry=new RoundedBoxGeometry(.074,.094,.03,5,.009);
   const vertices=palmGeometry.attributes.position;

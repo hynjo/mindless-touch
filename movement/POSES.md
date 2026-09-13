@@ -23,3 +23,21 @@ Run `node movement/scripts/audit-collisions.mjs` to regenerate `POSE-COLLISION-A
 The editor checks nonadjacent finger segments within each hand against each other and against a conservative palm volume. Connected knuckles and the finger-root attachment region are excluded. Nails are visual details inside the finger collision envelope. This does not add collision between the left and right hands or between hands and other body regions.
 
 Direct edits and playback use swept checks. Hand presets apply joints individually and stop at contact, so `Fist` may stop short of its authored target. Imported overlapping hand shapes remain diagnosable and playback is blocked until repaired; loading does not silently rewrite the file.
+
+## Ground support presets
+
+Camel and Dolphin have explicit grounded configurations in `supported-poses.json`. Camel aligns both shin contact surfaces horizontally and uses `knees-shins` support metadata. Dolphin aligns the forearms and palm planes with the floor and uses `forearms` support. Since the mannequin forearm radius is larger than the palm thickness, Dolphin includes a small local hand mounting offset. This is included in pose snapshots, swept surface checks, interpolation and sequence serialization; old files default to zero offsets.
+
+Regression checks sample multiple points along the shin/forearm contact surfaces and across each Dolphin palm. They check support in addition to penetration. These authored presets do not constitute a general balance simulation or guarantee that arbitrary edited poses retain all support anchors.
+
+## Wrist direction limits
+
+The swept body guard also limits hand direction relative to its forearm: bend to ±80° and side tilt to ±35°, using the rig's existing limits. These are editor safeguards, not clinical limits or a complete anatomical model. Direction vectors avoid Euler wrap jumps and separate longitudinal palm/back roll from bending. Pole grips orient the forearm as well as the hand; the lower grip no longer folds the hand backward.
+
+Caterpillar retains flat palms with approximately 70° wrist extension; regression tests check that the striped dorsal face points upward, both palm edges touch the floor, and the wrist has margin below its limit. Imported out-of-range poses are preserved and flagged, can be edited toward the valid range, and cannot start playback until repaired. Other draft poses may need alignment review; the collision audit now reports wrist violations separately from overlaps.
+
+## Full library support/range review
+
+Run `node movement/scripts/audit-pose-validity.mjs` for the separate support and joint-range audit. `POSE-VALIDITY-AUDIT.md`, `pose-validity-audit.html`, and `pose-validity-audit.json` contain all 167 rows, expected support profiles, measured gaps and local joint measurements. The report is diagnostic and does not alter authored poses. In particular, the existing Cat–Cow test verifies anchor constancy, while the expanded audit finds that subsequent floor settling raises those anchors; these are different guarantees.
+
+The current editor ranges are not clinical human limits. Whole-body root orientation is excluded, and shoulder/forearm coupling, internal body-on-body support and force/balance validation remain explicitly unverified. Minimum floor-support checks do not certify complete pose fidelity.

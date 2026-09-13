@@ -1,3 +1,4 @@
+import {blendHandOffsets,handOffsetTravel} from './hand-offsets.js';
 import * as THREE from 'three';
 import {capturePose,restorePose} from './pole-constraints.js';
 export const FLOOR_SKIN=.0007;
@@ -37,8 +38,8 @@ export function createFloorConstraints({root,joints,meshes}) {
   function commit() {
     const from=safe,to=capturePose(root,joints);
     const angle=Math.max(...from.rotations.map((q,i)=>q.angleTo(to.rotations[i])));
-    const steps=Math.max(1,Math.ceil((from.position.distanceTo(to.position)+angle*2)/.012));
-    const blend=mix=>{root.position.lerpVectors(from.position,to.position,mix);joints.forEach(({group},i)=>group.quaternion.slerpQuaternions(from.rotations[i],to.rotations[i],mix));};
+    const steps=Math.max(1,Math.ceil((from.position.distanceTo(to.position)+handOffsetTravel(from.handOffsets,to.handOffsets)+angle*2)/.012));
+    const blend=mix=>{blendHandOffsets(root,from.handOffsets,to.handOffsets,mix);root.position.lerpVectors(from.position,to.position,mix);joints.forEach(({group},i)=>group.quaternion.slerpQuaternions(from.rotations[i],to.rotations[i],mix));};
     let accepted=0;
     for(let i=1;i<=Math.min(steps,512);i++) {
       const mix=i/steps;blend(mix);

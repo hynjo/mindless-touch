@@ -1,0 +1,67 @@
+// Independently summarized minimum support requirements for the catalog's named
+// variants. Source descriptions were checked against Pocket Yoga /poses.json.
+// These describe geometry, not forces. Alternatives are intentional, not failures.
+const overrides={};
+const assign=(keys,requirements,note='')=>{for(const key of keys.split(' '))overrides[key]={requirements,note};};
+assign('Archer BoatFull BoundAngle Butterfly Cradle Easy EmbryoWomb FireLog FootBehindHead FootBehindHeadForward FootBehindHeadTwoLegged HeadToKnee Heron KneePile KneePileBind LordOfTheFishes LotusFull MarichiIIITraditional MarichiIITraditional MarichiITraditional MarichiIVTraditional SeatedForwardBend SeatedForwardBendHalfLotus SeatedForwardBendII SeatedForwardBendIII SeatedForwardBendIV SeatedForwardBendThreeLimbs SeatedGate SeatedHandToToeRevolved SplitsFront SupineTortoise',['seat']);
+assign('Bharadvaja',['seat','any-palm']);
+assign('Caterpillar',['seat','palms'],'Palms reflect the requested editor variant; the reference also allows holding the legs. A seated pelvis remains required.');
+assign('Staff',['seat','palms','heels']);
+assign('HeadToKneeII',['any-heel','any-back-leg'],'The pelvis may be supported by the bent foot rather than the floor.');
+assign('HeadToKneeIII',['seat','any-forefoot']);
+assign('Hero',['seat','shins'],'A block is an allowed reference alternative, but this scene has no block.');
+assign('Thunderbolt',['shins','foot-tops'],'Glutes-to-heels support requires separate internal-contact review.');
+assign('GarlandSideways SeatedOnHeelsTwistBound',['forefeet'],'Heel contact varies with the selected squat depth; no props are present.');
+assign('SideLunge',['any-sole','any-heel']);
+assign('ToeStand',['any-forefoot']);
+assign('Horse',['any-knee','any-sole']);
+assign('SplitsWide',['palms'],'Hip/leg contact varies with split depth.');
+assign('Banana BlissfulBaby CorpseDoubleLegRaise SupineHandToToeExtended SupineHandToToeFull SupineSpinalTwist SupineStraddle SupineTrivikrama Turtle YogicSleep',['seat','back']);
+assign('Corpse',['seat','back','back-head','heels']);
+assign('FishPreparation',['seat','head']);
+assign('Bridge',['heels','back']);
+assign('Bow ProneBowHalf GherandaI Locust LocustII LocustIII Snake',['front-core']);
+assign('CorpseFrontArmsForward',['front-core','front-chest']);
+assign('FrogTraditional',['front-core']);
+assign('CobraFull',['front-core','palms','foot-tops']);
+assign('ChildTraditional',['shins','head'],'Seat-to-heels and forehead support need visual review when the head mesh cannot identify the forehead.');
+assign('PuppyExtended',['shins','palms','head-or-chest']);
+assign('BoxNeutral Cat Dog',['palms','knees']);
+assign('Camel',['shins','knees'],'The user-selected variant requires shin and knee support.');
+assign('Dolphin',['palms','forearms','forefeet']);
+assign('DownwardDog',['palms','forefeet'],'Heel contact may be absent; do not require a flat whole foot.');
+assign('FourLimbedStaff Plank',['palms','toes']);
+assign('UpwardDog',['palms','foot-tops']);
+assign('PlankUpward Wheel',['palms','soles']);
+assign('PlankSide',['any-palm','any-foot-edge']);
+assign('WildThing',['any-palm','any-foot-edge','any-forefoot']);
+assign('Lunge',['palms','any-sole','any-toe'],'Flat hands reflect the current authored editor variant; the reference uses fingertips.');
+assign('Lizard',['palms-or-forearms','any-sole','any-toe']);
+assign('CrookedMonkey',['any-palm','any-knee','any-sole']);
+assign('Gate',['any-knee','any-sole']);
+assign('Tiger',['palms','any-knee']);
+assign('PigeonHalf',['knees','any-foot-top'],'Contact of the folded shin is reviewed separately from leg orientation.');
+assign('LittleThunderbolt Pigeon',['forearms','shins']);
+assign('Rabbit',['knees','head']);
+assign('EightPoint',['palms','knees','front-chest','toes','head']);
+assign('FlamingoHumble',['fingertips','any-heel']);
+assign('StaffInverted',['forearms','soles']);
+assign('Sphinx',['palms','forearms','front-core']);
+assign('VisvamitraFull',['any-palm','any-foot-edge']);
+assign('Crane Crow EightAngle ElephantTrunk Firefly FloatingStick FlyingLizard FlyingManRevolved FootBehindHeadElevated FootBehindHeadTwoLeggedElevated Grasshopper Handstand LotusElevated LungeHandsOnMatFlying Peacock Pendant PigeonFlying Rooster ScaleForward',['palms']);
+assign('FeatheredPeacock Scorpion Duck',['forearms','palms']);
+assign('RelaxedStance',['elbows'],'The final variant raises the hands; do not require palms or entire forearms.');
+assign('HeadstandSupported',['forearms','head']);
+assign('HeadstandTripod',['palms','head']);
+assign('ShoulderstandSupported ShoulderstandLotus Embryo',['back']);
+assign('Plow DeafMan SupineAngle',['back','toes']);
+assign('ChinStand',['front-chest','head','palms']);
+assign('BirdOfParadiseRevolved ChairTwistBindUp Eagle LordOfTheDance ShivaSquat StandingFootBehindHead StandingHandToToeExtended StandingHandToToeFull StandingHandToToeRevolved TreePrayer TrivikramaI WarriorIII',['any-sole']);
+assign('HalfMoon HalfMoonRevolved SplitsStanding StandingForwardBendFootBehindHead StandingForwardBendHalfLotus',['any-sole','any-hand'],'Hand contact can be fingertips or palm in these variants.');
+assign('WarriorIKneeling',['any-sole','any-knee']);
+export function supportProfile(pose){
+ const key=pose.source.split('/').at(-1);
+ if(overrides[key])return {...overrides[key],basis:'Named reference variant; see source and notes'};
+ if(pose.category==='Standing')return {requirements:['soles'],note:'Minimum foot support only; hand/leg binds and exact alignment require visual review.',basis:'Standing reference variant'};
+ throw new Error(`Missing explicit support profile for ${key}`);
+}
