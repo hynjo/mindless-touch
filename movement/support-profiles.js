@@ -2,6 +2,7 @@
 // variants. Source descriptions were checked against Pocket Yoga /poses.json.
 // These describe geometry, not forces. Alternatives are intentional, not failures.
 const overrides={};
+export const SUPPORT_REQUIREMENTS=new Set('seat back front-core front-chest head back-head palms forearms elbows shins knees soles heels forefeet toes foot-tops fingertips any-palm any-sole any-heel any-back-leg any-forefoot any-knee any-foot-edge any-toe any-foot-top any-hand palms-or-forearms head-or-chest opposite-sole-heel opposite-sole-toe opposite-sole-knee-foot-top'.split(' '));
 const assign=(keys,requirements,note='')=>{for(const key of keys.split(' '))overrides[key]={requirements,note};};
 assign('Archer BoatFull BoundAngle Butterfly Cradle Easy EmbryoWomb FireLog FootBehindHead FootBehindHeadForward FootBehindHeadTwoLegged HeadToKnee Heron KneePile KneePileBind LordOfTheFishes LotusFull MarichiIIITraditional MarichiIITraditional MarichiITraditional MarichiIVTraditional SeatedForwardBend SeatedForwardBendHalfLotus SeatedForwardBendII SeatedForwardBendIII SeatedForwardBendIV SeatedForwardBendThreeLimbs SeatedGate SeatedHandToToeRevolved SplitsFront SupineTortoise',['seat']);
 assign('Bharadvaja',['seat','any-palm']);
@@ -12,7 +13,7 @@ assign('HeadToKneeIII',['seat','any-forefoot']);
 assign('Hero',['seat','shins'],'A block is an allowed reference alternative, but this scene has no block.');
 assign('Thunderbolt',['shins','foot-tops'],'Glutes-to-heels support requires separate internal-contact review.');
 assign('GarlandSideways SeatedOnHeelsTwistBound',['forefeet'],'Heel contact varies with the selected squat depth; no props are present.');
-assign('SideLunge',['any-sole','any-heel']);
+assign('SideLunge',['opposite-sole-heel'],'The bent leg supports its sole; the opposite extended leg supports its heel.');
 assign('ToeStand',['any-forefoot']);
 assign('Horse',['any-knee','any-sole']);
 assign('SplitsWide',['palms'],'Hip/leg contact varies with split depth.');
@@ -35,8 +36,10 @@ assign('UpwardDog',['palms','foot-tops']);
 assign('PlankUpward Wheel',['palms','soles']);
 assign('PlankSide',['any-palm','any-foot-edge']);
 assign('WildThing',['any-palm','any-foot-edge','any-forefoot']);
-assign('Lunge',['palms','any-sole','any-toe'],'Flat hands reflect the current authored editor variant; the reference uses fingertips.');
-assign('Lizard',['palms-or-forearms','any-sole','any-toe']);
+assign('Lunge',['palms','opposite-sole-toe'],'Flat hands reflect the current authored editor variant; the reference uses fingertips.');
+assign('Lizard',['palms-or-forearms','opposite-sole-toe']);
+assign('LungeCrescent',['opposite-sole-toe'],'Front sole and opposite rear toes; rear heel is deliberately raised.');
+assign('TriangleRevolved',['soles','any-hand'],'The catalog variant has no block: the lower hand supports on the floor. Explicitly labeled shallow preparations may declare different supports.');
 assign('CrookedMonkey',['any-palm','any-knee','any-sole']);
 assign('Gate',['any-knee','any-sole']);
 assign('Tiger',['palms','any-knee']);
@@ -58,9 +61,10 @@ assign('Plow DeafMan SupineAngle',['back','toes']);
 assign('ChinStand',['front-chest','head','palms']);
 assign('BirdOfParadiseRevolved ChairTwistBindUp Eagle LordOfTheDance ShivaSquat StandingFootBehindHead StandingHandToToeExtended StandingHandToToeFull StandingHandToToeRevolved TreePrayer TrivikramaI WarriorIII',['any-sole']);
 assign('HalfMoon HalfMoonRevolved SplitsStanding StandingForwardBendFootBehindHead StandingForwardBendHalfLotus',['any-sole','any-hand'],'Hand contact can be fingertips or palm in these variants.');
-assign('WarriorIKneeling',['any-sole','any-knee']);
+assign('WarriorIKneeling',['opposite-sole-knee-foot-top'],'The rear knee and foot top share a side opposite the front sole.');
 export function supportProfile(pose){
- const key=pose.source.split('/').at(-1);
+ if(pose.supportRequirements)return {requirements:pose.supportRequirements,basis:'Explicit sequence support anchors',note:''};
+ const key=pose.source?.split('/').at(-1);
  if(overrides[key])return {...overrides[key],basis:'Named reference variant; see source and notes'};
  if(pose.category==='Standing')return {requirements:['soles'],note:'Minimum foot support only; hand/leg binds and exact alignment require visual review.',basis:'Standing reference variant'};
  throw new Error(`Missing explicit support profile for ${key}`);

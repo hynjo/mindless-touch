@@ -1,0 +1,510 @@
+[
+  {
+    "name": "Big Toe",
+    "accepted": false,
+    "before": [
+      "soles"
+    ],
+    "after": [
+      "soles"
+    ],
+    "newRom": 2,
+    "collisions": 0
+  },
+  {
+    "name": "Bird of Paradise",
+    "accepted": true,
+    "before": [
+      "any-sole"
+    ],
+    "after": [],
+    "newRom": 0,
+    "collisions": 0
+  },
+  {
+    "name": "Chair",
+    "accepted": true,
+    "before": [
+      "soles"
+    ],
+    "after": [],
+    "newRom": 0,
+    "collisions": 0
+  },
+  {
+    "name": "Crescent Lunge",
+    "accepted": false,
+    "before": [
+      "soles"
+    ],
+    "after": [],
+    "newRom": 1,
+    "collisions": 0
+  },
+  {
+    "name": "Crescent Lunge on the Knee",
+    "accepted": true,
+    "before": [
+      "any-sole",
+      "any-knee"
+    ],
+    "after": [
+      "any-knee"
+    ],
+    "newRom": 0,
+    "collisions": 0
+  },
+  {
+    "name": "Crescent Moon",
+    "accepted": true,
+    "before": [
+      "soles"
+    ],
+    "after": [],
+    "newRom": 0,
+    "collisions": 0
+  },
+  {
+    "name": "Crooked Monkey",
+    "accepted": false,
+    "before": [
+      "any-palm",
+      "any-knee",
+      "any-sole"
+    ],
+    "after": [
+      "any-palm",
+      "any-knee"
+    ],
+    "newRom": 1,
+    "collisions": 0
+  },
+  {
+    "name": "Eagle",
+    "accepted": true,
+    "before": [
+      "any-sole"
+    ],
+    "after": [],
+    "newRom": 0,
+    "collisions": 0
+  },
+  {
+    "name": "Extended Side Angle",
+    "accepted": false,
+    "before": [
+      "soles"
+    ],
+    "after": [],
+    "newRom": 3,
+    "collisions": 0
+  },
+  {
+    "name": "Extended Standing Hand to Big Toe",
+    "accepted": true,
+    "before": [
+      "any-sole"
+    ],
+    "after": [],
+    "newRom": 0,
+    "collisions": 0
+  },
+  {
+    "name": "Firefly II",
+    "accepted": true,
+    "before": [
+      "soles"
+    ],
+    "after": [],
+    "newRom": 0,
+    "collisions": 0
+  },
+  {
+    "name": "Firefly III",
+    "accepted": true,
+    "before": [
+      "soles"
+    ],
+    "after": [],
+    "newRom": 0,
+    "collisions": 0
+  },
+  {
+    "name": "Gate",
+    "accepted": false,
+    "before": [
+      "any-knee",
+      "any-sole"
+    ],
+    "after": [
+      "any-knee"
+    ],
+    "newRom": 1,
+    "collisions": 0
+  },
+  {
+    "name": "Goddess",
+    "accepted": false,
+    "before": [
+      "soles"
+    ],
+    "after": [],
+    "newRom": 2,
+    "collisions": 0
+  },
+  {
+    "name": "Gorilla",
+    "accepted": false,
+    "before": [
+      "soles"
+    ],
+    "after": [
+      "soles"
+    ],
+    "newRom": 2,
+    "collisions": 0
+  },
+  {
+    "name": "Half Moon",
+    "accepted": true,
+    "before": [
+      "any-sole",
+      "any-hand"
+    ],
+    "after": [
+      "any-hand"
+    ],
+    "newRom": 0,
+    "collisions": 0
+  },
+  {
+    "name": "Horse",
+    "accepted": false,
+    "before": [
+      "any-knee",
+      "any-sole"
+    ],
+    "after": [
+      "any-knee"
+    ],
+    "newRom": 1,
+    "collisions": 0
+  },
+  {
+    "name": "Inverted Staff",
+    "accepted": true,
+    "before": [
+      "forearms",
+      "soles"
+    ],
+    "after": [
+      "forearms"
+    ],
+    "newRom": 0,
+    "collisions": 0
+  },
+  {
+    "name": "Lizard",
+    "accepted": true,
+    "before": [
+      "any-sole",
+      "any-toe"
+    ],
+    "after": [
+      "any-toe"
+    ],
+    "newRom": 0,
+    "collisions": 0
+  },
+  {
+    "name": "Lunge",
+    "accepted": false,
+    "before": [
+      "any-sole"
+    ],
+    "after": [],
+    "newRom": 1,
+    "collisions": 0
+  },
+  {
+    "name": "Pyramid",
+    "accepted": true,
+    "before": [
+      "soles"
+    ],
+    "after": [],
+    "newRom": 0,
+    "collisions": 0
+  },
+  {
+    "name": "Revolved Bird of Paradise",
+    "accepted": true,
+    "before": [
+      "any-sole"
+    ],
+    "after": [],
+    "newRom": 0,
+    "collisions": 0
+  },
+  {
+    "name": "Revolved Half Moon",
+    "accepted": true,
+    "before": [
+      "any-sole",
+      "any-hand"
+    ],
+    "after": [
+      "any-hand"
+    ],
+    "newRom": 0,
+    "collisions": 0
+  },
+  {
+    "name": "Revolved Standing Hand to Big Toe",
+    "accepted": true,
+    "before": [
+      "any-sole"
+    ],
+    "after": [],
+    "newRom": 0,
+    "collisions": 0
+  },
+  {
+    "name": "Revolved Triangle",
+    "accepted": false,
+    "before": [
+      "soles"
+    ],
+    "after": [],
+    "newRom": 1,
+    "collisions": 0
+  },
+  {
+    "name": "Shiva Squat",
+    "accepted": false,
+    "before": [
+      "any-sole"
+    ],
+    "after": [],
+    "newRom": 1,
+    "collisions": 0
+  },
+  {
+    "name": "Side Lunge",
+    "accepted": false,
+    "before": [
+      "any-sole",
+      "any-heel"
+    ],
+    "after": [],
+    "newRom": 2,
+    "collisions": 0
+  },
+  {
+    "name": "Standing Bow",
+    "accepted": true,
+    "before": [
+      "any-sole"
+    ],
+    "after": [],
+    "newRom": 0,
+    "collisions": 0
+  },
+  {
+    "name": "Standing Foot to Head",
+    "accepted": true,
+    "before": [
+      "any-sole"
+    ],
+    "after": [],
+    "newRom": 0,
+    "collisions": 0
+  },
+  {
+    "name": "Standing Half Bound Lotus Forward Bend",
+    "accepted": false,
+    "before": [
+      "any-sole"
+    ],
+    "after": [
+      "any-sole"
+    ],
+    "newRom": 1,
+    "collisions": 0
+  },
+  {
+    "name": "Standing Hand to Big Toe",
+    "accepted": true,
+    "before": [
+      "any-sole"
+    ],
+    "after": [],
+    "newRom": 0,
+    "collisions": 0
+  },
+  {
+    "name": "Standing Leg Behind the Head",
+    "accepted": true,
+    "before": [
+      "any-sole"
+    ],
+    "after": [],
+    "newRom": 0,
+    "collisions": 0
+  },
+  {
+    "name": "Standing Leg Behind the Head Forward Bend",
+    "accepted": false,
+    "before": [
+      "any-sole"
+    ],
+    "after": [
+      "any-sole"
+    ],
+    "newRom": 1,
+    "collisions": 0
+  },
+  {
+    "name": "Standing Splits",
+    "accepted": true,
+    "before": [
+      "any-sole",
+      "any-hand"
+    ],
+    "after": [
+      "any-hand"
+    ],
+    "newRom": 0,
+    "collisions": 0
+  },
+  {
+    "name": "Star",
+    "accepted": true,
+    "before": [
+      "soles"
+    ],
+    "after": [],
+    "newRom": 0,
+    "collisions": 0
+  },
+  {
+    "name": "Tree",
+    "accepted": true,
+    "before": [
+      "any-sole"
+    ],
+    "after": [],
+    "newRom": 0,
+    "collisions": 0
+  },
+  {
+    "name": "Triangle",
+    "accepted": false,
+    "before": [
+      "soles"
+    ],
+    "after": [],
+    "newRom": 2,
+    "collisions": 1
+  },
+  {
+    "name": "Upward Plank",
+    "accepted": false,
+    "before": [
+      "palms",
+      "soles"
+    ],
+    "after": [
+      "palms"
+    ],
+    "newRom": 2,
+    "collisions": 0
+  },
+  {
+    "name": "Warrior I",
+    "accepted": false,
+    "before": [
+      "soles"
+    ],
+    "after": [],
+    "newRom": 1,
+    "collisions": 0
+  },
+  {
+    "name": "Warrior II",
+    "accepted": false,
+    "before": [
+      "soles"
+    ],
+    "after": [],
+    "newRom": 3,
+    "collisions": 0
+  },
+  {
+    "name": "Warrior III",
+    "accepted": true,
+    "before": [
+      "any-sole"
+    ],
+    "after": [],
+    "newRom": 0,
+    "collisions": 0
+  },
+  {
+    "name": "Wheel",
+    "accepted": false,
+    "before": [
+      "palms",
+      "soles"
+    ],
+    "after": [
+      "palms"
+    ],
+    "newRom": 2,
+    "collisions": 0
+  },
+  {
+    "name": "Wide Legged Forward Bend I",
+    "accepted": false,
+    "before": [
+      "soles"
+    ],
+    "after": [
+      "soles"
+    ],
+    "newRom": 2,
+    "collisions": 0
+  },
+  {
+    "name": "Wide Legged Forward Bend II",
+    "accepted": false,
+    "before": [
+      "soles"
+    ],
+    "after": [],
+    "newRom": 6,
+    "collisions": 0
+  },
+  {
+    "name": "Wide Legged Forward Bend III",
+    "accepted": false,
+    "before": [
+      "soles"
+    ],
+    "after": [],
+    "newRom": 6,
+    "collisions": 0
+  },
+  {
+    "name": "Wide Legged Forward Bend IV",
+    "accepted": false,
+    "before": [
+      "soles"
+    ],
+    "after": [
+      "soles"
+    ],
+    "newRom": 2,
+    "collisions": 0
+  }
+]

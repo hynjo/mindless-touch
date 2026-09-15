@@ -1,0 +1,2134 @@
+[
+  {
+    "example": "Sun Salutation",
+    "id": "mountain-start",
+    "name": "Mountain",
+    "issues": [],
+    "soles": [
+      {
+        "name": "left-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      },
+      {
+        "name": "right-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      }
+    ]
+  },
+  {
+    "example": "Sun Salutation",
+    "id": "salute-start",
+    "name": "Upward Salute",
+    "issues": [],
+    "soles": [
+      {
+        "name": "left-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      },
+      {
+        "name": "right-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      }
+    ]
+  },
+  {
+    "example": "Sun Salutation",
+    "id": "fold-start",
+    "name": "Forward Fold",
+    "issues": [],
+    "soles": [
+      {
+        "name": "left-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      },
+      {
+        "name": "right-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      }
+    ]
+  },
+  {
+    "example": "Sun Salutation",
+    "id": "half-lift-start",
+    "name": "Halfway Lift",
+    "issues": [],
+    "soles": [
+      {
+        "name": "left-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      },
+      {
+        "name": "right-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      }
+    ]
+  },
+  {
+    "example": "Sun Salutation",
+    "id": "plant-hands",
+    "name": "Plant Hands",
+    "issues": [],
+    "soles": [
+      {
+        "name": "left-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      },
+      {
+        "name": "right-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      }
+    ]
+  },
+  {
+    "example": "Sun Salutation",
+    "id": "step-back",
+    "name": "Step Back",
+    "issues": [],
+    "soles": [
+      {
+        "name": "left-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      },
+      {
+        "name": "right-sole",
+        "gapMm": 132.94,
+        "minGapMm": 30.51,
+        "alignment": -0.17,
+        "minimumAlignment": 0.95,
+        "pass": false,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      }
+    ]
+  },
+  {
+    "example": "Sun Salutation",
+    "id": "plank",
+    "name": "Plank",
+    "issues": [],
+    "soles": [
+      {
+        "name": "left-sole",
+        "gapMm": 14.82,
+        "minGapMm": 0,
+        "alignment": 0.98,
+        "minimumAlignment": 0.95,
+        "pass": false,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      },
+      {
+        "name": "right-sole",
+        "gapMm": 14.82,
+        "minGapMm": 0,
+        "alignment": 0.98,
+        "minimumAlignment": 0.95,
+        "pass": false,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      }
+    ]
+  },
+  {
+    "example": "Sun Salutation",
+    "id": "low-plank",
+    "name": "Low Plank",
+    "issues": [],
+    "soles": [
+      {
+        "name": "left-sole",
+        "gapMm": 18.62,
+        "minGapMm": 0,
+        "alignment": 0.97,
+        "minimumAlignment": 0.95,
+        "pass": false,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      },
+      {
+        "name": "right-sole",
+        "gapMm": 18.62,
+        "minGapMm": 0,
+        "alignment": 0.97,
+        "minimumAlignment": 0.95,
+        "pass": false,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      }
+    ]
+  },
+  {
+    "example": "Sun Salutation",
+    "id": "upward-dog",
+    "name": "Upward-Facing Dog",
+    "issues": [],
+    "soles": [
+      {
+        "name": "left-sole",
+        "gapMm": 95.29,
+        "minGapMm": 21.52,
+        "alignment": -0.64,
+        "minimumAlignment": 0.95,
+        "pass": false,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      },
+      {
+        "name": "right-sole",
+        "gapMm": 95.29,
+        "minGapMm": 21.52,
+        "alignment": -0.64,
+        "minimumAlignment": 0.95,
+        "pass": false,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      }
+    ]
+  },
+  {
+    "example": "Sun Salutation",
+    "id": "downward-dog",
+    "name": "Downward-Facing Dog",
+    "issues": [],
+    "soles": [
+      {
+        "name": "left-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      },
+      {
+        "name": "right-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      }
+    ]
+  },
+  {
+    "example": "Sun Salutation",
+    "id": "step-forward",
+    "name": "Step Forward",
+    "issues": [],
+    "soles": [
+      {
+        "name": "left-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      },
+      {
+        "name": "right-sole",
+        "gapMm": 132.94,
+        "minGapMm": 30.51,
+        "alignment": -0.17,
+        "minimumAlignment": 0.95,
+        "pass": false,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      }
+    ]
+  },
+  {
+    "example": "Sun Salutation",
+    "id": "step-together",
+    "name": "Step Together",
+    "issues": [],
+    "soles": [
+      {
+        "name": "left-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      },
+      {
+        "name": "right-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      }
+    ]
+  },
+  {
+    "example": "Sun Salutation",
+    "id": "half-lift-end",
+    "name": "Halfway Lift",
+    "issues": [],
+    "soles": [
+      {
+        "name": "left-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      },
+      {
+        "name": "right-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      }
+    ]
+  },
+  {
+    "example": "Sun Salutation",
+    "id": "fold-end",
+    "name": "Forward Fold",
+    "issues": [],
+    "soles": [
+      {
+        "name": "left-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      },
+      {
+        "name": "right-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      }
+    ]
+  },
+  {
+    "example": "Sun Salutation",
+    "id": "salute-end",
+    "name": "Upward Salute",
+    "issues": [],
+    "soles": [
+      {
+        "name": "left-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      },
+      {
+        "name": "right-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      }
+    ]
+  },
+  {
+    "example": "Sun Salutation",
+    "id": "mountain-end",
+    "name": "Mountain",
+    "issues": [],
+    "soles": [
+      {
+        "name": "left-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      },
+      {
+        "name": "right-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      }
+    ]
+  },
+  {
+    "example": "Ashtanga Short Practice",
+    "id": "ashtanga-sun-a-1",
+    "name": "Mountain",
+    "issues": [],
+    "soles": [
+      {
+        "name": "left-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      },
+      {
+        "name": "right-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      }
+    ]
+  },
+  {
+    "example": "Ashtanga Short Practice",
+    "id": "ashtanga-sun-a-2",
+    "name": "Upward Salute",
+    "issues": [],
+    "soles": [
+      {
+        "name": "left-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      },
+      {
+        "name": "right-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      }
+    ]
+  },
+  {
+    "example": "Ashtanga Short Practice",
+    "id": "ashtanga-sun-a-3",
+    "name": "Forward Fold",
+    "issues": [],
+    "soles": [
+      {
+        "name": "left-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      },
+      {
+        "name": "right-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      }
+    ]
+  },
+  {
+    "example": "Ashtanga Short Practice",
+    "id": "ashtanga-sun-a-4",
+    "name": "Halfway Lift",
+    "issues": [],
+    "soles": [
+      {
+        "name": "left-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      },
+      {
+        "name": "right-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      }
+    ]
+  },
+  {
+    "example": "Ashtanga Short Practice",
+    "id": "ashtanga-sun-a-5",
+    "name": "Plant Hands",
+    "issues": [],
+    "soles": [
+      {
+        "name": "left-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      },
+      {
+        "name": "right-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      }
+    ]
+  },
+  {
+    "example": "Ashtanga Short Practice",
+    "id": "ashtanga-sun-a-6",
+    "name": "Step Back",
+    "issues": [],
+    "soles": [
+      {
+        "name": "left-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      },
+      {
+        "name": "right-sole",
+        "gapMm": 132.94,
+        "minGapMm": 30.51,
+        "alignment": -0.17,
+        "minimumAlignment": 0.95,
+        "pass": false,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      }
+    ]
+  },
+  {
+    "example": "Ashtanga Short Practice",
+    "id": "ashtanga-sun-a-7",
+    "name": "Plank",
+    "issues": [],
+    "soles": [
+      {
+        "name": "left-sole",
+        "gapMm": 14.82,
+        "minGapMm": 0,
+        "alignment": 0.98,
+        "minimumAlignment": 0.95,
+        "pass": false,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      },
+      {
+        "name": "right-sole",
+        "gapMm": 14.82,
+        "minGapMm": 0,
+        "alignment": 0.98,
+        "minimumAlignment": 0.95,
+        "pass": false,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      }
+    ]
+  },
+  {
+    "example": "Ashtanga Short Practice",
+    "id": "ashtanga-sun-a-8",
+    "name": "Low Plank",
+    "issues": [],
+    "soles": [
+      {
+        "name": "left-sole",
+        "gapMm": 18.62,
+        "minGapMm": 0,
+        "alignment": 0.97,
+        "minimumAlignment": 0.95,
+        "pass": false,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      },
+      {
+        "name": "right-sole",
+        "gapMm": 18.62,
+        "minGapMm": 0,
+        "alignment": 0.97,
+        "minimumAlignment": 0.95,
+        "pass": false,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      }
+    ]
+  },
+  {
+    "example": "Ashtanga Short Practice",
+    "id": "ashtanga-sun-a-9",
+    "name": "Upward-Facing Dog",
+    "issues": [],
+    "soles": [
+      {
+        "name": "left-sole",
+        "gapMm": 95.29,
+        "minGapMm": 21.52,
+        "alignment": -0.64,
+        "minimumAlignment": 0.95,
+        "pass": false,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      },
+      {
+        "name": "right-sole",
+        "gapMm": 95.29,
+        "minGapMm": 21.52,
+        "alignment": -0.64,
+        "minimumAlignment": 0.95,
+        "pass": false,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      }
+    ]
+  },
+  {
+    "example": "Ashtanga Short Practice",
+    "id": "ashtanga-sun-a-10",
+    "name": "Downward-Facing Dog",
+    "issues": [],
+    "soles": [
+      {
+        "name": "left-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      },
+      {
+        "name": "right-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      }
+    ]
+  },
+  {
+    "example": "Ashtanga Short Practice",
+    "id": "ashtanga-sun-a-11",
+    "name": "Step Forward",
+    "issues": [],
+    "soles": [
+      {
+        "name": "left-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      },
+      {
+        "name": "right-sole",
+        "gapMm": 132.94,
+        "minGapMm": 30.51,
+        "alignment": -0.17,
+        "minimumAlignment": 0.95,
+        "pass": false,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      }
+    ]
+  },
+  {
+    "example": "Ashtanga Short Practice",
+    "id": "ashtanga-sun-a-12",
+    "name": "Step Together",
+    "issues": [],
+    "soles": [
+      {
+        "name": "left-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      },
+      {
+        "name": "right-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      }
+    ]
+  },
+  {
+    "example": "Ashtanga Short Practice",
+    "id": "ashtanga-sun-a-13",
+    "name": "Halfway Lift",
+    "issues": [],
+    "soles": [
+      {
+        "name": "left-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      },
+      {
+        "name": "right-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      }
+    ]
+  },
+  {
+    "example": "Ashtanga Short Practice",
+    "id": "ashtanga-sun-a-14",
+    "name": "Forward Fold",
+    "issues": [],
+    "soles": [
+      {
+        "name": "left-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      },
+      {
+        "name": "right-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      }
+    ]
+  },
+  {
+    "example": "Ashtanga Short Practice",
+    "id": "ashtanga-sun-a-15",
+    "name": "Upward Salute",
+    "issues": [],
+    "soles": [
+      {
+        "name": "left-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      },
+      {
+        "name": "right-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      }
+    ]
+  },
+  {
+    "example": "Ashtanga Short Practice",
+    "id": "ashtanga-sun-a-16",
+    "name": "Mountain",
+    "issues": [],
+    "soles": [
+      {
+        "name": "left-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      },
+      {
+        "name": "right-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      }
+    ]
+  },
+  {
+    "example": "Ashtanga Short Practice",
+    "id": "ashtanga-big-toe",
+    "name": "Big Toe Preparation",
+    "issues": [],
+    "soles": [
+      {
+        "name": "left-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      },
+      {
+        "name": "right-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      }
+    ]
+  },
+  {
+    "example": "Ashtanga Short Practice",
+    "id": "ashtanga-rise-from-fold",
+    "name": "Return Upright",
+    "issues": [],
+    "soles": [
+      {
+        "name": "left-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      },
+      {
+        "name": "right-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      }
+    ]
+  },
+  {
+    "example": "Ashtanga Short Practice",
+    "id": "ashtanga-triangle-left",
+    "name": "Triangle — Left",
+    "issues": [],
+    "soles": [
+      {
+        "name": "left-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      },
+      {
+        "name": "right-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      }
+    ]
+  },
+  {
+    "example": "Ashtanga Short Practice",
+    "id": "ashtanga-switch-triangle",
+    "name": "Return Upright",
+    "issues": [],
+    "soles": [
+      {
+        "name": "left-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      },
+      {
+        "name": "right-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      }
+    ]
+  },
+  {
+    "example": "Ashtanga Short Practice",
+    "id": "ashtanga-triangle-right",
+    "name": "Triangle — Right",
+    "issues": [],
+    "soles": [
+      {
+        "name": "left-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      },
+      {
+        "name": "right-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      }
+    ]
+  },
+  {
+    "example": "Ashtanga Short Practice",
+    "id": "ashtanga-prepare-revolved",
+    "name": "Return Upright",
+    "issues": [],
+    "soles": [
+      {
+        "name": "left-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      },
+      {
+        "name": "right-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      }
+    ]
+  },
+  {
+    "example": "Ashtanga Short Practice",
+    "id": "ashtanga-revolved-triangle-left",
+    "name": "Revolved Triangle — Left",
+    "issues": [],
+    "soles": [
+      {
+        "name": "left-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      },
+      {
+        "name": "right-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      }
+    ]
+  },
+  {
+    "example": "Ashtanga Short Practice",
+    "id": "ashtanga-switch-revolved",
+    "name": "Return Upright",
+    "issues": [],
+    "soles": [
+      {
+        "name": "left-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      },
+      {
+        "name": "right-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      }
+    ]
+  },
+  {
+    "example": "Ashtanga Short Practice",
+    "id": "ashtanga-revolved-triangle-right",
+    "name": "Revolved Triangle — Right",
+    "issues": [],
+    "soles": [
+      {
+        "name": "left-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      },
+      {
+        "name": "right-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      }
+    ]
+  },
+  {
+    "example": "Ashtanga Short Practice",
+    "id": "ashtanga-prepare-warrior",
+    "name": "Return Upright",
+    "issues": [],
+    "soles": [
+      {
+        "name": "left-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      },
+      {
+        "name": "right-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      }
+    ]
+  },
+  {
+    "example": "Ashtanga Short Practice",
+    "id": "ashtanga-warrior-one-left",
+    "name": "Warrior I — Left",
+    "issues": [],
+    "soles": [
+      {
+        "name": "left-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      },
+      {
+        "name": "right-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      }
+    ]
+  },
+  {
+    "example": "Ashtanga Short Practice",
+    "id": "ashtanga-warrior-two-left",
+    "name": "Warrior II — Left",
+    "issues": [],
+    "soles": [
+      {
+        "name": "left-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      },
+      {
+        "name": "right-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      }
+    ]
+  },
+  {
+    "example": "Ashtanga Short Practice",
+    "id": "ashtanga-switch-warrior",
+    "name": "Return Upright",
+    "issues": [],
+    "soles": [
+      {
+        "name": "left-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      },
+      {
+        "name": "right-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      }
+    ]
+  },
+  {
+    "example": "Ashtanga Short Practice",
+    "id": "ashtanga-warrior-one-right",
+    "name": "Warrior I — Right",
+    "issues": [],
+    "soles": [
+      {
+        "name": "left-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      },
+      {
+        "name": "right-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      }
+    ]
+  },
+  {
+    "example": "Ashtanga Short Practice",
+    "id": "ashtanga-warrior-two-right",
+    "name": "Warrior II — Right",
+    "issues": [],
+    "soles": [
+      {
+        "name": "left-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      },
+      {
+        "name": "right-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      }
+    ]
+  },
+  {
+    "example": "Ashtanga Short Practice",
+    "id": "ashtanga-prepare-seated",
+    "name": "Return Upright",
+    "issues": [],
+    "soles": [
+      {
+        "name": "left-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      },
+      {
+        "name": "right-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      }
+    ]
+  },
+  {
+    "example": "Ashtanga Short Practice",
+    "id": "ashtanga-staff",
+    "name": "Staff — Arms Forward",
+    "issues": [],
+    "soles": [
+      {
+        "name": "left-sole",
+        "gapMm": 110,
+        "minGapMm": 0.14,
+        "alignment": 0.12,
+        "minimumAlignment": 0.95,
+        "pass": false,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      },
+      {
+        "name": "right-sole",
+        "gapMm": 110,
+        "minGapMm": 0.14,
+        "alignment": 0.12,
+        "minimumAlignment": 0.95,
+        "pass": false,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      }
+    ]
+  },
+  {
+    "example": "Ashtanga Short Practice",
+    "id": "ashtanga-open-from-staff",
+    "name": "Seated Reset",
+    "issues": [],
+    "soles": [
+      {
+        "name": "left-sole",
+        "gapMm": 110,
+        "minGapMm": 0.14,
+        "alignment": 0.12,
+        "minimumAlignment": 0.95,
+        "pass": false,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      },
+      {
+        "name": "right-sole",
+        "gapMm": 110,
+        "minGapMm": 0.14,
+        "alignment": 0.12,
+        "minimumAlignment": 0.95,
+        "pass": false,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      }
+    ]
+  },
+  {
+    "example": "Ashtanga Short Practice",
+    "id": "ashtanga-seated-forward-bend",
+    "name": "Seated Forward Bend — Bent Knees",
+    "issues": [],
+    "soles": [
+      {
+        "name": "left-sole",
+        "gapMm": 109.59,
+        "minGapMm": 0.02,
+        "alignment": 0.14,
+        "minimumAlignment": 0.95,
+        "pass": false,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      },
+      {
+        "name": "right-sole",
+        "gapMm": 109.59,
+        "minGapMm": 0.02,
+        "alignment": 0.14,
+        "minimumAlignment": 0.95,
+        "pass": false,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      }
+    ]
+  },
+  {
+    "example": "Ashtanga Short Practice",
+    "id": "ashtanga-open-after-fold",
+    "name": "Seated Reset",
+    "issues": [],
+    "soles": [
+      {
+        "name": "left-sole",
+        "gapMm": 110,
+        "minGapMm": 0.14,
+        "alignment": 0.12,
+        "minimumAlignment": 0.95,
+        "pass": false,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      },
+      {
+        "name": "right-sole",
+        "gapMm": 110,
+        "minGapMm": 0.14,
+        "alignment": 0.12,
+        "minimumAlignment": 0.95,
+        "pass": false,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      }
+    ]
+  },
+  {
+    "example": "Ashtanga Short Practice",
+    "id": "ashtanga-boat",
+    "name": "Boat",
+    "issues": [],
+    "soles": [
+      {
+        "name": "left-sole",
+        "gapMm": 692.67,
+        "minGapMm": 600.97,
+        "alignment": -0.64,
+        "minimumAlignment": 0.95,
+        "pass": false,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      },
+      {
+        "name": "right-sole",
+        "gapMm": 692.67,
+        "minGapMm": 600.97,
+        "alignment": -0.64,
+        "minimumAlignment": 0.95,
+        "pass": false,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      }
+    ]
+  },
+  {
+    "example": "Ashtanga Short Practice",
+    "id": "ashtanga-prepare-bound-angle",
+    "name": "Seated Reset",
+    "issues": [],
+    "soles": [
+      {
+        "name": "left-sole",
+        "gapMm": 110,
+        "minGapMm": 0.14,
+        "alignment": 0.12,
+        "minimumAlignment": 0.95,
+        "pass": false,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      },
+      {
+        "name": "right-sole",
+        "gapMm": 110,
+        "minGapMm": 0.14,
+        "alignment": 0.12,
+        "minimumAlignment": 0.95,
+        "pass": false,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      }
+    ]
+  },
+  {
+    "example": "Ashtanga Short Practice",
+    "id": "ashtanga-bound-angle",
+    "name": "Bound Angle Preparation",
+    "issues": [],
+    "soles": [
+      {
+        "name": "left-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 0.52,
+        "minimumAlignment": 0.95,
+        "pass": false,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      },
+      {
+        "name": "right-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 0.52,
+        "minimumAlignment": 0.95,
+        "pass": false,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      }
+    ]
+  },
+  {
+    "example": "Ashtanga Short Practice",
+    "id": "ashtanga-prepare-bridge",
+    "name": "Seated Reset",
+    "issues": [],
+    "soles": [
+      {
+        "name": "left-sole",
+        "gapMm": 110,
+        "minGapMm": 0.14,
+        "alignment": 0.12,
+        "minimumAlignment": 0.95,
+        "pass": false,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      },
+      {
+        "name": "right-sole",
+        "gapMm": 110,
+        "minGapMm": 0.14,
+        "alignment": 0.12,
+        "minimumAlignment": 0.95,
+        "pass": false,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      }
+    ]
+  },
+  {
+    "example": "Ashtanga Short Practice",
+    "id": "ashtanga-bridge",
+    "name": "Low Bridge",
+    "issues": [],
+    "soles": [
+      {
+        "name": "left-sole",
+        "gapMm": 0.06,
+        "minGapMm": 0.03,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      },
+      {
+        "name": "right-sole",
+        "gapMm": 0.06,
+        "minGapMm": 0.03,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      }
+    ]
+  },
+  {
+    "example": "Ashtanga Short Practice",
+    "id": "ashtanga-fish",
+    "name": "Fish Preparation",
+    "issues": [],
+    "soles": [
+      {
+        "name": "left-sole",
+        "gapMm": 109.39,
+        "minGapMm": 0.02,
+        "alignment": 0.15,
+        "minimumAlignment": 0.95,
+        "pass": false,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      },
+      {
+        "name": "right-sole",
+        "gapMm": 109.39,
+        "minGapMm": 0.02,
+        "alignment": 0.15,
+        "minimumAlignment": 0.95,
+        "pass": false,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      }
+    ]
+  },
+  {
+    "example": "Ashtanga Short Practice",
+    "id": "ashtanga-prepare-closing-seat",
+    "name": "Seated Reset",
+    "issues": [],
+    "soles": [
+      {
+        "name": "left-sole",
+        "gapMm": 110,
+        "minGapMm": 0.14,
+        "alignment": 0.12,
+        "minimumAlignment": 0.95,
+        "pass": false,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      },
+      {
+        "name": "right-sole",
+        "gapMm": 110,
+        "minGapMm": 0.14,
+        "alignment": 0.12,
+        "minimumAlignment": 0.95,
+        "pass": false,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      }
+    ]
+  },
+  {
+    "example": "Ashtanga Short Practice",
+    "id": "ashtanga-closing-seat",
+    "name": "Closing Seat — Open Legs",
+    "issues": [],
+    "soles": [
+      {
+        "name": "left-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 0.52,
+        "minimumAlignment": 0.95,
+        "pass": false,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      },
+      {
+        "name": "right-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 0.52,
+        "minimumAlignment": 0.95,
+        "pass": false,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      }
+    ]
+  },
+  {
+    "example": "Ashtanga Short Practice",
+    "id": "ashtanga-corpse",
+    "name": "Corpse",
+    "issues": [],
+    "soles": [
+      {
+        "name": "left-sole",
+        "gapMm": 110.16,
+        "minGapMm": 0.27,
+        "alignment": 0.12,
+        "minimumAlignment": 0.95,
+        "pass": false,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      },
+      {
+        "name": "right-sole",
+        "gapMm": 110.16,
+        "minGapMm": 0.27,
+        "alignment": 0.12,
+        "minimumAlignment": 0.95,
+        "pass": false,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      }
+    ]
+  },
+  {
+    "example": "Neck Stretching",
+    "id": "neck-start",
+    "name": "Stand Tall",
+    "issues": [],
+    "soles": [
+      {
+        "name": "left-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      },
+      {
+        "name": "right-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      }
+    ]
+  },
+  {
+    "example": "Neck Stretching",
+    "id": "neck-turn-right",
+    "name": "Turn Right",
+    "issues": [],
+    "soles": [
+      {
+        "name": "left-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      },
+      {
+        "name": "right-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      }
+    ]
+  },
+  {
+    "example": "Neck Stretching",
+    "id": "neck-center-1",
+    "name": "Return to Center",
+    "issues": [],
+    "soles": [
+      {
+        "name": "left-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      },
+      {
+        "name": "right-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      }
+    ]
+  },
+  {
+    "example": "Neck Stretching",
+    "id": "neck-turn-left",
+    "name": "Turn Left",
+    "issues": [],
+    "soles": [
+      {
+        "name": "left-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      },
+      {
+        "name": "right-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      }
+    ]
+  },
+  {
+    "example": "Neck Stretching",
+    "id": "neck-center-2",
+    "name": "Return to Center",
+    "issues": [],
+    "soles": [
+      {
+        "name": "left-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      },
+      {
+        "name": "right-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      }
+    ]
+  },
+  {
+    "example": "Neck Stretching",
+    "id": "neck-tilt-right",
+    "name": "Tilt Right",
+    "issues": [],
+    "soles": [
+      {
+        "name": "left-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      },
+      {
+        "name": "right-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      }
+    ]
+  },
+  {
+    "example": "Neck Stretching",
+    "id": "neck-center-3",
+    "name": "Return to Center",
+    "issues": [],
+    "soles": [
+      {
+        "name": "left-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      },
+      {
+        "name": "right-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      }
+    ]
+  },
+  {
+    "example": "Neck Stretching",
+    "id": "neck-tilt-left",
+    "name": "Tilt Left",
+    "issues": [],
+    "soles": [
+      {
+        "name": "left-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      },
+      {
+        "name": "right-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      }
+    ]
+  },
+  {
+    "example": "Neck Stretching",
+    "id": "neck-center-4",
+    "name": "Return to Center",
+    "issues": [],
+    "soles": [
+      {
+        "name": "left-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      },
+      {
+        "name": "right-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      }
+    ]
+  },
+  {
+    "example": "Neck Stretching",
+    "id": "neck-lift-right",
+    "name": "Lift Right Arm",
+    "issues": [],
+    "soles": [
+      {
+        "name": "left-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      },
+      {
+        "name": "right-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      }
+    ]
+  },
+  {
+    "example": "Neck Stretching",
+    "id": "neck-reach-right",
+    "name": "Reach Right Hand Over",
+    "issues": [],
+    "soles": [
+      {
+        "name": "left-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      },
+      {
+        "name": "right-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      }
+    ]
+  },
+  {
+    "example": "Neck Stretching",
+    "id": "neck-assisted-right",
+    "name": "Assisted Tilt Right",
+    "issues": [],
+    "soles": [
+      {
+        "name": "left-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      },
+      {
+        "name": "right-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      }
+    ]
+  },
+  {
+    "example": "Neck Stretching",
+    "id": "neck-release-right",
+    "name": "Release Right Hand",
+    "issues": [],
+    "soles": [
+      {
+        "name": "left-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      },
+      {
+        "name": "right-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      }
+    ]
+  },
+  {
+    "example": "Neck Stretching",
+    "id": "neck-lower-right",
+    "name": "Lower Right Arm",
+    "issues": [],
+    "soles": [
+      {
+        "name": "left-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      },
+      {
+        "name": "right-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      }
+    ]
+  },
+  {
+    "example": "Neck Stretching",
+    "id": "neck-center-5",
+    "name": "Release and Center",
+    "issues": [],
+    "soles": [
+      {
+        "name": "left-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      },
+      {
+        "name": "right-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      }
+    ]
+  },
+  {
+    "example": "Neck Stretching",
+    "id": "neck-lift-left",
+    "name": "Lift Left Arm",
+    "issues": [],
+    "soles": [
+      {
+        "name": "left-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      },
+      {
+        "name": "right-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      }
+    ]
+  },
+  {
+    "example": "Neck Stretching",
+    "id": "neck-reach-left",
+    "name": "Reach Left Hand Over",
+    "issues": [],
+    "soles": [
+      {
+        "name": "left-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      },
+      {
+        "name": "right-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      }
+    ]
+  },
+  {
+    "example": "Neck Stretching",
+    "id": "neck-assisted-left",
+    "name": "Assisted Tilt Left",
+    "issues": [],
+    "soles": [
+      {
+        "name": "left-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      },
+      {
+        "name": "right-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      }
+    ]
+  },
+  {
+    "example": "Neck Stretching",
+    "id": "neck-release-left",
+    "name": "Release Left Hand",
+    "issues": [],
+    "soles": [
+      {
+        "name": "left-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      },
+      {
+        "name": "right-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      }
+    ]
+  },
+  {
+    "example": "Neck Stretching",
+    "id": "neck-lower-left",
+    "name": "Lower Left Arm",
+    "issues": [],
+    "soles": [
+      {
+        "name": "left-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      },
+      {
+        "name": "right-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      }
+    ]
+  },
+  {
+    "example": "Neck Stretching",
+    "id": "neck-finish",
+    "name": "Finish in Neutral",
+    "issues": [],
+    "soles": [
+      {
+        "name": "left-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      },
+      {
+        "name": "right-sole",
+        "gapMm": 0.03,
+        "minGapMm": 0,
+        "alignment": 1,
+        "minimumAlignment": 0.95,
+        "pass": true,
+        "note": "Heel and metatarsal pads; the arch is deliberately excluded."
+      }
+    ]
+  }
+]

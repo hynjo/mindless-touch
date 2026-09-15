@@ -30,6 +30,14 @@ export function placePalmsOnFloor({root,hands,byId,dimensions,meshes}) {
   const maxShoulder=Math.max(...['left','right'].map(side=>position(byId[side+'Shoulder'].group).y));
   root.position.y-=Math.max(0,maxShoulder-(dimensions.upperArm+dimensions.forearm+palmHeight-.014));
   root.updateWorldMatrix(true,true);
+  // An unreachable ankle target is silently clamped by IK. Lower the pelvis
+  // first so hand support cannot leave both supporting feet suspended.
+  const legReach=dimensions.thigh+dimensions.shin-.0002;
+  const excess=Math.max(0,...['left','right'].map(side=>{
+    const hip=position(byId[side+'Hip'].group),target=feet[side];
+    return hip.y-target.height-legReach;
+  }));
+  root.position.y-=excess;root.updateWorldMatrix(true,true);
   for(let pass=0;pass<5;pass++) {
     for(const side of ['left','right']) {
       const upper=byId[side+'Shoulder'].group,middle=byId[side+'Elbow'].group;
@@ -37,6 +45,14 @@ export function placePalmsOnFloor({root,hands,byId,dimensions,meshes}) {
       const bend=position(middle).add(new THREE.Vector3(0,.1,-.2));
       solve({upper,middle,a:dimensions.upperArm,b:dimensions.forearm},target,bend);
       worldOrientation(hands[side].wrist,flatPalm);
+      // A flat palm is not valid support if it overextends the wrist. Move its
+      // target forward within arm reach instead of accepting an invalid bend.
+      for(let retry=0;retry<12&&wristMargins({group:hands[side].wrist}).some(margin=>margin<0);retry++){
+        target.z+=.015;
+        target.copy(groundTarget(upper,target,target.y,dimensions.upperArm+dimensions.forearm));
+        solve({upper,middle,a:dimensions.upperArm,b:dimensions.forearm},target,bend);
+        worldOrientation(hands[side].wrist,flatPalm);
+      }
       const hip=byId[side+'Hip'].group,knee=byId[side+'Knee'].group,ankle=byId[side+'Ankle'].group;
       const footTarget=groundTarget(hip,feet[side].position,feet[side].height,dimensions.thigh+dimensions.shin);
       solve({upper:hip,middle:knee,a:dimensions.thigh,b:dimensions.shin},footTarget,position(knee).add(new THREE.Vector3(0,0,.2)));

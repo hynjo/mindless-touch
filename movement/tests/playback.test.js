@@ -28,3 +28,10 @@ test('timeline sampling has no state: pausing and resuming preserves the pose',(
   timeline.sample(20);
   assert.deepEqual(timeline.sample(4.25),paused);
 });
+test('contact timing uses linear transition progress rather than eased pose blend',()=>{
+ const timeline=createTimeline([{holdSeconds:1,transitionSeconds:2},{holdSeconds:1}]);
+ assert.equal(timeline.sample(.5).progress,0);
+ const quarter=timeline.sample(1.5);assert.equal(quarter.progress,.25);assert.equal(quarter.mix,.15625);
+ assert.equal(timeline.sample(2.5).progress,.75);
+ assert.equal(timeline.sample(3).progress,0);
+});

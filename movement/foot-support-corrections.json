@@ -1,0 +1,419 @@
+{
+  "ChairTwistBindUp": {
+    "rootPosition": [
+      0,
+      0.9707336026079281,
+      0
+    ],
+    "rotations": {
+      "rightFootArch": [
+        8,
+        0,
+        0
+      ]
+    }
+  },
+  "Chair": {
+    "rootPosition": [
+      0,
+      0.818857345456084,
+      0
+    ],
+    "rotations": {
+      "leftFootArch": [
+        8,
+        0,
+        0
+      ],
+      "rightFootArch": [
+        8,
+        0,
+        0
+      ]
+    }
+  },
+  "WarriorIKneeling": {
+    "rootPosition": [
+      0,
+      0.5407336026079281,
+      0
+    ],
+    "rotations": {
+      "leftFootArch": [
+        8,
+        0,
+        0
+      ]
+    }
+  },
+  "CrescentMoon": {
+    "rootPosition": [
+      0,
+      0.9707336026079281,
+      0
+    ],
+    "rotations": {
+      "leftFootArch": [
+        8,
+        0,
+        0
+      ],
+      "rightFootArch": [
+        8,
+        0,
+        0
+      ]
+    }
+  },
+  "Eagle": {
+    "rootPosition": [
+      0,
+      0.8963230699055207,
+      0
+    ],
+    "rotations": {
+      "leftAnkle": [
+        -19.314081202672238,
+        2.880949708398886,
+        -8.161116270770412
+      ],
+      "leftFootArch": [
+        8,
+        0,
+        0
+      ]
+    }
+  },
+  "StandingHandToToeExtended": {
+    "rootPosition": [
+      0,
+      0.9707336026079281,
+      0
+    ],
+    "rotations": {
+      "rightFootArch": [
+        8,
+        0,
+        0
+      ]
+    }
+  },
+  "TortoiseBind": {
+    "rootPosition": [
+      0,
+      0.817392217687887,
+      0
+    ],
+    "rotations": {
+      "leftAnkle": [
+        -8.887327609866352e-15,
+        4.14422892501304e-15,
+        -25.00000000000001
+      ],
+      "leftFootArch": [
+        8,
+        0,
+        0
+      ],
+      "rightAnkle": [
+        -8.887327609866352e-15,
+        -4.14422892501304e-15,
+        25.00000000000001
+      ],
+      "rightFootArch": [
+        8,
+        0,
+        0
+      ]
+    }
+  },
+  "TortoiseBindII": {
+    "rootPosition": [
+      0,
+      0.8720353477743088,
+      0
+    ],
+    "rotations": {
+      "leftAnkle": [
+        9.8510761165839,
+        -1.7279410723505093,
+        -9.85107611658391
+      ],
+      "leftFootArch": [
+        8,
+        0,
+        0
+      ],
+      "rightAnkle": [
+        9.8510761165839,
+        1.7279410723505093,
+        9.85107611658391
+      ],
+      "rightFootArch": [
+        8,
+        0,
+        0
+      ]
+    }
+  },
+  "HalfMoon": {
+    "rootPosition": [
+      0,
+      0.6647943825687748,
+      0
+    ],
+    "rotations": {
+      "rightAnkle": [
+        -25.18167821467858,
+        10.959090673738656,
+        -22.01524455359157
+      ],
+      "rightFootArch": [
+        8,
+        0,
+        0
+      ]
+    }
+  },
+  "StaffInverted": {
+    "rootPosition": [
+      0,
+      0.6220544136515516,
+      0
+    ],
+    "rotations": {
+      "leftAnkle": [
+        50.00000000000003,
+        0,
+        0
+      ],
+      "leftFootArch": [
+        8,
+        0,
+        0
+      ],
+      "rightAnkle": [
+        50.00000000000003,
+        0,
+        0
+      ],
+      "rightFootArch": [
+        8,
+        0,
+        0
+      ]
+    }
+  },
+  "Lizard": {
+    "rootPosition": [
+      0,
+      0.2800000000000001,
+      0
+    ],
+    "rotations": {
+      "leftFootArch": [
+        8,
+        0,
+        0
+      ]
+    }
+  },
+  "PyramidPrayer": {
+    "rootPosition": [
+      0,
+      0.8501582994594471,
+      0
+    ],
+    "rotations": {
+      "leftAnkle": [
+        24.999999999999993,
+        0,
+        0
+      ],
+      "leftFootArch": [
+        8,
+        0,
+        0
+      ],
+      "rightAnkle": [
+        -24.99999999999998,
+        0,
+        0
+      ],
+      "rightFootArch": [
+        8,
+        0,
+        0
+      ]
+    }
+  },
+  "BirdOfParadiseRevolved": {
+    "rootPosition": [
+      0,
+      0.9707336026079281,
+      0
+    ],
+    "rotations": {
+      "rightFootArch": [
+        8,
+        0,
+        0
+      ]
+    }
+  },
+  "HalfMoonRevolved": {
+    "rootPosition": [
+      0,
+      0.9342198323178343,
+      0
+    ],
+    "rotations": {
+      "leftFootArch": [
+        8,
+        0,
+        0
+      ]
+    }
+  },
+  "StandingHandToToeRevolved": {
+    "rootPosition": [
+      0,
+      0.9707336026079281,
+      0
+    ],
+    "rotations": {
+      "rightFootArch": [
+        8,
+        0,
+        0
+      ]
+    }
+  },
+  "LordOfTheDance": {
+    "rootPosition": [
+      0,
+      0.9653746187593055,
+      0
+    ],
+    "rotations": {
+      "leftFootArch": [
+        8,
+        0,
+        0
+      ]
+    }
+  },
+  "TrivikramaI": {
+    "rootPosition": [
+      0,
+      0.9707336026079281,
+      0
+    ],
+    "rotations": {
+      "rightFootArch": [
+        8,
+        0,
+        0
+      ]
+    }
+  },
+  "StandingHandToToeFull": {
+    "rootPosition": [
+      0,
+      0.9707336026079281,
+      0
+    ],
+    "rotations": {
+      "rightFootArch": [
+        8,
+        0,
+        0
+      ]
+    }
+  },
+  "StandingFootBehindHead": {
+    "rootPosition": [
+      0,
+      0.9707336026079281,
+      0
+    ],
+    "rotations": {
+      "rightFootArch": [
+        8,
+        0,
+        0
+      ]
+    }
+  },
+  "SplitsStanding": {
+    "rootPosition": [
+      0,
+      0.9237876755012511,
+      0
+    ],
+    "rotations": {
+      "leftFootArch": [
+        8,
+        0,
+        0
+      ]
+    }
+  },
+  "Star": {
+    "rootPosition": [
+      0,
+      0.9188692564838092,
+      0
+    ],
+    "rotations": {
+      "leftAnkle": [
+        0,
+        0,
+        -19.999999999999996
+      ],
+      "leftFootArch": [
+        8,
+        0,
+        0
+      ],
+      "rightAnkle": [
+        0,
+        0,
+        19.999999999999996
+      ],
+      "rightFootArch": [
+        8,
+        0,
+        0
+      ]
+    }
+  },
+  "TreePrayer": {
+    "rootPosition": [
+      0,
+      0.9707336026079281,
+      0
+    ],
+    "rotations": {
+      "rightFootArch": [
+        8,
+        0,
+        0
+      ]
+    }
+  },
+  "WarriorIII": {
+    "rootPosition": [
+      0,
+      0.930733602607928,
+      0
+    ],
+    "rotations": {
+      "leftFootArch": [
+        8,
+        0,
+        0
+      ]
+    }
+  }
+}

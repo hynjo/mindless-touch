@@ -40,3 +40,16 @@ test('forearm support offsets survive save/load and reject oversized or unknown 
  assert.deepEqual(parseSequence(serializeSequence(original,context),context).steps[0].pose.handOffsets,original.steps[0].pose.handOffsets);
  for(const offsets of [{left:[0,0,-2]},{other:[0,0,0]},{left:[0,NaN,0]}]){const bad=structuredClone(original);bad.steps[0].pose.handOffsets=offsets;assert.throws(()=>validateSequence(bad,context));}
 });
+test('explicit support anchors survive save/load and unknown requirements are rejected',()=>{
+ const original=document();original.steps[0].supportRequirements=['palms','soles'];
+ assert.deepEqual(parseSequence(serializeSequence(original,context),context).steps[0].supportRequirements,['palms','soles']);
+ original.steps[0].supportRequirements=['unknown-surface'];assert.throws(()=>validateSequence(original,context),/support requirements/);
+});
+test('optional transition contact schedules round trip without changing legacy files',()=>{
+ const original=document();const legacy=validateSequence(original,context);assert(!('contactSchedule' in legacy.steps[0]));
+ original.steps[0].contactSchedule={version:1,anchors:[{anchor:'left-sole',start:true,end:true},{anchor:'right-sole',start:true,end:true,release:[.1,.3],landing:[.7,.9]}]};
+ const restored=parseSequence(serializeSequence(original,context),context);
+ assert.deepEqual(restored.steps[0].contactSchedule,original.steps[0].contactSchedule);
+ restored.steps[0].contactSchedule.anchors[1].release[0]=.2;assert.equal(original.steps[0].contactSchedule.anchors[1].release[0],.1);
+ const invalid=structuredClone(original);invalid.steps[0].contactSchedule.anchors[1].landing=[.2,.4];assert.throws(()=>validateSequence(invalid,context),/contact schedule/);
+});

@@ -5,7 +5,7 @@ import {createBody} from '../body.js';
 import {yogaPoses} from '../poses.js';
 import {createFloorConstraints} from '../floor-constraints.js';
 import {applyHandOffsets} from '../hand-offsets.js';
-import {inspectJointRanges,inspectSupports} from '../pose-validation.js';
+import {inspectJointRanges,inspectSupports,evaluateSupportRequirements} from '../pose-validation.js';
 import {supportProfile} from '../support-profiles.js';
 function fixture(name){
  const dimensions={pelvisHeight:.97,torso:.48,shoulderWidth:.44,hipWidth:.22,upperArm:.29,forearm:.26,thigh:.43,shin:.43},material=new THREE.MeshStandardMaterial();
@@ -18,6 +18,26 @@ function fixture(name){
 }
 test('all 167 named variants have an explicit minimum support profile',()=>{
  for(const pose of yogaPoses)assert(supportProfile(pose).requirements.length,pose.name);
+});
+test('opposite-leg contracts cannot be satisfied by a single supporting limb',()=>{
+ const surfaces=Object.fromEntries(['left','right'].flatMap(side=>['sole','heel','toe','knee','foot-top'].map(part=>[side+'-'+part,{name:side+'-'+part,pass:side==='left'}])));
+ for(const requirement of ['opposite-sole-heel','opposite-sole-toe','opposite-sole-knee-foot-top']){
+  assert.equal(evaluateSupportRequirements(surfaces,[requirement])[0].pass,false,requirement);
+ }
+ surfaces['right-heel'].pass=true;assert(evaluateSupportRequirements(surfaces,['opposite-sole-heel'])[0].pass);
+ surfaces['right-toe'].pass=true;assert(evaluateSupportRequirements(surfaces,['opposite-sole-toe'])[0].pass);
+ surfaces['right-knee'].pass=true;assert.equal(evaluateSupportRequirements(surfaces,['opposite-sole-knee-foot-top'])[0].pass,false);
+ surfaces['right-foot-top'].pass=true;assert(evaluateSupportRequirements(surfaces,['opposite-sole-knee-foot-top'])[0].pass);
+});
+test('Crescent Lunge allows the rear heel to lift while kneeling lunge requires the rear foot top',()=>{
+ assert.deepEqual(supportProfile({source:'https://www.pocketyoga.com/pose/LungeCrescent',category:'Standing'}).requirements,['opposite-sole-toe']);
+ assert.deepEqual(supportProfile({source:'https://www.pocketyoga.com/pose/WarriorIKneeling',category:'Standing'}).requirements,['opposite-sole-knee-foot-top']);
+ assert.deepEqual(supportProfile({source:'https://www.pocketyoga.com/pose/TriangleRevolved',category:'Standing'}).requirements,['soles','any-hand']);
+});
+test('one penetrated palm patch cannot pass just because the highest patch is close to the floor',()=>{
+ const {rig,pose}=fixture('Dolphin');rig.hands.left.palm.rotation.x+=.12;
+ const surface=inspectSupports(rig,pose).surfaces['left-palm'];
+ assert(surface.gapMm<5);assert(surface.minGapMm<-1);assert.equal(surface.pass,false);
 });
 test('collision-free Caterpillar still fails seated support while its entire palms pass',()=>{
  const {rig,pose,floor}=fixture('Caterpillar'),s=inspectSupports(rig,pose);

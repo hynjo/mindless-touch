@@ -10,6 +10,7 @@ import {createPoleConstraints,POLE,capturePose} from './pole-constraints.js';
 import {SEQUENCE_FORMAT,SEQUENCE_VERSION,MAX_STEPS,parseSequence,serializeSequence} from './sequence-file.js';
 import { sunSalutation } from './examples.js';
 import {neckStretching} from './neck-example.js';
+import {ashtangaShortPractice} from './ashtanga-example.js';
 import {yogaPoses} from './poses.js';
 import { createTimeline } from './playback.js';
 import { poleFlow } from './pole-example.js';
@@ -17,14 +18,32 @@ import {samplePoleMotion} from './pole-motion.js';
 import {createFloorConstraints} from './floor-constraints.js';
 import {placeHandsAndKnees,placePalmsOnFloor,palmsAreSupported,preparePalmLanding} from './palm-support.js';
 const poleStudio = document.body.dataset.studio === 'pole';
-const examples = poleStudio ? [poleFlow] : [sunSalutation,neckStretching];
+const examples = poleStudio ? [poleFlow] : [sunSalutation,neckStretching,ashtangaShortPractice];
+// Browsers may restore live form values across Vite reloads. Reset transient
+// controls so their visible values match the freshly-created application state.
+const exampleControl=document.querySelector('#example'),speedControl=document.querySelector('#playback-speed');
+for(const example of examples)if(!exampleControl.querySelector(`option[value="${example.id}"]`))exampleControl.add(new Option(example.name,example.id));
+exampleControl.value=poleStudio?'pole-flow':'';speedControl.value='1';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import {enableStageResize} from './stage-resize.js';
+import {enableSequencePanel} from './sequence-panel.js';
+import {inspectSupports} from './pose-validation.js';
+import {supportProfile} from './support-profiles.js';
+import {projectSupportPose} from './support-solver.js';
+import {sampleContactSchedule} from './contact-schedule.js';
+import {inspectScheduledHolds} from './scheduled-supports.js';
+import {enablePlaybackToolbar,setPlaybackIcon} from './playback-toolbar.js';
+enablePlaybackToolbar();
 
 // Dimensions remain separate from pose data so proportions can become editable.
 const dimensions = { pelvisHeight: 0.97, torso: 0.48, shoulderWidth: 0.44, hipWidth: 0.22, upperArm: 0.29, forearm: 0.26, thigh: 0.43, shin: 0.43 };
 const viewport = document.querySelector('#viewport');
 const scene = new THREE.Scene();
-scene.background = new THREE.Color('#000000');
+// Continue the studio backdrop above the floor horizon instead of showing a
+// black band that looks like unused space above the canvas.
+scene.background = new THREE.Color('#2d2c24');
+// Blend the lit floor into the unlit backdrop before the far clipping plane.
+scene.fog = new THREE.Fog(scene.background, 10, 40);
 const camera = new THREE.PerspectiveCamera(35, 1, 0.01, 50);
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
@@ -271,6 +290,25 @@ let lastSelfPlaybackTime=0;
 const selfStatus=document.createElement('p');selfStatus.id='self-contact-status';selfStatus.setAttribute('role','status');document.querySelector('label[for=joint]').before(selfStatus);
 function updateSelfContactUI(blocked=false){const overlaps=selfConstraints.contacts(),limits=selfConstraints.jointViolations();selfStatus.textContent=limits.length?`${limits[0].id}: wrist bend or tilt exceeds its range. Adjust the hand or arm before playback.`:overlaps.length?`Body overlap: ${overlaps[0].a} / ${overlaps[0].b}. Move the parts apart before playback.`:blocked?'Movement stopped at contact or a wrist limit.':'Body and hand collision · Wrist limits on';selfStatus.dataset.error=String(blocked||overlaps.length>0||limits.length>0);}
 const palmRig = {root,hands,byId,dimensions,meshes:physicalMeshes};
+const supportRig={...palmRig,joints,feet,headMesh,self:selfConstraints};
+const fitSupportsButton=document.createElement('button');fitSupportsButton.type='button';fitSupportsButton.id='fit-supports';fitSupportsButton.textContent='Fit supports';fitSupportsButton.hidden=poleStudio;
+const fitSupportsStatus=document.createElement('p');fitSupportsStatus.id='fit-supports-status';fitSupportsStatus.setAttribute('role','status');fitSupportsStatus.hidden=true;
+document.querySelector('label[for=joint]').before(fitSupportsButton,fitSupportsStatus);
+fitSupportsButton.addEventListener('click',()=>{
+ const step=sequence.steps[playback.index];if(!step?.supportRequirements?.length)return;
+ closeHand();pausePlayback();endDrag();
+ const previousCard=capturedStep(step);
+ const result=projectSupportPose(supportRig,step,{maxPasses:32});
+ fitSupportsStatus.hidden=false;
+ if(!result.accepted){fitSupportsStatus.textContent=result.reason==='unsupported-support-family'?'This support combination needs a different repair method. The pose was kept unchanged.':'Could not fit every support within the joint and collision limits. The pose was kept unchanged.';return;}
+ if(!result.changed){fitSupportsStatus.textContent='All required supports and current pose checks already pass.';return;}
+ // Keep the previous card for Undo, then commit the accepted pose without a
+ // subsequent floor-settle pass that could detach one of its supports.
+ sequence.steps[playback.index]=previousCard;rememberSequence();sequence.steps[playback.index]=capturedStep(step);playback.edited=false;
+ const accepted=capturePose(root,joints);floorConstraints.restore({pose:accepted,safe:accepted});selfConstraints.sync();
+ rebuildSequence();selectExampleStep(playback.index,false);
+ fitSupportsStatus.hidden=false;fitSupportsStatus.textContent='Supports fitted. Undo restores the previous card.';
+});
 const floorContactMarkers = new THREE.Group();floorContactMarkers.visible=!poleStudio;scene.add(floorContactMarkers);
 for (let i=0;i<4;i++) {const marker = new THREE.Mesh(new THREE.RingGeometry(.057,.064,32),new THREE.MeshBasicMaterial({color:'#397b5a',side:THREE.DoubleSide,transparent:true,opacity:.8,depthWrite:false,depthTest:false}));marker.rotation.x=-Math.PI/2;marker.renderOrder=3;floorContactMarkers.add(marker);}
 function updateFloorContacts() {
@@ -282,6 +320,13 @@ function updateFloorContacts() {
   floorContactMarkers.children.forEach((marker,i)=>{marker.visible=!!points[i];if(points[i])marker.position.copy(points[i]);});
   const status=document.querySelector('#floor-contact-status');
   if(status) status.textContent=`Floor collision on / ${points.length} contact area${points.length===1 ? '':'s'}`;
+  const step=sequence.steps[playback.index];
+  fitSupportsButton.disabled=playback.playing||!step?.supportRequirements?.length;
+  if(status&&step?.supportRequirements?.length&&!playback.playing){
+    const inspection=inspectSupports({root,byId,hands,feet,headMesh},step);
+    status.dataset.error=String(inspection.issues.length>0);
+    status.textContent=inspection.issues.length?`Support needs adjustment: ${inspection.issues.map(issue=>issue.name).join(', ')}. Floor clearance alone does not confirm support.`:'Required floor supports are in contact.';
+  }else if(status)status.dataset.error='false';
 }
 function updateContactUI(message) {
   if (!poleStudio) return;
@@ -504,9 +549,10 @@ function updatePlaybackUI() {
   document.querySelector('#play-sequence').disabled=!sequence.steps.length;
   document.querySelector('#restart-sequence').disabled=!sequence.steps.length;
   document.querySelector('#download').disabled=!sequence.steps.length;
-  document.querySelector('#play-sequence').textContent = playback.playing ? 'Pause' : playback.time >= timeline.duration ? 'Replay' : 'Play';
+  setPlaybackIcon(document.querySelector('#play-sequence'),playback.playing ? 'Pause' : playback.time >= timeline.duration ? 'Replay' : 'Play');
   const format = value => `${Math.floor(value/60)}:${String(Math.floor(value%60)).padStart(2,'0')}`;
   document.querySelector('#playback-time').textContent = `${format(playback.time)} / ${format(timeline.duration)}`;
+  if(!playback.playing)updateFloorContacts();
 }
 function pausePlayback() {
   playback.playing = false;playback.lastTick = null;updatePlaybackUI();
@@ -559,6 +605,14 @@ function renderPlayback() {
     surface.restore(surfaceBefore);selfConstraints.restore(selfBefore);playback.time=lastSelfPlaybackTime;playback.index=timeline.sample(playback.time).index;pausePlayback();updateSelfContactUI(true);updateFloorContacts();
     sequenceMessage(`Transition blocked: ${reason} (${transition}). Adjust the pose or add an intermediate pose.`,true);return;
   }
+  if(!poleStudio&&sample.index!==sample.next&&sequence.steps[sample.index].contactSchedule){
+    const scheduled=sampleContactSchedule(sequence.steps[sample.index].contactSchedule,sample.progress);
+    const inspection=inspectSupports(supportRig,{supportRequirements:scheduled.requiredAnchors});
+    if(inspection.issues.length){
+      surface.restore(surfaceBefore);selfConstraints.restore(selfBefore);playback.time=lastSelfPlaybackTime;playback.index=timeline.sample(playback.time).index;pausePlayback();updateFloorContacts();
+      sequenceMessage(`Transition blocked: scheduled contact missing (${inspection.issues.map(issue=>issue.name.replaceAll('-',' ')).join(', ')}). Adjust the pose or release/landing timing.`,true);return;
+    }
+  }
   lastSelfPlaybackTime=playback.time;
   root.updateWorldMatrix(true,true);
   playback.index = sample.index;
@@ -569,6 +623,7 @@ function renderPlayback() {
 function selectExampleStep(index,flush=true) {
   if(flush)flushPendingPose();
   if(!sequence.steps[index])return;
+  fitSupportsStatus.hidden=true;
   closeHand();pausePlayback();playback.time = timeline.startOf(index);playback.index = index;playback.edited = false;
   applyExamplePose(sequence.steps[index]);selfConstraints.sync();updateSelfContactUI();lastSelfPlaybackTime=playback.time;
   updateContactUI();updateFloorContacts();
@@ -578,6 +633,10 @@ function selectExampleStep(index,flush=true) {
 function playSequence(restart=false) {
   flushPendingPose();
   if (!sequenceFrames.length) return;
+  if(!poleStudio){
+    const issues=inspectScheduledHolds(supportRig,sequence.steps,sequenceFrames);
+    if(issues.length){pausePlayback();sequenceMessage(`Contact schedule needs adjustment: ${issues[0].reason}`,true);return;}
+  }
   closeHand();endDrag();
   if (restart || playback.time >= timeline.duration){playback.time=0;applyExamplePose(sequence.steps[0]);selfConstraints.sync();}
   else if (playback.edited) playback.time = timeline.startOf(playback.index);
@@ -591,7 +650,7 @@ function playSequence(restart=false) {
 }
 document.querySelector('#play-sequence').onclick = () => playback.playing ? pausePlayback() : playSequence();
 document.querySelector('#restart-sequence').onclick = () => playSequence(true);
-document.querySelector('#playback-speed').onchange = event => {playback.speed = Number(event.target.value);};
+speedControl.onchange = event => {playback.speed = Number(event.target.value);};
 document.addEventListener('visibilitychange',() => {if (document.hidden) pausePlayback();});
 function statusText(message){document.querySelector('#sequence-status').textContent=message;}
 function sequenceMessage(message,error=false){const node=document.querySelector('#sequence-message');node.textContent=message;node.dataset.error=String(error);}
@@ -600,6 +659,8 @@ function storedPose(){const offsets=Object.fromEntries(Object.entries(captureHan
 function capturedStep(previous={}) {
   const pose=storedPose();
   const step={id:previous.id||crypto.randomUUID(),name:previous.name||`Pose ${sequence.steps.length+1}`,kind:previous.kind||'pose',cue:previous.cue||'',holdSeconds:previous.holdSeconds??1.4,transitionSeconds:previous.transitionSeconds??2.2,pose};
+  if(!poleStudio&&(previous.supportRequirements||previous.source))step.supportRequirements=[...supportProfile(previous).requirements];
+  if(previous.contactSchedule)step.contactSchedule=structuredClone(previous.contactSchedule);
   if(poleStudio){
     let angle=Math.atan2(pose.rootPosition[0],pose.rootPosition[2]);
     const reference=previous.orbit?.angle??sequence.steps.at(-1)?.orbit?.angle??angle;
@@ -675,9 +736,9 @@ function flushPendingPose(){
 }
 function updateExampleNote(){
  const note=document.querySelector('#example-note');if(!note)return;
- const example=examples.find(item=>item.id===document.querySelector('#example').value);
+ const example=examples.find(item=>item.id===exampleControl.value);
  note.replaceChildren();note.hidden=!example?.description;
- if(example?.description){note.append(document.createTextNode(example.description+' '));if(example.source){const link=document.createElement('a');link.href=example.source;link.textContent='Reference: Shape and Strength';link.target='_blank';link.rel='noopener noreferrer';note.append(link);}}
+ if(example?.description){note.append(document.createTextNode(example.description+' '));if(example.source){const link=document.createElement('a');link.href=example.source;link.textContent=`Reference: ${example.sourceLabel||'source guide'}`;link.target='_blank';link.rel='noopener noreferrer';note.append(link);}}
 }
 function replaceSequence(next,index=0){sequence=next;playback.index=next.steps.length?Math.max(0,Math.min(index,next.steps.length-1)):-1;playback.edited=false;rebuildSequence();if(sequence.steps.length)selectExampleStep(playback.index,false);updateExampleNote();}
 function validatePoses(next){
@@ -685,7 +746,7 @@ function validatePoses(next){
   try{for(const [index,step] of next.steps.entries()){applyExamplePose(step);const clearance=poleStudio?poleConstraints.clearance():floorConstraints.clearance();if(clearance<-.0001)throw new Error(`Pose ${index+1} intersects the ${poleStudio?'pole':'floor'}. The current sequence has not been replaced.`);}}
   finally{if(poleStudio)poleConstraints.restore(saved);else floorConstraints.restore(saved);}
 }
-document.querySelector('#example').addEventListener('change',event=>{
+exampleControl.addEventListener('change',event=>{
   const example=examples.find(item=>item.id===event.target.value);
   if(!example){updateExampleNote();return;}
   flushPendingPose();rememberSequence();closeHand();pausePlayback();
@@ -716,7 +777,7 @@ for(const [id,key] of [['pose-name','name'],['pose-hold','holdSeconds'],['pose-t
   flushPendingPose();rememberSequence();sequence.steps[playback.index][key]=value;rebuildSequence();sequenceMessage('Card settings updated.');
 };
 document.querySelector('#sequence-name').onchange=event=>{const name=event.target.value.trim();if(!name){event.target.value=sequence.name;return;}rememberSequence();sequence.name=name;document.querySelector('#sequence-heading').textContent=name;};
-document.querySelector('#new-sequence').onclick=()=>{flushPendingPose();rememberSequence();document.querySelector('#example').value='';replaceSequence(emptySequence());sequenceMessage('New sequence. Add a pose to begin. Undo restores the previous sequence.');};
+document.querySelector('#new-sequence').onclick=()=>{flushPendingPose();rememberSequence();exampleControl.value='';replaceSequence(emptySequence());sequenceMessage('New sequence. Add a pose to begin. Undo restores the previous sequence.');};
 document.querySelector('#undo-sequence').onclick=()=>{
   if(playback.edited&&sequence.steps[playback.index]){playback.edited=false;selectExampleStep(playback.index,false);sequenceMessage('Pending pose edits reverted.');return;}
   const previous=sequenceHistory.pop();if(!previous)return;replaceSequence(previous.sequence,previous.index);document.querySelector('#undo-sequence').disabled=!sequenceHistory.length;sequenceMessage('Sequence change undone.');
@@ -736,15 +797,17 @@ document.querySelector('#sequence-file').onchange=async event=>{
   try{
     if(file.size>2*1024*1024)throw new Error('Choose a sequence file smaller than 2 MB.');
     const next=parseSequence(await file.text(),fileContext);validatePoses(next);
-    flushPendingPose();rememberSequence();document.querySelector('#example').value='';replaceSequence(next);sequenceMessage(`Loaded ${next.steps.length} poses from ${file.name}.`);
+    flushPendingPose();rememberSequence();exampleControl.value='';replaceSequence(next);sequenceMessage(`Loaded ${next.steps.length} poses from ${file.name}.`);
   }catch(error){sequenceMessage(error.message,true);}
   finally{event.target.value='';}
 };
 new ResizeObserver(() => {const {width,height} = viewport.getBoundingClientRect();camera.aspect = width/height;camera.updateProjectionMatrix();renderer.setSize(width,height,false);}).observe(viewport);
+enableStageResize(document.querySelector('.stage'));
+enableSequencePanel();
 if (floorConstraints) {floorConstraints.settle();updateFloorContacts();}
 selfConstraints.sync();updateSelfContactUI();
 choose(poleStudio ? 'leftWrist':'neck');setView('perspective');setMode(poleStudio ? 'view':'pose');
-if (poleStudio) document.querySelector('#example').dispatchEvent(new Event('change'));else rebuildSequence();
+if (poleStudio) exampleControl.dispatchEvent(new Event('change'));else rebuildSequence();
 renderer.setAnimationLoop(now => {
   if (playback.playing) {
     const elapsed = playback.lastTick === null ? 0 : Math.min((now-playback.lastTick)/1000,.1);
@@ -763,6 +826,7 @@ if(poseLibrary){
  let page=0,generation=0;
  const search=poseLibrary.querySelector('#pose-search'),category=poseLibrary.querySelector('#pose-category'),difficulty=poseLibrary.querySelector('#pose-difficulty');
  for(const name of [...new Set(yogaPoses.map(p=>p.category))].sort()){const option=document.createElement('option');option.value=name;option.textContent=name;category.append(option);}
+ search.value='';category.value='';difficulty.value='';
  async function renderLibrary(){
   const request=++generation;
   const query=search.value.trim().toLowerCase();

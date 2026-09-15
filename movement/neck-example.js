@@ -19,6 +19,7 @@ const reachLeft={leftShoulder:[24.962795138893966,-98.23500407759448,-157.509788
 export const neckStretching={
  id:'neck-stretching',name:'Neck Stretching',
  source:'https://shapeandstrength.com/neck-pain-exercises/',
+ sourceLabel:'Shape and Strength',
  description:'About 2 minutes · One shortened round of rotations, side bends and assisted upper-trapezius stretches. Move within a comfortable range; stop if painful. Rest the hand lightly and do not pull on your head.',
  steps:[
   step('neck-start','Stand Tall','Face forward. Let your shoulders rest.',[0,0,0],3),
@@ -50,3 +51,4 @@ export const neckStretching={
   step('neck-finish','Finish in Neutral','Face forward and relax.',[0,0,0],3),
  ],
 };
+for(const step of neckStretching.steps)step.supportRequirements=['soles'];

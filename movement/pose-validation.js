@@ -42,7 +42,7 @@ export function inspectJointRanges(joints){
 export function inspectSupports(rig,pose){
  const {root,byId,hands,feet}=rig;root.updateWorldMatrix(true,true);
  const surfaces={};
- const add=(name,gaps,note='',alignment=null,minimumAlignment=.95)=>{const gap=Math.max(...gaps)*1000;surfaces[name]={name,gapMm:round(gap),minGapMm:round(Math.min(...gaps)*1000),alignment:alignment===null?null:round(alignment),minimumAlignment:alignment===null?null:minimumAlignment,pass:gap<=CONTACT_TOLERANCE_MM+1e-7&&gap>=-1&&(alignment===null||alignment>=minimumAlignment),note};};
+ const add=(name,gaps,note='',alignment=null,minimumAlignment=.95)=>{const gap=Math.max(...gaps)*1000,minGap=Math.min(...gaps)*1000;surfaces[name]={name,gapMm:round(gap),minGapMm:round(minGap),alignment:alignment===null?null:round(alignment),minimumAlignment:alignment===null?null:minimumAlignment,pass:gap<=CONTACT_TOLERANCE_MM+1e-7&&minGap>=-1&&(alignment===null||alignment>=minimumAlignment),note};};
  const meshContact=(name,mesh)=>add(name,[lowest(mesh)]);
  meshContact('seat',bodyMesh(root));
  const core=[bodyMesh(root),bodyMesh(byId.waist.group)];
@@ -73,8 +73,21 @@ export function inspectSupports(rig,pose){
   add(side+'-foot-top',[Math.min(...foot.meshes.map(lowest))],'Top-of-foot orientation plus contact; articulated dorsal surface is approximate.',facing(foot.wrist,new THREE.Vector3(0,1,0)),.5);
   add(side+'-foot-edge',[Math.min(...foot.meshes.map(lowest))],'Side-edge contact proxy.');
  }
+ const profile=supportProfile(pose),requirements=evaluateSupportRequirements(surfaces,profile.requirements);
+ return {profile,requirements,issues:requirements.filter(r=>!r.pass),surfaces,actualContactRegions:Object.values(surfaces).filter(s=>s.minGapMm<=CONTACT_TOLERANCE_MM).map(s=>s.name)};
+}
+export function evaluateSupportRequirements(surfaces,requirements){
  const bilateral={palms:'palm',forearms:'forearm',elbows:'elbow',shins:'shin',knees:'knee',soles:'sole',heels:'heel',forefeet:'forefoot',toes:'toe','foot-tops':'foot-top',fingertips:'fingertip'};
  const assess=name=>{
+  const opposite={'opposite-sole-heel':['heel'],'opposite-sole-toe':['toe'],'opposite-sole-knee-foot-top':['knee','foot-top']}[name];
+  if(opposite){
+   const alternatives=['left','right'].map(side=>{
+    const other=side==='left'?'right':'left',names=[side+'-sole',...opposite.map(part=>other+'-'+part)];
+    const samples=names.map(n=>surfaces[n]);
+    return {name:names.join(' + '),pass:samples.every(s=>s.pass),samples};
+   });
+   return {name,pass:alternatives.some(a=>a.pass),alternatives};
+  }
   if(name==='palms-or-forearms'||name==='head-or-chest'){
    const alternatives=(name==='palms-or-forearms'?['palms','forearms']:['head','front-chest']).map(assess);
    return {name,pass:alternatives.some(a=>a.pass),alternatives};
@@ -83,7 +96,6 @@ export function inspectSupports(rig,pose){
   const samples=names.map(n=>{if(!surfaces[n])throw new Error(`Unknown support ${n}`);return surfaces[n];});
   return {name,pass:name.startsWith('any-')?samples.some(s=>s.pass):samples.every(s=>s.pass),samples};
  };
- const profile=supportProfile(pose),requirements=profile.requirements.map(assess);
- return {profile,requirements,issues:requirements.filter(r=>!r.pass),surfaces,actualContactRegions:Object.values(surfaces).filter(s=>s.minGapMm<=CONTACT_TOLERANCE_MM).map(s=>s.name)};
+ return requirements.map(assess);
 }
 export function inspectPose(rig,pose){return {supports:inspectSupports(rig,pose),rom:inspectJointRanges(rig.joints)};}

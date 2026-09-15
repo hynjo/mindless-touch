@@ -7,6 +7,7 @@ import {createFloorConstraints,floorClearance,FLOOR_SKIN} from '../floor-constra
 import {createTimeline} from '../playback.js';
 import {sunSalutation} from '../examples.js';
 import {placePalmsOnFloor,palmsAreSupported,preparePalmLanding} from '../palm-support.js';
+import {inspectSupports} from '../pose-validation.js';
 const dimensions={pelvisHeight:.97,torso:.48,shoulderWidth:.44,hipWidth:.22,upperArm:.29,forearm:.26,thigh:.43,shin:.43};
 function fixture() {
   const scene=new THREE.Scene(),material=new THREE.MeshStandardMaterial();
@@ -63,6 +64,7 @@ test('both Forward Folds keep rendered hand vertices above the floor with flat p
   rig.root.position.fromArray(step.rootPosition);
   for(const joint of rig.joints)joint.group.rotation.set(...(step.rotations[joint.id]||[0,0,0]).map(THREE.MathUtils.degToRad));
   placePalmsOnFloor(rig);rig.floor.settle();rig.root.updateWorldMatrix(true,true);
+  assert.deepEqual(inspectSupports(rig,step).issues,[],`${step.id}: both palms AND both soles must support the hold`);
   for(const hand of Object.values(rig.hands)){
    for(const mesh of hand.meshes){
     const vertices=mesh.geometry.attributes.position;
