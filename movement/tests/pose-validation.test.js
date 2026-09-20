@@ -7,6 +7,9 @@ import {createFloorConstraints} from '../floor-constraints.js';
 import {applyHandOffsets} from '../hand-offsets.js';
 import {inspectJointRanges,inspectSupports,evaluateSupportRequirements} from '../pose-validation.js';
 import {supportProfile} from '../support-profiles.js';
+import {createSelfConstraints} from '../self-constraints.js';
+import {capturePose,restorePose} from '../pole-constraints.js';
+import {ashtangaShortPractice} from '../ashtanga-example.js';
 function fixture(name){
  const dimensions={pelvisHeight:.97,torso:.48,shoulderWidth:.44,hipWidth:.22,upperArm:.29,forearm:.26,thigh:.43,shin:.43},material=new THREE.MeshStandardMaterial();
  const body=createBody({scene:new THREE.Scene(),dimensions,bodyMaterial:material,jointMaterial:material}),pose=yogaPoses.find(p=>p.name===name),meshes=[];
@@ -16,8 +19,36 @@ function fixture(name){
  for(const j of body.joints)j.group.rotation.set(...(pose.rotations[j.id]||[0,0,0]).map(THREE.MathUtils.degToRad));
  const floor=createFloorConstraints(rig);floor.settle();return {rig,pose,floor};
 }
-test('all 167 named variants have an explicit minimum support profile',()=>{
+test('all named variants have an explicit minimum support profile',()=>{
  for(const pose of yogaPoses)assert(supportProfile(pose).requirements.length,pose.name);
+});
+test('Bound Angle preserves seated sole-to-sole contact after save and restore',()=>{
+ const {rig,pose,floor}=fixture('Bound Angle'),self=createSelfConstraints(rig);
+ assert.deepEqual(supportProfile(pose).requirements,['sit-bones','sole-pair']);
+ const saved=capturePose(rig.root,rig.joints);rig.root.position.y+=.1;restorePose(rig.root,rig.joints,saved);floor.settle();
+ const inspection=inspectSupports(rig,pose);
+ assert(inspection.surfaces.seat.pass,'the pelvis must not float to accommodate the feet');
+ assert(inspection.surfaces['left-sit-bone'].pass&&inspection.surfaces['right-sit-bone'].pass,'both ischial landmarks must support the pelvis');
+ assert.deepEqual(inspection.issues,[]);
+ assert(inspection.actualContactRegions.includes('sole-pair'));
+ assert(inspection.surfaces['sole-pair'].separatingPlaneOverrunMm<1);
+ assert.deepEqual(inspectJointRanges(rig.joints).issues,[]);
+ assert.deepEqual(self.contacts(),[]);assert.deepEqual(self.jointViolations(),[]);
+ assert(pose.draft);assert.match(pose.modification,/No hand grip/);
+ rig.byId.leftHip.group.rotation.z+=.08;rig.root.updateWorldMatrix(true,true);
+ assert(inspectSupports(rig,pose).issues.some(i=>i.name==='sole-pair'),'a separated pair must still fail');
+ for(const step of ashtangaShortPractice.steps.filter(p=>p.source?.endsWith('/BoundAngle'))){
+  assert.deepEqual(supportProfile(step).requirements,['seat','any-foot-edge'],'explicit open-foot examples stay distinct');
+ }
+});
+test('bilateral sit-bone support rejects a tilted seated pelvis and stays distinct from supine pelvis contact',()=>{
+ const seated=fixture('Bound Angle'),supine=fixture('Corpse');
+ assert(supportProfile(seated.pose).requirements.includes('sit-bones'));
+ assert(!supportProfile(supine.pose).requirements.includes('sit-bones'));
+ seated.rig.root.rotation.z=.12;seated.rig.root.updateWorldMatrix(true,true);
+ const result=inspectSupports(seated.rig,seated.pose);
+ assert(result.issues.some(issue=>issue.name==='sit-bones'));
+ assert.notEqual(result.surfaces['left-sit-bone'].gapMm,result.surfaces['right-sit-bone'].gapMm);
 });
 test('opposite-leg contracts cannot be satisfied by a single supporting limb',()=>{
  const surfaces=Object.fromEntries(['left','right'].flatMap(side=>['sole','heel','toe','knee','foot-top'].map(part=>[side+'-'+part,{name:side+'-'+part,pass:side==='left'}])));
@@ -42,7 +73,7 @@ test('one penetrated palm patch cannot pass just because the highest patch is cl
 test('collision-free Caterpillar still fails seated support while its entire palms pass',()=>{
  const {rig,pose,floor}=fixture('Caterpillar'),s=inspectSupports(rig,pose);
  assert(floor.clearance()>0);assert(s.requirements.find(r=>r.name==='palms').pass);
- assert(!s.requirements.find(r=>r.name==='seat').pass);assert(s.surfaces.seat.gapMm>300);
+ assert(!s.requirements.find(r=>r.name==='sit-bones').pass);assert(s.surfaces['left-sit-bone'].gapMm>300);
 });
 test('Dolphin forearm support detects an endpoint-only contact and preserves OR alternatives',()=>{
  const {rig,pose,floor}=fixture('Dolphin');assert.equal(inspectSupports(rig,pose).issues.length,0);

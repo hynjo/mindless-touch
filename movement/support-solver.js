@@ -1,3 +1,4 @@
+import {inspectPoseForm} from './pose-contracts.js';
 import {capturePose,restorePose} from './pole-constraints.js';
 import {floorClearance,FLOOR_SKIN} from './floor-constraints.js';
 import {inspectSupports,inspectJointRanges} from './pose-validation.js';
@@ -10,10 +11,10 @@ export function projectSupportPose(rig,pose,{maxPasses=16}={}) {
  const preservedContacts=new Set();
  const inspect=()=>{
   rig.root.updateWorldMatrix(true,true);
-  return {supports:inspectSupports(rig,pose),rom:inspectJointRanges(rig.joints),
+  return {form:inspectPoseForm(rig,pose),supports:inspectSupports(rig,pose),rom:inspectJointRanges(rig.joints),
    clearance:Math.min(...rig.meshes.map(floorClearance)),contacts:self.contacts(),wristIssues:self.jointViolations()};
  };
- const valid=r=>!r.supports.issues.length&&!r.rom.issues.length&&!r.contacts.length&&!r.wristIssues.length&&r.clearance>=FLOOR_SKIN-.00002&&[...preservedContacts].every(name=>r.supports.surfaces[name]?.pass);
+ const valid=r=>!r.form.issues.length&&!r.supports.issues.length&&!r.rom.issues.length&&!r.contacts.length&&!r.wristIssues.length&&r.clearance>=FLOOR_SKIN-.00002&&[...preservedContacts].every(name=>r.supports.surfaces[name]?.pass);
  let before;
  try {
   before=inspect();

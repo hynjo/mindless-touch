@@ -5,7 +5,6 @@ import {createBody} from '../body.js';
 import {yogaPoses} from '../poses.js';
 import {sunSalutation} from '../examples.js';
 import {poleFlow} from '../pole-example.js';
-import {applyHandPreset} from '../hands.js';
 import {createFloorConstraints,floorClearance} from '../floor-constraints.js';
 import {createPoleConstraints,capturePose} from '../pole-constraints.js';
 import {createSelfConstraints} from '../self-constraints.js';
@@ -24,7 +23,6 @@ function apply(r,step){
  applyHandOffsets(r.root,step.handOffsets);
  r.root.position.fromArray(step.rootPosition);
  for(const j of r.joints)j.group.rotation.set(...(step.rotations[j.id]||[0,0,0]).map(THREE.MathUtils.degToRad));
- for(const hand of Object.values(r.hands))applyHandPreset(hand,'open');
  if(r.pole){r.pole.settle();for(const side of ['left','right'])if(step.contacts?.[side+'Wrist'])r.pole.attach(side,{height:step.contacts[side+'Wrist'][1],angle:step.orbit.angle});}
  else {if(step.floorSupport==='palms-knees')placeHandsAndKnees(r);else if(palmsAreSupported(step))placePalmsOnFloor(r);r.floor.settle();}
  r.root.updateWorldMatrix(true,true);

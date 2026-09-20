@@ -46,3 +46,30 @@ All three delegated deliverables have been integrated and reviewed.
 ## Remaining work
 
 The next stage is authored geometry repair for standing and mixed-support poses, starting with Warrior, Triangle and lunges. The bounded solver cannot correct large stance errors, and mixed sole/toe/knee contracts need additional degrees of freedom before they can be projected. Review each authored correction against the reference and adjacent transitions, then proceed through the remaining posture families. World-space contact trajectories remain a separate implementation stage.
+
+## Second increment assignments
+
+Baseline `eff381b` is committed and pushed to `origin/main`.
+
+| Owner | Pose family | Exclusive deliverables |
+| --- | --- | --- |
+| Support solver agent | Warrior I, II, III | `warrior-support-corrections.js`, corresponding tests, `WARRIOR-SUPPORT-REVIEW.md` |
+| Support contract review agent | Triangle and Revolved Triangle | `triangle-support-corrections.js`, corresponding tests, `TRIANGLE-SUPPORT-REVIEW.md` |
+| Contact transition agent | Lunge, Lizard, Crescent Lunge and kneeling Crescent Lunge | `lunge-support-corrections.js`, corresponding tests, `LUNGE-SUPPORT-REVIEW.md` |
+| Primary agent | Integration and cross-family regression | Shared catalog application, audits, examples and final verification |
+
+Each correction must retain its reference intent and pass all declared supports, floor clearance, measured ROM, wrist limits and body-contact checks after runtime placement. Agents export correction maps keyed by reference pose ID; only the primary agent changes the shared catalog. Failed candidates remain unresolved rather than changing acceptance thresholds. Ashtanga's explicitly authored preparation variants remain distinct from catalog reference poses.
+
+### Second increment outcome
+
+All three agents stopped at the usage limit before delivering correction files. The primary agent completed the bounded nine-pose review locally, using `standing-support-corrections.js` and `lunge-support-corrections.js` plus shared integration tests. Eight poses were changed; Warrior III stayed unchanged. See `SUPPORT-FAMILY-REVIEW.md` for per-pose results and remaining reference differences.
+
+The full suite now has 89 passing tests. Catalog support findings fell from 125 to 117 and joint-envelope findings from 65 to 63; example hold support remains 82/82. Large-scale reference alignment, the other posture families and world-space transition contact planning remain open.
+
+### Big Toe follow-up
+
+The Ashtanga preparation was corrected separately and renamed `Forward Fold — Bent Knees`. The catalog `Big Toe` was then corrected as a straight-knee toe-reaching draft with an explicit no-grip label. One read-only sub-agent reviewed the missing grip/collision checks; the primary agent authored and verified the correction. See `BIG-TOE-REVIEW.md`. Current catalog totals are 116 support findings and 62 joint-envelope reviews; a genuine toe-lock constraint remains open.
+
+### Bound Angle follow-up
+
+Added and persisted the missing `sole-pair` requirement, including pad alignment and a conservative complete-foot separating-plane check. The follow-up corrected the hip coordinate convention without widening bounds and authored a raised-knee closed-sole variant. Seat and both sole patches now pass, including save/load. See `BOUND-ANGLE-REVIEW.md`. Full regression: 105 tests pass; 82 example holds retain their supports. Actual hand grip and full anatomical certification remain outside this correction.

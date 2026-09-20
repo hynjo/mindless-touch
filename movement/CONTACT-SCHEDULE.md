@@ -1,5 +1,8 @@
 # Authored transition contacts
 
+`sole-pair` is a geometric contact between feet, not a ground anchor. It may be
+declared in a schedule and is checked for the closed sole-to-sole relation.
+
 `contact-schedule.js` defines optional contact intent for a single outgoing
 transition. It does not alter existing playback or infer contacts from a pose.
 Absence of metadata normalizes and samples to `undefined`.

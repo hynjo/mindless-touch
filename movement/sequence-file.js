@@ -1,4 +1,5 @@
 import {SUPPORT_REQUIREMENTS} from './support-profiles.js';
+import {POSE_CONTRACTS} from './pose-contracts.js';
 import {normalizeContactSchedule} from './contact-schedule.js';
 export const SEQUENCE_FORMAT='movement-sequence';
 export const SEQUENCE_VERSION=1;
@@ -26,6 +27,7 @@ export function validateSequence(input,{studio,dimensions,jointIds}) {
     if(!plain(step)||!plain(step.pose)||!plain(step.pose.rotations))fail(`Pose ${index+1} is invalid.`);
     const id=text(step.id,'Pose ID',100);if(ids.has(id))fail('Duplicate pose IDs.');ids.add(id);
     const supportRequirements=step.supportRequirements;
+    if(step.poseContract!==undefined&&!Object.hasOwn(POSE_CONTRACTS,step.poseContract))fail('Unknown pose contract.');
     const contactSchedule=normalizeContactSchedule(step.contactSchedule);
     if(contactSchedule&&studio!=='movement')fail('Floor contact schedules are supported in Movement Studio only.');
     if(supportRequirements!==undefined&&(!Array.isArray(supportRequirements)||supportRequirements.length>12||supportRequirements.some(name=>!SUPPORT_REQUIREMENTS.has(name))))fail('Invalid support requirements.');
@@ -56,7 +58,7 @@ export function validateSequence(input,{studio,dimensions,jointIds}) {
       orbit={angle:number((step.orbit||fallback).angle,-1000,1000,'Orbit angle'),radius:number((step.orbit||fallback).radius,0,20,'Orbit radius')};
       if(Math.abs(Math.sin(orbit.angle)*orbit.radius-rootPosition[0])>.001||Math.abs(Math.cos(orbit.angle)*orbit.radius-rootPosition[2])>.001)fail('Orbit does not match the saved body position.');
     }
-    return {id,name:text(step.name,'Pose name'),kind:step.kind==='transition'?'transition':'pose',cue:typeof step.cue==='string'?step.cue.slice(0,120):'',holdSeconds:number(step.holdSeconds,0,120,'Hold time'),transitionSeconds:number(step.transitionSeconds,.05,120,'Transition time'),...(contactSchedule?{contactSchedule}:{}),...(supportRequirements?{supportRequirements:[...supportRequirements]}:{}),...(step.floorSupport?{floorSupport:step.floorSupport}:{}),...(orbit?{orbit}:{}),pose:{rootPosition,rotations,poleContacts,...(Object.keys(handOffsets).length?{handOffsets}:{})}};
+    return {...(step.poseContract?{poseContract:step.poseContract}:{}),id,name:text(step.name,'Pose name'),kind:step.kind==='transition'?'transition':'pose',cue:typeof step.cue==='string'?step.cue.slice(0,120):'',holdSeconds:number(step.holdSeconds,0,120,'Hold time'),transitionSeconds:number(step.transitionSeconds,.05,120,'Transition time'),...(contactSchedule?{contactSchedule}:{}),...(supportRequirements?{supportRequirements:[...supportRequirements]}:{}),...(step.floorSupport?{floorSupport:step.floorSupport}:{}),...(orbit?{orbit}:{}),pose:{rootPosition,rotations,poleContacts,...(Object.keys(handOffsets).length?{handOffsets}:{})}};
   });
   return {format:SEQUENCE_FORMAT,version:SEQUENCE_VERSION,studio,dimensions:{...dimensions},name:text(data.name,'Sequence name'),steps};
 }

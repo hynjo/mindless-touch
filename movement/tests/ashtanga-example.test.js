@@ -9,6 +9,7 @@ import {createTimeline} from '../playback.js';
 import {applyHandPreset} from '../hands.js';
 import {placePalmsOnFloor,palmsAreSupported,preparePalmLanding} from '../palm-support.js';
 import {inspectSupports,inspectJointRanges} from '../pose-validation.js';
+import {capturePose} from '../pole-constraints.js';
 
 const dimensions={pelvisHeight:.97,torso:.48,shoulderWidth:.44,hipWidth:.22,upperArm:.29,forearm:.26,thigh:.43,shin:.43};
 function fixture(){
@@ -87,6 +88,39 @@ test('Triangle arms, feet and torso form the pose on both sides; Warriors bend t
    assert(Math.hypot(knee.x-ankle.x,knee.z-ankle.z)<.001,`${step.name}: shin vertical`);
    assert(rig.byId[side+'Knee'].group.rotation.x>.8);
    assert(Math.abs(rig.byId[other+'Knee'].group.rotation.x)<.001);
+  }
+ }
+});
+
+test('bent-knee Big Toe preparation reaches beside the feet and retains supports through entry and exit',()=>{
+ const rig=fixture(),index=ashtangaShortPractice.steps.findIndex(p=>p.id==='ashtanga-big-toe'),pose=ashtangaShortPractice.steps[index];
+ const position=id=>rig.byId[id].group.getWorldPosition(new THREE.Vector3());
+ apply(rig,pose);
+ assert.equal(pose.name,'Forward Fold — Bent Knees');
+ for(const side of ['left','right']){
+  const wrist=position(side+'Wrist'),ankle=position(side+'Ankle');
+  assert(Math.abs(wrist.z-ankle.z)<.08,'hands must reach beside the feet, not float far ahead');
+  assert(wrist.y<.22&&wrist.y>.14,'hands descend without requiring a floor-bearing palm');
+  const knee=rig.byId[side+'Knee'].group.rotation;
+  assert(knee.x>THREE.MathUtils.degToRad(15)&&knee.x<THREE.MathUtils.degToRad(35),'explicit moderate knee bend');
+  assert(Math.abs(knee.y)+Math.abs(knee.z)<1e-8,'knee stays on its hinge');
+ }
+ const steps=ashtangaShortPractice.steps.slice(index-1,index+2),frames=steps.map(step=>{apply(rig,step);return capturePose(rig.root,rig.joints);});
+ for(let edge=0;edge<2;edge++)for(let frame=0;frame<=100;frame++){
+  const t=frame/100,a=frames[edge],b=frames[edge+1];
+  rig.root.position.lerpVectors(a.position,b.position,t);rig.joints.forEach((j,i)=>j.group.quaternion.slerpQuaternions(a.rotations[i],b.rotations[i],t));rig.floor.settle();
+  const at=`edge ${edge}, frame ${frame}`;
+  assert.deepEqual(inspectSupports(rig,pose).issues,[],`sole support at ${at}`);
+  assert.deepEqual(inspectJointRanges(rig.joints).issues,[],`joint envelope at ${at}`);
+  assert.deepEqual(rig.self.contacts(),[],`body contact at ${at}`);
+  assert.deepEqual(rig.self.jointViolations(),[],`wrist limit at ${at}`);
+  // The general self guard covers limbs and within-hand collisions, not every
+  // hand/foot pair. Disjoint mesh bounds prove clearance for these authored
+  // transitions without pretending that box overlap proves penetration.
+  const footBounds=Object.values(rig.feet).flatMap(foot=>foot.meshes.map(mesh=>new THREE.Box3().setFromObject(mesh,true)));
+  for(const hand of Object.values(rig.hands))for(const mesh of hand.meshes){
+   const box=new THREE.Box3().setFromObject(mesh,true);
+   assert(footBounds.every(foot=>!box.intersectsBox(foot)),`hand/foot clearance at ${at}`);
   }
  }
 });

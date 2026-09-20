@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 // Exact segment/box distance: split at face crossings, then minimize each quadratic.
-function boxDistance(a,b,half){
+export function boxDistance(a,b,half){
  const p=a.toArray(),d=b.clone().sub(a).toArray(),cuts=[0,1];
  for(let i=0;i<3;i++)if(Math.abs(d[i])>1e-12)for(const face of [-half[i],half[i]]){const t=(face-p[i])/d[i];if(t>0&&t<1)cuts.push(t);}
  cuts.sort((x,y)=>x-y);

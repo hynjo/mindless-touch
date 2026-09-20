@@ -3,7 +3,7 @@
 const bilateral = 'sole palm forearm elbow knee shin heel forefoot toe foot-top fingertip foot-edge hand back-leg'.split(' ');
 export const CONTACT_ANCHORS = Object.freeze([
   ...bilateral.flatMap(name => ['left', 'right'].map(side => `${side}-${name}`)),
-  'seat', 'back', 'front-core', 'front-chest', 'head', 'back-head',
+  'seat', 'back', 'front-core', 'front-chest', 'head', 'back-head', 'sole-pair',
 ]);
 const known = new Set(CONTACT_ANCHORS);
 const plain = value => value !== null && typeof value === 'object' && !Array.isArray(value);

@@ -24,14 +24,20 @@ const upper=q(revolved.pelvis).multiply(q(revolved.waist)).multiply(q(revolved.t
 for(const [side,y] of [['left',1],['right',-1]])revolved[side+'Shoulder']=degrees(upper.clone().invert().multiply(new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0,-1,0),new THREE.Vector3(0,y,0))));
 export const ashtangaShapes={
  Mountain:standing({}),
- 'Big Toe':standing({pelvis:[120,0,0],waist:[15,0,0],torso:[10,0,0],...both('Hip',[-120,0,0]),...both('Shoulder',[-150,0,0]),...both('Elbow',[-65,0,0])}),
+ // Bent-knee preparation: hands descend beside the feet without claiming a toe
+ // grip. These angles preserve sole support and leave wrist extension margin.
+ 'Big Toe':standing({pelvis:[106.889,0,0],waist:[9.154,0,0],torso:[5.846,0,0],neck:[-10,0,0],
+  ...both('Hip',[-129.847,0,0]),...both('Knee',[24.919,0,0]),
+  ...both('Shoulder',[-84.775,0,0]),...both('Elbow',[-20.225,0,0]),...both('Wrist',[-26.889,0,0])}),
  Triangle:triangle,
  'Revolved Triangle':revolved,
  'Warrior I':standing({...warriorLegs,...both('Shoulder',[-175,0,0]),neck:[-10,0,0]},[0,35]),
  'Warrior II':standing({...warriorLegs,waist:[0,-30,0],torso:[0,-60,0],neck:[0,90,0],...both('Shoulder',[0,0,90])},[0,35]),
  Staff:seated,
  'Seated Forward Bend I':{pelvis:[17.416,0,0],waist:[20,0,0],torso:[15,0,0],...both('Hip',[-113.342,0,0]),...both('Knee',[13.826,0,0]),...both('Shoulder',[-125.847,0,12]),...both('Elbow',[-10,0,0])},
- 'Bound Angle':{...both('Hip',[-95.2123,-60,39.7682]),...both('Knee',[110,0,0]),...both('Shoulder',[-65,0,0]),...both('Elbow',[-60,0,0]),...both('Ankle',[18.2964,0,20])},
+ // Open-foot preparation: seat and outer foot edges remain grounded while
+ // the composed hip rotation stays inside the femoral axial envelope.
+ 'Bound Angle':{...both('Hip',[-98.0223,-54.41,33.1082]),...both('Knee',[93.54,0,0]),...both('Shoulder',[-65,0,0]),...both('Elbow',[-60,0,0]),...both('Ankle',[13.7164,0,25.72])},
  Bridge:{pelvis:[-90,0,0],waist:[-1.85,0,0],torso:[-11.35,0,0],neck:[24.65,0,0],...both('Hip',[-30,0,0]),...both('Knee',[75.15,0,0]),...both('Shoulder',[-3.7,0,0]),...both('Ankle',[44.85,0,0]),...both('FootArch',[8,0,0])},
  Fish:{pelvis:[-73.67,0,0],waist:[-11.38,0,0],torso:[-6.89,0,0],neck:[-10,0,0],...both('Shoulder',[14.46,0,0]),...both('Elbow',[-49.26,0,0]),...both('Hip',[-19.75,0,0]),...both('Knee',[12,0,0])},
  Corpse:{pelvis:[-90.93,0,0],waist:[.977,0,0],torso:[3.173,0,0],neck:[-14.25,0,0],...both('Hip',[.839,0,6]),...both('Knee',[6.838,0,0]),...both('Shoulder',[0,0,12])},

@@ -45,6 +45,13 @@ test('explicit support anchors survive save/load and unknown requirements are re
  assert.deepEqual(parseSequence(serializeSequence(original,context),context).steps[0].supportRequirements,['palms','soles']);
  original.steps[0].supportRequirements=['unknown-surface'];assert.throws(()=>validateSequence(original,context),/support requirements/);
 });
+test('sole-pair relationship and its authored contact schedule survive sequence round trip',()=>{
+ const original=document();original.steps[0].supportRequirements=['seat','sole-pair'];
+ original.steps[0].contactSchedule={version:1,anchors:[{anchor:'sole-pair',start:true,end:true}]};
+ const restored=parseSequence(serializeSequence(original,context),context);
+ assert.deepEqual(restored.steps[0].supportRequirements,['seat','sole-pair']);
+ assert.deepEqual(restored.steps[0].contactSchedule,original.steps[0].contactSchedule);
+});
 test('optional transition contact schedules round trip without changing legacy files',()=>{
  const original=document();const legacy=validateSequence(original,context);assert(!('contactSchedule' in legacy.steps[0]));
  original.steps[0].contactSchedule={version:1,anchors:[{anchor:'left-sole',start:true,end:true},{anchor:'right-sole',start:true,end:true,release:[.1,.3],landing:[.7,.9]}]};

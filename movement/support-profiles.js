@@ -1,10 +1,17 @@
+import {poseContract} from "./pose-contracts.js";
 // Independently summarized minimum support requirements for the catalog's named
 // variants. Source descriptions were checked against Pocket Yoga /poses.json.
 // These describe geometry, not forces. Alternatives are intentional, not failures.
 const overrides={};
-export const SUPPORT_REQUIREMENTS=new Set('seat back front-core front-chest head back-head palms forearms elbows shins knees soles heels forefeet toes foot-tops fingertips any-palm any-sole any-heel any-back-leg any-forefoot any-knee any-foot-edge any-toe any-foot-top any-hand palms-or-forearms head-or-chest opposite-sole-heel opposite-sole-toe opposite-sole-knee-foot-top'.split(' '));
+export const SUPPORT_REQUIREMENTS=new Set('seat sit-bones back front-core front-chest head back-head palms forearms upper-arms elbows shins knees soles sole-pair heels forefeet toes foot-tops fingertips hands-together any-palm any-sole any-heel any-back-leg any-forefoot any-knee any-foot-edge any-toe any-foot-top any-hand palms-or-forearms head-or-chest opposite-sole-heel opposite-sole-toe opposite-sole-knee-foot-top'.split(' '));
 const assign=(keys,requirements,note='')=>{for(const key of keys.split(' '))overrides[key]={requirements,note};};
+SUPPORT_REQUIREMENTS.add('crow-knees-on-arms');
+SUPPORT_REQUIREMENTS.add('legs-airborne');
+SUPPORT_REQUIREMENTS.add('both-toe-grips');
+SUPPORT_REQUIREMENTS.add('archer-leg-support');
 assign('Archer BoatFull BoundAngle Butterfly Cradle Easy EmbryoWomb FireLog FootBehindHead FootBehindHeadForward FootBehindHeadTwoLegged HeadToKnee Heron KneePile KneePileBind LordOfTheFishes LotusFull MarichiIIITraditional MarichiIITraditional MarichiITraditional MarichiIVTraditional SeatedForwardBend SeatedForwardBendHalfLotus SeatedForwardBendII SeatedForwardBendIII SeatedForwardBendIV SeatedForwardBendThreeLimbs SeatedGate SeatedHandToToeRevolved SplitsFront SupineTortoise',['seat']);
+assign('BoundAngle',['seat','sole-pair'],'Closed sole-to-sole variant: heel and forefoot patches face and meet their opposite-side partners. Knees need not touch the floor. Explicit open-foot preparations use their own requirements.');
+assign('Archer',['seat','archer-leg-support','both-toe-grips'],'Both hands hook their own big toes; lifted foot approaches the ear. The authored modification allows a slightly softened supporting knee.');
 assign('Bharadvaja',['seat','any-palm']);
 assign('Caterpillar',['seat','palms'],'Palms reflect the requested editor variant; the reference also allows holding the legs. A seated pelvis remains required.');
 assign('Staff',['seat','palms','heels']);
@@ -20,7 +27,7 @@ assign('SplitsWide',['palms'],'Hip/leg contact varies with split depth.');
 assign('Banana BlissfulBaby CorpseDoubleLegRaise SupineHandToToeExtended SupineHandToToeFull SupineSpinalTwist SupineStraddle SupineTrivikrama Turtle YogicSleep',['seat','back']);
 assign('Corpse',['seat','back','back-head','heels']);
 assign('FishPreparation',['seat','head']);
-assign('Bridge',['heels','back']);
+assign('Bridge',['soles','back','back-head','upper-arms']);
 assign('Bow ProneBowHalf GherandaI Locust LocustII LocustIII Snake',['front-core']);
 assign('CorpseFrontArmsForward',['front-core','front-chest']);
 assign('FrogTraditional',['front-core']);
@@ -52,6 +59,7 @@ assign('StaffInverted',['forearms','soles']);
 assign('Sphinx',['palms','forearms','front-core']);
 assign('VisvamitraFull',['any-palm','any-foot-edge']);
 assign('Crane Crow EightAngle ElephantTrunk Firefly FloatingStick FlyingLizard FlyingManRevolved FootBehindHeadElevated FootBehindHeadTwoLeggedElevated Grasshopper Handstand LotusElevated LungeHandsOnMatFlying Peacock Pendant PigeonFlying Rooster ScaleForward',['palms']);
+assign('Crow',['palms','crow-knees-on-arms','legs-airborne'],'Bent-arm Crow: knee regions supported by the upper arms, with both legs and feet lifted. Contact geometry does not certify center-of-mass balance.');
 assign('FeatheredPeacock Scorpion Duck',['forearms','palms']);
 assign('RelaxedStance',['elbows'],'The final variant raises the hands; do not require palms or entire forearms.');
 assign('HeadstandSupported',['forearms','head']);
@@ -63,9 +71,11 @@ assign('BirdOfParadiseRevolved ChairTwistBindUp Eagle LordOfTheDance ShivaSquat 
 assign('HalfMoon HalfMoonRevolved SplitsStanding StandingForwardBendFootBehindHead StandingForwardBendHalfLotus',['any-sole','any-hand'],'Hand contact can be fingertips or palm in these variants.');
 assign('WarriorIKneeling',['opposite-sole-knee-foot-top'],'The rear knee and foot top share a side opposite the front sole.');
 export function supportProfile(pose){
+ const contract=poseContract(pose);
+ if(contract)return {requirements:[...new Set([...contract.requirements,...(pose.supportRequirements||[])])],basis:pose.poseContract,note:''};
  if(pose.supportRequirements)return {requirements:pose.supportRequirements,basis:'Explicit sequence support anchors',note:''};
  const key=pose.source?.split('/').at(-1);
- if(overrides[key])return {...overrides[key],basis:'Named reference variant; see source and notes'};
+ if(overrides[key]){const profile=overrides[key],requirements=pose.category==='Seated'?profile.requirements.map(name=>name==='seat'?'sit-bones':name):profile.requirements;return {...profile,requirements,basis:'Named reference variant; see source and notes'};}
  if(pose.category==='Standing')return {requirements:['soles'],note:'Minimum foot support only; hand/leg binds and exact alignment require visual review.',basis:'Standing reference variant'};
  throw new Error(`Missing explicit support profile for ${key}`);
 }

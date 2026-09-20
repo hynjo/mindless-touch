@@ -834,7 +834,7 @@
   {
     "example": "Ashtanga Short Practice",
     "id": "ashtanga-big-toe",
-    "name": "Big Toe Preparation",
+    "name": "Forward Fold — Bent Knees",
     "issues": [],
     "soles": [
       {
@@ -1411,18 +1411,18 @@
     "soles": [
       {
         "name": "left-sole",
-        "gapMm": 0.03,
+        "gapMm": 18.87,
         "minGapMm": 0,
-        "alignment": 0.52,
+        "alignment": 0.38,
         "minimumAlignment": 0.95,
         "pass": false,
         "note": "Heel and metatarsal pads; the arch is deliberately excluded."
       },
       {
         "name": "right-sole",
-        "gapMm": 0.03,
+        "gapMm": 18.87,
         "minGapMm": 0,
-        "alignment": 0.52,
+        "alignment": 0.38,
         "minimumAlignment": 0.95,
         "pass": false,
         "note": "Heel and metatarsal pads; the arch is deliberately excluded."
@@ -1541,18 +1541,18 @@
     "soles": [
       {
         "name": "left-sole",
-        "gapMm": 0.03,
+        "gapMm": 18.87,
         "minGapMm": 0,
-        "alignment": 0.52,
+        "alignment": 0.38,
         "minimumAlignment": 0.95,
         "pass": false,
         "note": "Heel and metatarsal pads; the arch is deliberately excluded."
       },
       {
         "name": "right-sole",
-        "gapMm": 0.03,
+        "gapMm": 18.87,
         "minGapMm": 0,
-        "alignment": 0.52,
+        "alignment": 0.38,
         "minimumAlignment": 0.95,
         "pass": false,
         "note": "Heel and metatarsal pads; the arch is deliberately excluded."

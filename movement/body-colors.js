@@ -4,9 +4,9 @@ export const bodyParts={
  waist:{label:'Waist',color:'#b49bd8'},
  pelvis:{label:'Pelvis',color:'#df9eac'},
  arms:{label:'Arms',color:'#e4b88c',rightColor:'#c78f70'},
- hands:{label:'Hands',color:'#ead597',rightColor:'#c9b275'},
+ hands:{label:'Wrists',color:'#ead597',rightColor:'#c9b275'},
  legs:{label:'Legs',color:'#9bcaae',rightColor:'#6eaa96'},
- feet:{label:'Feet',color:'#a8bce3',rightColor:'#7f91bc'},
+ feet:{label:'Ankles',color:'#a8bce3',rightColor:'#7f91bc'},
 };
 // Mesh-local shading follows each joint as it bends or rotates.
 // Fingers curl toward local -Z, so the back of a hand is +Z.

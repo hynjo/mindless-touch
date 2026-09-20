@@ -77,3 +77,13 @@ test('a tilted supporting ankle requires joint correction rather than just dropp
  assert(Math.abs(rig.byId.leftAnkle.group.rotation.x-angle)>.001);
  assert.equal(result.after.supports.issues.length,0);
 });
+test('alternative contact projection preserves the original passing support sides',()=>{
+ const {rig,pose}=fixture();rig.byId.leftAnkle.group.rotation.x+=.06;
+ createFloorConstraints(rig).settle();
+ const saved=capturePose(rig.root,rig.joints);
+ const result=projectSupportPose(rig,{...pose,supportRequirements:['soles','any-heel']},{maxPasses:32});
+ const original=result.before.supports.requirements.find(r=>r.name==='any-heel').samples.filter(s=>s.pass);
+ assert(original.length>0);
+ if(result.accepted)for(const sample of original)assert(result.after.supports.surfaces[sample.name].pass,`${sample.name} changed support side`);
+ else assert.deepEqual(capturePose(rig.root,rig.joints),saved);
+});

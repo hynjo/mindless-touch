@@ -1,9 +1,9 @@
+import {applyPose} from '../apply-pose.js';
 import {writeFile} from 'node:fs/promises';
 import * as THREE from 'three';
 import {createBody} from '../body.js';
 import {yogaPoses} from '../poses.js';
 import {applyHandOffsets} from '../hand-offsets.js';
-import {applyHandPreset} from '../hands.js';
 import {createFloorConstraints} from '../floor-constraints.js';
 import {createSelfConstraints} from '../self-constraints.js';
 import {palmsAreSupported,placePalmsOnFloor,placeHandsAndKnees} from '../palm-support.js';
@@ -14,13 +14,9 @@ const meshes=[];body.root.traverse(m=>{if(m.isMesh)meshes.push(m);});
 const rig={...body,meshes,dimensions,byId:Object.fromEntries(body.joints.map(j=>[j.id,j]))};
 const floor=createFloorConstraints(rig),self=createSelfConstraints(rig);
 const results=yogaPoses.map(pose=>{
- applyHandOffsets(body.root,pose.handOffsets);body.root.position.fromArray(pose.rootPosition);
- for(const j of body.joints)j.group.rotation.set(...(pose.rotations[j.id]||[0,0,0]).map(THREE.MathUtils.degToRad));
- for(const hand of Object.values(body.hands))applyHandPreset(hand,'open');
- if(pose.floorSupport==='palms-knees')placeHandsAndKnees(rig);else if(palmsAreSupported(pose))placePalmsOnFloor(rig);
- const beforeY=body.root.position.y;floor.settle();
+ const beforeY=pose.rootPosition[1];applyPose(rig,pose,{floor});
  const result=inspectPose(rig,pose),contacts=self.contacts();
- return {key:pose.source.split('/').at(-1),name:pose.name,category:pose.category,source:pose.source,draft:pose.draft,status:result.supports.issues.length||result.rom.issues.length||contacts.length?'issues-found':'scoped-checks-pass-review-remains',...result,collisionContacts:contacts,floorClearanceMm:floor.clearance()*1000,floorSettleDeltaMm:(body.root.position.y-beforeY)*1000};
+ return {key:pose.source.split('/').at(-1),name:pose.name,category:pose.category,source:pose.source,draft:pose.draft,status:result.supports.issues.length||result.rom.issues.length||result.form.issues.length||contacts.length?'issues-found':'scoped-checks-pass-review-remains',...result,collisionContacts:contacts,floorClearanceMm:floor.clearance()*1000,floorSettleDeltaMm:(body.root.position.y-beforeY)*1000};
 });
 function missingSamples(requirement){
  if(requirement.alternatives)return requirement.alternatives.map(missingSamples).sort((a,b)=>a.length-b.length||Math.max(...a.map(s=>s.gapMm))-Math.max(...b.map(s=>s.gapMm)))[0];

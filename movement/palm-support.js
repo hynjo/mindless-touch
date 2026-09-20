@@ -18,6 +18,16 @@ function groundTarget(upper,current,height,length) {
 }
 export function placePalmsOnFloor({root,hands,byId,dimensions,meshes}) {
   root.updateWorldMatrix(true,true);
+  // A captured/authored supported hold must not run through unconstrained leg
+  // IK again: doing so can rotate knees off their hinge or overflex the hips.
+  // Preserve exact grounded palms and the existing body geometry on reload.
+  const grounded=Object.values(hands).every(hand=>{
+    const normal=new THREE.Vector3(0,0,-1).applyQuaternion(hand.wrist.getWorldQuaternion(new THREE.Quaternion()));
+    return normal.distanceTo(new THREE.Vector3(0,-1,0))<.0001&&
+      [-.018,.018].every(x=>[-.025,.025].every(y=>Math.abs(hand.palm.localToWorld(new THREE.Vector3(x,y,-.015)).y-FLOOR_SKIN)<.0001))&&
+      wristMargins({group:hand.wrist}).every(margin=>margin>=0);
+  });
+  if(grounded&&Math.min(...meshes.map(floorClearance))>=FLOOR_SKIN-.00002)return;
   const feet={};
   for(const side of ['left','right']) {
     const ankle=byId[side+'Ankle'].group;
@@ -88,7 +98,9 @@ export function preparePalmLanding({root,hands}) {
 // Quadruped support: preserve knee and palm locations while the spine changes shape.
 export function placeHandsAndKnees({root,hands,byId,dimensions}) {
  root.updateWorldMatrix(true,true);
- const kneeHeight=.086+FLOOR_SKIN;
+ // The knee support proxy is the proximal shin capsule (radius .063), not the
+ // thigh radius. Put that capsule on the floor and lay the foot dorsum behind it.
+ const kneeHeight=.063+FLOOR_SKIN;
  const hip=byId.leftHip.group;
  const hipPosition=position(hip);
  const kneeZ=root.position.z-.15;
@@ -100,10 +112,14 @@ export function placeHandsAndKnees({root,hands,byId,dimensions}) {
   const target=position(upper).setY(kneeHeight);target.z=kneeZ;
   aim(upper,new THREE.Vector3(0,-1,0),target.sub(position(upper)));
   aim(knee,new THREE.Vector3(0,-1,0),new THREE.Vector3(0,0,-1));
-  worldOrientation(ankle,new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1,0,0),Math.PI/2));
+  // Keep the modeled ankle within its editor envelope. This rig cannot yet lay
+  // the complete foot dorsum flat without a richer ankle/instep chain.
+  ankle.rotation.set(THREE.MathUtils.degToRad(50),0,0);
+  byId[side+'FootArch'].group.rotation.set(.3,0,0);
   const shoulder=byId[side+'Shoulder'].group,elbow=byId[side+'Elbow'].group;
-  const handTarget=new THREE.Vector3(root.position.x+(side==='left'?1:-1)*dimensions.shoulderWidth/2,palmHeight,root.position.z+.52);
-  solve({upper:shoulder,middle:elbow,a:dimensions.upperArm,b:dimensions.forearm},handTarget,handTarget.clone().add(new THREE.Vector3(0,.2,-.2)));
+  const handTarget=new THREE.Vector3(root.position.x+(side==='left'?1:-1)*dimensions.shoulderWidth/2,palmHeight,root.position.z+.4);
+  const elbowGuide=position(shoulder).lerp(handTarget,.5).add(new THREE.Vector3(0,.16,-.08));
+  solve({upper:shoulder,middle:elbow,a:dimensions.upperArm,b:dimensions.forearm},handTarget,elbowGuide);
   applyHandPreset(hands[side],'open');worldOrientation(hands[side].wrist,flatPalm);
  }
  root.updateWorldMatrix(true,true);

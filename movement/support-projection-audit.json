@@ -3,9 +3,9 @@
   "summary": {
     "total": 44,
     "standing": 39,
-    "baselineUnchanged": 11,
+    "baselineUnchanged": 20,
     "projected": 1,
-    "rejected": 32,
+    "rejected": 23,
     "maxAcceptedRootDisplacementMm": 0,
     "maxAcceptedJointDisplacementDegrees": 15.225967594519167,
     "allRejectedRolledBack": true
@@ -15,55 +15,39 @@
       "name": "Big Toe",
       "source": "https://www.pocketyoga.com/pose/ForwardBendBigToe",
       "category": "Standing",
-      "accepted": false,
+      "accepted": true,
       "changed": false,
-      "reason": "constraints-unsatisfied",
-      "status": "rejected",
+      "reason": "already-supported",
+      "status": "baseline-unchanged",
       "before": {
-        "supportFailures": 1,
+        "supportFailures": 0,
         "requirements": [
           "soles"
         ],
-        "failedSupports": [
-          "soles"
-        ],
-        "romFailures": 2,
+        "failedSupports": [],
+        "romFailures": 0,
         "selfContacts": 0,
         "wristFailures": 0,
-        "floorClearanceMm": 0.7000000000001805
+        "floorClearanceMm": 0.7000000000000339
       },
       "after": {
-        "supportFailures": 1,
+        "supportFailures": 0,
         "requirements": [
           "soles"
         ],
-        "failedSupports": [
-          "soles"
-        ],
-        "romFailures": 2,
+        "failedSupports": [],
+        "romFailures": 0,
         "selfContacts": 0,
         "wristFailures": 0,
-        "floorClearanceMm": 0.7000000000001805
+        "floorClearanceMm": 0.7000000000000339
       },
-      "attempted": {
-        "supportFailures": 1,
-        "requirements": [
-          "soles"
-        ],
-        "failedSupports": [
-          "soles"
-        ],
-        "romFailures": 4,
-        "selfContacts": 0,
-        "wristFailures": 0,
-        "floorClearanceMm": -27.424999999999887
-      },
+      "attempted": null,
       "displacement": {
         "rootMm": 0,
         "maxJointDegrees": 0.0000017075472925031877,
         "maxJointWorldMm": 0
       },
-      "rollbackVerified": true
+      "rollbackVerified": false
     },
     {
       "name": "Bird of Paradise",
@@ -145,77 +129,31 @@
       "name": "Crescent Lunge",
       "source": "https://www.pocketyoga.com/pose/LungeCrescent",
       "category": "Standing",
-      "accepted": false,
+      "accepted": true,
       "changed": false,
-      "reason": "unsupported-support-family",
-      "status": "rejected",
+      "reason": "already-supported",
+      "status": "baseline-unchanged",
       "before": {
-        "supportFailures": 1,
+        "supportFailures": 0,
         "requirements": [
           "opposite-sole-toe"
         ],
-        "failedSupports": [
-          "opposite-sole-toe"
-        ],
+        "failedSupports": [],
         "romFailures": 0,
         "selfContacts": 0,
         "wristFailures": 0,
-        "floorClearanceMm": 0.6999999999999905
+        "floorClearanceMm": 0.7000000000000305
       },
       "after": {
-        "supportFailures": 1,
+        "supportFailures": 0,
         "requirements": [
           "opposite-sole-toe"
         ],
-        "failedSupports": [
-          "opposite-sole-toe"
-        ],
+        "failedSupports": [],
         "romFailures": 0,
         "selfContacts": 0,
         "wristFailures": 0,
-        "floorClearanceMm": 0.6999999999999905
-      },
-      "attempted": null,
-      "displacement": {
-        "rootMm": 0,
-        "maxJointDegrees": 0,
-        "maxJointWorldMm": 0
-      },
-      "rollbackVerified": true
-    },
-    {
-      "name": "Crescent Lunge on the Knee",
-      "source": "https://www.pocketyoga.com/pose/WarriorIKneeling",
-      "category": "Standing",
-      "accepted": false,
-      "changed": false,
-      "reason": "unsupported-support-family",
-      "status": "rejected",
-      "before": {
-        "supportFailures": 1,
-        "requirements": [
-          "opposite-sole-knee-foot-top"
-        ],
-        "failedSupports": [
-          "opposite-sole-knee-foot-top"
-        ],
-        "romFailures": 0,
-        "selfContacts": 0,
-        "wristFailures": 0,
-        "floorClearanceMm": 0.70000000000002
-      },
-      "after": {
-        "supportFailures": 1,
-        "requirements": [
-          "opposite-sole-knee-foot-top"
-        ],
-        "failedSupports": [
-          "opposite-sole-knee-foot-top"
-        ],
-        "romFailures": 0,
-        "selfContacts": 0,
-        "wristFailures": 0,
-        "floorClearanceMm": 0.70000000000002
+        "floorClearanceMm": 0.7000000000000305
       },
       "attempted": null,
       "displacement": {
@@ -223,7 +161,45 @@
         "maxJointDegrees": 0.0000017075472925031877,
         "maxJointWorldMm": 0
       },
-      "rollbackVerified": true
+      "rollbackVerified": false
+    },
+    {
+      "name": "Crescent Lunge on the Knee",
+      "source": "https://www.pocketyoga.com/pose/WarriorIKneeling",
+      "category": "Standing",
+      "accepted": true,
+      "changed": false,
+      "reason": "already-supported",
+      "status": "baseline-unchanged",
+      "before": {
+        "supportFailures": 0,
+        "requirements": [
+          "opposite-sole-knee-foot-top"
+        ],
+        "failedSupports": [],
+        "romFailures": 0,
+        "selfContacts": 0,
+        "wristFailures": 0,
+        "floorClearanceMm": 0.7000000000000166
+      },
+      "after": {
+        "supportFailures": 0,
+        "requirements": [
+          "opposite-sole-knee-foot-top"
+        ],
+        "failedSupports": [],
+        "romFailures": 0,
+        "selfContacts": 0,
+        "wristFailures": 0,
+        "floorClearanceMm": 0.7000000000000166
+      },
+      "attempted": null,
+      "displacement": {
+        "rootMm": 0,
+        "maxJointDegrees": 0.0000017075472925031877,
+        "maxJointWorldMm": 0
+      },
+      "rollbackVerified": false
     },
     {
       "name": "Crescent Moon",
@@ -785,37 +761,33 @@
       "name": "Lizard",
       "source": "https://www.pocketyoga.com/pose/Lizard",
       "category": "Floor support",
-      "accepted": false,
+      "accepted": true,
       "changed": false,
-      "reason": "unsupported-support-family",
-      "status": "rejected",
+      "reason": "already-supported",
+      "status": "baseline-unchanged",
       "before": {
-        "supportFailures": 1,
+        "supportFailures": 0,
         "requirements": [
           "palms-or-forearms",
           "opposite-sole-toe"
         ],
-        "failedSupports": [
-          "opposite-sole-toe"
-        ],
-        "romFailures": 4,
+        "failedSupports": [],
+        "romFailures": 0,
         "selfContacts": 0,
         "wristFailures": 0,
-        "floorClearanceMm": 0.6999999999999914
+        "floorClearanceMm": 0.7000000000000235
       },
       "after": {
-        "supportFailures": 1,
+        "supportFailures": 0,
         "requirements": [
           "palms-or-forearms",
           "opposite-sole-toe"
         ],
-        "failedSupports": [
-          "opposite-sole-toe"
-        ],
-        "romFailures": 4,
+        "failedSupports": [],
+        "romFailures": 0,
         "selfContacts": 0,
         "wristFailures": 0,
-        "floorClearanceMm": 0.6999999999999914
+        "floorClearanceMm": 0.7000000000000235
       },
       "attempted": null,
       "displacement": {
@@ -823,51 +795,47 @@
         "maxJointDegrees": 0.0000024148365394514667,
         "maxJointWorldMm": 0
       },
-      "rollbackVerified": true
+      "rollbackVerified": false
     },
     {
       "name": "Lunge",
       "source": "https://www.pocketyoga.com/pose/Lunge",
       "category": "Floor support",
-      "accepted": false,
+      "accepted": true,
       "changed": false,
-      "reason": "unsupported-support-family",
-      "status": "rejected",
+      "reason": "already-supported",
+      "status": "baseline-unchanged",
       "before": {
-        "supportFailures": 1,
+        "supportFailures": 0,
         "requirements": [
           "palms",
           "opposite-sole-toe"
         ],
-        "failedSupports": [
-          "opposite-sole-toe"
-        ],
-        "romFailures": 3,
+        "failedSupports": [],
+        "romFailures": 0,
         "selfContacts": 0,
         "wristFailures": 0,
-        "floorClearanceMm": 0.6999999999999819
+        "floorClearanceMm": 0.6999999999999575
       },
       "after": {
-        "supportFailures": 1,
+        "supportFailures": 0,
         "requirements": [
           "palms",
           "opposite-sole-toe"
         ],
-        "failedSupports": [
-          "opposite-sole-toe"
-        ],
-        "romFailures": 3,
+        "failedSupports": [],
+        "romFailures": 0,
         "selfContacts": 0,
         "wristFailures": 0,
-        "floorClearanceMm": 0.6999999999999819
+        "floorClearanceMm": 0.6999999999999575
       },
       "attempted": null,
       "displacement": {
         "rootMm": 0,
-        "maxJointDegrees": 0.0000029575586669421963,
+        "maxJointDegrees": 0.0000017075472925031877,
         "maxJointWorldMm": 0
       },
-      "rollbackVerified": true
+      "rollbackVerified": false
     },
     {
       "name": "Mountain",
@@ -1093,61 +1061,41 @@
       "name": "Revolved Triangle",
       "source": "https://www.pocketyoga.com/pose/TriangleRevolved",
       "category": "Standing",
-      "accepted": false,
+      "accepted": true,
       "changed": false,
-      "reason": "constraints-unsatisfied",
-      "status": "rejected",
+      "reason": "already-supported",
+      "status": "baseline-unchanged",
       "before": {
-        "supportFailures": 2,
+        "supportFailures": 0,
         "requirements": [
           "soles",
           "any-hand"
         ],
-        "failedSupports": [
-          "soles",
-          "any-hand"
-        ],
+        "failedSupports": [],
         "romFailures": 0,
         "selfContacts": 0,
         "wristFailures": 0,
-        "floorClearanceMm": 0.7000000000000044
+        "floorClearanceMm": 0.6999999999999784
       },
       "after": {
-        "supportFailures": 2,
+        "supportFailures": 0,
         "requirements": [
           "soles",
           "any-hand"
         ],
-        "failedSupports": [
-          "soles",
-          "any-hand"
-        ],
+        "failedSupports": [],
         "romFailures": 0,
         "selfContacts": 0,
         "wristFailures": 0,
-        "floorClearanceMm": 0.7000000000000044
+        "floorClearanceMm": 0.6999999999999784
       },
-      "attempted": {
-        "supportFailures": 2,
-        "requirements": [
-          "soles",
-          "any-hand"
-        ],
-        "failedSupports": [
-          "soles",
-          "any-hand"
-        ],
-        "romFailures": 0,
-        "selfContacts": 0,
-        "wristFailures": 0,
-        "floorClearanceMm": -0.2860852730466809
-      },
+      "attempted": null,
       "displacement": {
         "rootMm": 0,
         "maxJointDegrees": 0.0000017075472925031877,
         "maxJointWorldMm": 0
       },
-      "rollbackVerified": true
+      "rollbackVerified": false
     },
     {
       "name": "Shiva Squat",
@@ -1734,163 +1682,115 @@
       "name": "Triangle",
       "source": "https://www.pocketyoga.com/pose/TriangleForward",
       "category": "Standing",
-      "accepted": false,
+      "accepted": true,
       "changed": false,
-      "reason": "constraints-unsatisfied",
-      "status": "rejected",
+      "reason": "already-supported",
+      "status": "baseline-unchanged",
       "before": {
-        "supportFailures": 1,
+        "supportFailures": 0,
         "requirements": [
           "soles"
         ],
-        "failedSupports": [
-          "soles"
-        ],
+        "failedSupports": [],
         "romFailures": 0,
         "selfContacts": 0,
         "wristFailures": 0,
-        "floorClearanceMm": 0.70000000000002
+        "floorClearanceMm": 0.6999999999999645
       },
       "after": {
-        "supportFailures": 1,
+        "supportFailures": 0,
         "requirements": [
           "soles"
         ],
-        "failedSupports": [
-          "soles"
-        ],
+        "failedSupports": [],
         "romFailures": 0,
         "selfContacts": 0,
         "wristFailures": 0,
-        "floorClearanceMm": 0.70000000000002
+        "floorClearanceMm": 0.6999999999999645
       },
-      "attempted": {
-        "supportFailures": 1,
-        "requirements": [
-          "soles"
-        ],
-        "failedSupports": [
-          "soles"
-        ],
-        "romFailures": 1,
-        "selfContacts": 0,
-        "wristFailures": 0,
-        "floorClearanceMm": -2.5204268271477663
-      },
-      "displacement": {
-        "rootMm": 0,
-        "maxJointDegrees": 0,
-        "maxJointWorldMm": 0
-      },
-      "rollbackVerified": true
-    },
-    {
-      "name": "Warrior I",
-      "source": "https://www.pocketyoga.com/pose/WarriorI",
-      "category": "Standing",
-      "accepted": false,
-      "changed": false,
-      "reason": "constraints-unsatisfied",
-      "status": "rejected",
-      "before": {
-        "supportFailures": 1,
-        "requirements": [
-          "soles"
-        ],
-        "failedSupports": [
-          "soles"
-        ],
-        "romFailures": 0,
-        "selfContacts": 0,
-        "wristFailures": 0,
-        "floorClearanceMm": 0.7000000000000096
-      },
-      "after": {
-        "supportFailures": 1,
-        "requirements": [
-          "soles"
-        ],
-        "failedSupports": [
-          "soles"
-        ],
-        "romFailures": 0,
-        "selfContacts": 0,
-        "wristFailures": 0,
-        "floorClearanceMm": 0.7000000000000096
-      },
-      "attempted": {
-        "supportFailures": 1,
-        "requirements": [
-          "soles"
-        ],
-        "failedSupports": [
-          "soles"
-        ],
-        "romFailures": 0,
-        "selfContacts": 0,
-        "wristFailures": 0,
-        "floorClearanceMm": -1.8935816647388872
-      },
+      "attempted": null,
       "displacement": {
         "rootMm": 0,
         "maxJointDegrees": 0.0000017075472925031877,
         "maxJointWorldMm": 0
       },
-      "rollbackVerified": true
+      "rollbackVerified": false
+    },
+    {
+      "name": "Warrior I",
+      "source": "https://www.pocketyoga.com/pose/WarriorI",
+      "category": "Standing",
+      "accepted": true,
+      "changed": false,
+      "reason": "already-supported",
+      "status": "baseline-unchanged",
+      "before": {
+        "supportFailures": 0,
+        "requirements": [
+          "soles"
+        ],
+        "failedSupports": [],
+        "romFailures": 0,
+        "selfContacts": 0,
+        "wristFailures": 0,
+        "floorClearanceMm": 0.70000000000002
+      },
+      "after": {
+        "supportFailures": 0,
+        "requirements": [
+          "soles"
+        ],
+        "failedSupports": [],
+        "romFailures": 0,
+        "selfContacts": 0,
+        "wristFailures": 0,
+        "floorClearanceMm": 0.70000000000002
+      },
+      "attempted": null,
+      "displacement": {
+        "rootMm": 0,
+        "maxJointDegrees": 0.0000017075472925031877,
+        "maxJointWorldMm": 0
+      },
+      "rollbackVerified": false
     },
     {
       "name": "Warrior II",
       "source": "https://www.pocketyoga.com/pose/WarriorII",
       "category": "Standing",
-      "accepted": false,
+      "accepted": true,
       "changed": false,
-      "reason": "constraints-unsatisfied",
-      "status": "rejected",
+      "reason": "already-supported",
+      "status": "baseline-unchanged",
       "before": {
-        "supportFailures": 1,
+        "supportFailures": 0,
         "requirements": [
           "soles"
         ],
-        "failedSupports": [
-          "soles"
-        ],
+        "failedSupports": [],
         "romFailures": 0,
         "selfContacts": 0,
         "wristFailures": 0,
-        "floorClearanceMm": 0.7000000000000756
+        "floorClearanceMm": 0.70000000000002
       },
       "after": {
-        "supportFailures": 1,
+        "supportFailures": 0,
         "requirements": [
           "soles"
         ],
-        "failedSupports": [
-          "soles"
-        ],
+        "failedSupports": [],
         "romFailures": 0,
         "selfContacts": 0,
         "wristFailures": 0,
-        "floorClearanceMm": 0.7000000000000756
+        "floorClearanceMm": 0.70000000000002
       },
-      "attempted": {
-        "supportFailures": 1,
-        "requirements": [
-          "soles"
-        ],
-        "failedSupports": [
-          "soles"
-        ],
-        "romFailures": 0,
-        "selfContacts": 0,
-        "wristFailures": 0,
-        "floorClearanceMm": 1.5325883369376596
-      },
+      "attempted": null,
       "displacement": {
         "rootMm": 0,
-        "maxJointDegrees": 0,
+        "maxJointDegrees": 0.0000017075472925031877,
         "maxJointWorldMm": 0
       },
-      "rollbackVerified": true
+      "rollbackVerified": false
     },
     {
       "name": "Warrior III",

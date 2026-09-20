@@ -6,7 +6,7 @@ const source='https://myyogateacher.com/articles/ashtanga-yoga-primary-series-gu
 const library=(name,id,cue,holdSeconds=5)=>{
  const pose=yogaPoses.find(item=>item.name===name);
  if(!pose)throw new Error(`Missing Ashtanga pose: ${name}`);
- return {...structuredClone(pose),rotations:structuredClone(ashtangaShapes[name]||pose.rotations),floorSupport:pose.floorSupport||'ground',id:`ashtanga-${id}`,cue,holdSeconds,transitionSeconds:2.4};
+ return {...structuredClone(pose),...(ashtangaShapes[name]?{poseContract:undefined}:{}),rotations:structuredClone(ashtangaShapes[name]||pose.rotations),floorSupport:pose.floorSupport||'ground',id:`ashtanga-${id}`,cue,holdSeconds,transitionSeconds:2.4};
 };
 const sidePose=(name,id,side,cue)=>{
  const step=library(name,`${id}-${side}`,cue);
@@ -25,7 +25,7 @@ export const ashtangaShortPractice={
  description:'Shortened Primary Series study: one Sun Salutation A, both sides of selected standing poses, seated poses and rest. Sun Salutation B, repeated vinyasas, binds and inversions are omitted. Shallow bends, bent-knee folds and an open seated finish are explicit modifications; timing is for preview, not a breath count.',
  steps:[
   ...opening,
-  {...library('Big Toe','big-toe','Both feet grounded. Preparation only: hands do not bind the toes.'),name:'Big Toe Preparation'},
+  {...library('Big Toe','big-toe','Preparation for Big Toe Pose: bend the knees and lower the hands beside the feet. Both soles stay grounded; no toe grip.'),name:'Forward Fold — Bent Knees'},
   reset('rise-from-fold'),
   sidePose('Triangle','triangle','left','Keep both soles grounded; reach the lower hand toward the shin. Modified depth.'),
   reset('switch-triangle'),

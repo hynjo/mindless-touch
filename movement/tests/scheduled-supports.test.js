@@ -29,7 +29,13 @@ test('schedule cannot omit one required sole or claim a floating endpoint is gro
  frames[1]=structuredClone(frames[1]);frames[1].position=new THREE.Vector3().copy(frames[0].position).add(new THREE.Vector3(0,.04,0));
  // Cloned frame quaternions need their Three.js prototypes for pose restoration.
  frames[1].rotations=frames[0].rotations;frames[1].handOffsets=frames[0].handOffsets;
- assert(inspectScheduledHolds(rig,steps,frames).some(i=>/End contact is not grounded/.test(i.reason)));
+ assert(inspectScheduledHolds(rig,steps,frames).some(i=>/End contact is not satisfied/.test(i.reason)));
+});
+test('a sole-pair declaration cannot pass preflight merely because feet touch the floor',()=>{
+ const {rig,steps,frames}=fixture();steps[0].supportRequirements=['soles','sole-pair'];
+ steps[0].contactSchedule.anchors.push({anchor:'sole-pair',start:true,end:true});
+ const issues=inspectScheduledHolds(rig,steps,frames);
+ assert(issues.some(i=>/Start contact is not satisfied: sole-pair/.test(i.reason)));
 });
 test('outgoing schedule needs a destination and neighboring schedules must agree',()=>{
  const {rig,steps,frames}=fixture();

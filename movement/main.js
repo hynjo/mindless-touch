@@ -12,6 +12,7 @@ import { sunSalutation } from './examples.js';
 import {neckStretching} from './neck-example.js';
 import {ashtangaShortPractice} from './ashtanga-example.js';
 import {yogaPoses} from './poses.js';
+import {findPoseByPath,posePath} from './pose-routes.js';
 import { createTimeline } from './playback.js';
 import { poleFlow } from './pole-example.js';
 import {samplePoleMotion} from './pole-motion.js';
@@ -27,6 +28,8 @@ exampleControl.value=poleStudio?'pole-flow':'';speedControl.value='1';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import {enableStageResize} from './stage-resize.js';
 import {enableSequencePanel} from './sequence-panel.js';
+import {applyPose} from './apply-pose.js';
+import {inspectPoseForm} from './pose-contracts.js';
 import {inspectSupports} from './pose-validation.js';
 import {supportProfile} from './support-profiles.js';
 import {projectSupportPose} from './support-solver.js';
@@ -34,6 +37,11 @@ import {sampleContactSchedule} from './contact-schedule.js';
 import {inspectScheduledHolds} from './scheduled-supports.js';
 import {enablePlaybackToolbar,setPlaybackIcon} from './playback-toolbar.js';
 enablePlaybackToolbar();
+const studioSwitcher=document.querySelector('.studio-switcher');
+if(studioSwitcher){
+ document.addEventListener('pointerdown',event=>{if(studioSwitcher.open&&!studioSwitcher.contains(event.target))studioSwitcher.open=false;});
+ document.addEventListener('keydown',event=>{if(event.key==='Escape'&&studioSwitcher.open){studioSwitcher.open=false;studioSwitcher.querySelector('summary').focus();}});
+}
 
 // Dimensions remain separate from pose data so proportions can become editable.
 const dimensions = { pelvisHeight: 0.97, torso: 0.48, shoulderWidth: 0.44, hipWidth: 0.22, upperArm: 0.29, forearm: 0.26, thigh: 0.43, shin: 0.43 };
@@ -80,9 +88,23 @@ const selectedMaterial = new THREE.MeshStandardMaterial({ color: '#fff875', emis
 const {root,torso,neck,headMesh,joints,markers,hands,feet} = createBody({scene,dimensions,bodyMaterial,jointMaterial});
 colorBody({root,joints,bodyMaterial});
 const bodyKey=document.createElement('div');bodyKey.className='body-key';bodyKey.setAttribute('aria-label','Body part colors');
-for(const {label,color,rightColor} of Object.values(bodyParts)){const item=document.createElement('span');item.style.setProperty('--part-color',rightColor?`linear-gradient(90deg,${color} 50%,${rightColor} 50%)`:color);item.textContent=rightColor?`${label} · L / R`:label;bodyKey.append(item);}
-const orientationNote=document.createElement('p');orientationNote.className='body-key-note';orientationNote.textContent='L / R follows the model. Subtle stripes mark the back of the body, arms, legs and hands.';bodyKey.append(orientationNote);
-document.querySelector('label[for=joint]').before(bodyKey);
+for(const [part,{label,color,rightColor}] of Object.entries(bodyParts)){
+ const item=document.createElement('button');item.type='button';item.dataset.bodyPart=part;item.setAttribute('aria-pressed','false');
+ const swatch=document.createElement('span');swatch.className='body-key-swatch';swatch.setAttribute('aria-hidden','true');
+ if(rightColor){for(const [side,sideColor] of [['left',color],['right',rightColor]]){const half=document.createElement('i');half.dataset.side=side;half.style.background=sideColor;swatch.append(half);}}
+ else swatch.style.background=color;
+ const text=document.createElement('span');text.textContent=rightColor?`${label} · L / R`:label;item.append(swatch,text);bodyKey.append(item);
+}
+const poseEditorControls=document.querySelector('#pose-editor-controls');
+const handControls=document.querySelector('.hand-controls');
+for(const button of handControls.querySelectorAll('[data-focus-hand],[data-focus-foot]')){
+ const part=button.dataset.focusHand?'hands':'feet',side=button.dataset.focusHand||button.dataset.focusFoot;
+ const swatch=document.createElement('span');swatch.className='body-key-swatch';swatch.setAttribute('aria-hidden','true');
+ swatch.style.background=side==='right'?bodyParts[part].rightColor:bodyParts[part].color;button.prepend(swatch);button.classList.add('body-key-special');bodyKey.append(button);
+}
+handControls.querySelectorAll('.hand-focus-buttons').forEach(group=>group.remove());
+poseEditorControls.append(bodyKey,document.querySelector('#hand-detail'));
+handControls.remove();
 // Local-axis rings rotate the neck while keeping its attachment to the torso fixed.
 const headRings = new THREE.Group();
 neck.add(headRings);
@@ -95,11 +117,10 @@ for (const [axis, color] of [['x', '#d16a59'], ['y', '#55986b'], ['z', '#568fc7'
 }
 headRings.visible = false;
 const byId = Object.fromEntries(joints.map(item => [item.id, item]));
+const bodyKeyJoints={head:['neck'],chest:['torso'],waist:['waist'],pelvis:['pelvis'],arms:['leftElbow','rightElbow'],hands:['leftWrist','rightWrist'],legs:['leftKnee','rightKnee'],feet:['leftAnkle','rightAnkle']};
 const handles = joints.filter(({id,isFinger,isToe,isFootJoint}) => !isFinger && !isToe && !isFootJoint && !/Shoulder|Hip/.test(id));
 jointMaterial.depthTest = false; selectedMaterial.depthTest = false;
 for (const marker of markers) {marker.visible = handles.includes(marker.userData.joint);marker.renderOrder = 2;}
-const select = document.querySelector('#joint');
-for (const item of handles) select.add(new Option(item.label, item.id));
 let selected, mode, drag;
 let focusedHand = null, selectedFinger = null, savedHandView = null;
 const closeupVisibility = new Map();
@@ -112,16 +133,28 @@ const playback = {playing:false,time:0,speed:1,lastTick:null,index:0,edited:fals
 const sequenceFrames = [];
 const sequenceBounds = new THREE.Box3();
 const position = group => group.getWorldPosition(new THREE.Vector3());
+function syncBodyKeySelection(id){
+  for(const button of bodyKey.querySelectorAll('button[data-body-part]')){
+    const candidates=bodyKeyJoints[button.dataset.bodyPart],selectedIndex=candidates.indexOf(id);
+    button.setAttribute('aria-pressed',String(selectedIndex>=0));button.dataset.selectedSide=selectedIndex<0?'':selectedIndex===0?'left':'right';
+  }
+}
 function choose(id) {
   endDrag();
   if (focusedHand && id !== `${focusedHand.side}${focusedHand.isFoot?'Ankle':'Wrist'}`) closeHand();
-  selected = byId[id];select.value = id;
+  selected = byId[id];
   syncHeadRings();
   syncJointAppearance();
   updateContactUI();
-  document.querySelector('#selection-help').textContent = id === 'pelvis' ? 'Drag the hips to move the whole body.' : id.endsWith('Wrist') ? 'Drag the wrist handle to reach, or a ring to rotate the hand. Palm / back changes the facing direction.' : id.endsWith('Ankle') ? 'Drag the ankle handle to reach, or a ring to rotate the foot and change the sole direction.' : /Elbow|Knee/.test(id) ? 'Drag to change the bend direction.' : ['neck','waist','torso'].includes(id) ? 'Drag a ring: red to bend or arch, green to twist, blue to tilt. Select a motion below to isolate its ring.' : 'Drag to tilt the chest.';
+  syncBodyKeySelection(id);
 }
-select.addEventListener('change', () => choose(select.value));
+bodyKey.addEventListener('click',event=>{
+ const button=event.target.closest('button[data-body-part]');if(!button)return;
+ const candidates=bodyKeyJoints[button.dataset.bodyPart];
+ const requestedSide=event.target.closest('[data-side]')?.dataset.side;
+ const index=requestedSide?(requestedSide==='right'?1:0):candidates.indexOf(selected?.id)+1;
+ choose(candidates[index%candidates.length]);
+});
 function endDrag() {
   const previous = drag;drag = null;
   for (const ring of ringMeshes) ring.material.opacity = .85;
@@ -185,7 +218,8 @@ function focusHand(side,isFoot=false) {
     if (!closeupVisibility.has(object)) closeupVisibility.set(object,object.visible);
     object.visible = focusedHand.meshes.includes(object);
   });
-  selected = byId[`${side}${isFoot?'Ankle':'Wrist'}`];select.value = selected.id;
+  selected = byId[`${side}${isFoot?'Ankle':'Wrist'}`];
+  syncBodyKeySelection(selected.id);
   const jointSelect = document.querySelector('#finger-joint');jointSelect.replaceChildren();
   for (const joint of focusedHand.joints) jointSelect.add(new Option(joint.label,joint.id));
   document.querySelector('#hand-detail').hidden = false;
@@ -287,13 +321,13 @@ const poleConstraints = poleStudio ? createPoleConstraints({root,joints,hands,ch
 const floorConstraints = !poleStudio ? createFloorConstraints({root,joints,meshes:physicalMeshes}) : null;
 const selfConstraints=createSelfConstraints({root,joints});
 let lastSelfPlaybackTime=0;
-const selfStatus=document.createElement('p');selfStatus.id='self-contact-status';selfStatus.setAttribute('role','status');document.querySelector('label[for=joint]').before(selfStatus);
+const selfStatus=document.createElement('p');selfStatus.id='self-contact-status';selfStatus.setAttribute('role','status');poseEditorControls.append(selfStatus);
 function updateSelfContactUI(blocked=false){const overlaps=selfConstraints.contacts(),limits=selfConstraints.jointViolations();selfStatus.textContent=limits.length?`${limits[0].id}: wrist bend or tilt exceeds its range. Adjust the hand or arm before playback.`:overlaps.length?`Body overlap: ${overlaps[0].a} / ${overlaps[0].b}. Move the parts apart before playback.`:blocked?'Movement stopped at contact or a wrist limit.':'Body and hand collision · Wrist limits on';selfStatus.dataset.error=String(blocked||overlaps.length>0||limits.length>0);}
 const palmRig = {root,hands,byId,dimensions,meshes:physicalMeshes};
 const supportRig={...palmRig,joints,feet,headMesh,self:selfConstraints};
 const fitSupportsButton=document.createElement('button');fitSupportsButton.type='button';fitSupportsButton.id='fit-supports';fitSupportsButton.textContent='Fit supports';fitSupportsButton.hidden=poleStudio;
 const fitSupportsStatus=document.createElement('p');fitSupportsStatus.id='fit-supports-status';fitSupportsStatus.setAttribute('role','status');fitSupportsStatus.hidden=true;
-document.querySelector('label[for=joint]').before(fitSupportsButton,fitSupportsStatus);
+poseEditorControls.append(fitSupportsButton,fitSupportsStatus);
 fitSupportsButton.addEventListener('click',()=>{
  const step=sequence.steps[playback.index];if(!step?.supportRequirements?.length)return;
  closeHand();pausePlayback();endDrag();
@@ -324,6 +358,7 @@ function updateFloorContacts() {
   fitSupportsButton.disabled=playback.playing||!step?.supportRequirements?.length;
   if(status&&step?.supportRequirements?.length&&!playback.playing){
     const inspection=inspectSupports({root,byId,hands,feet,headMesh},step);
+    inspection.issues.push(...inspectPoseForm(supportRig,step).issues);
     status.dataset.error=String(inspection.issues.length>0);
     status.textContent=inspection.issues.length?`Support needs adjustment: ${inspection.issues.map(issue=>issue.name).join(', ')}. Floor clearance alone does not confirm support.`:'Required floor supports are in contact.';
   }else if(status)status.dataset.error='false';
@@ -465,25 +500,8 @@ function applyPoleContacts(step) {
   }
 }
 function applyExamplePose(step) {
-  endDrag();applyHandOffsets(root,step.pose?.handOffsets||step.handOffsets);
-  if(step.pose) {
-    root.position.fromArray(step.pose.rootPosition);
-    joints.forEach(({id,group})=>group.rotation.set(...step.pose.rotations[id]));
-    const pose=capturePose(root,joints);
-    if(poleStudio)poleConstraints.restore({pose,safe:pose,grips:Object.entries(step.pose.poleContacts)});
-    else floorConstraints.restore({pose,safe:pose});
-    root.updateWorldMatrix(true,true);return;
-  }
-  root.position.fromArray(step.rootPosition);
-  for (const {id,group} of joints) {
-    const angles = step.rotations[id] || [0,0,0];
-    group.rotation.set(...angles.map(THREE.MathUtils.degToRad));
-  }
-  root.updateWorldMatrix(true,true);
-
-  for (const hand of Object.values(hands)) applyHandPreset(hand,'open');
-  if (poleStudio) {poleConstraints.settle();applyPoleContacts(step);}else {if(step.floorSupport==='palms-knees')placeHandsAndKnees(palmRig);else if(palmsAreSupported(step))placePalmsOnFloor(palmRig);floorConstraints.settle();}
-  root.updateWorldMatrix(true,true);
+  endDrag();
+  return applyPose(supportRig,step,{floor:floorConstraints,pole:poleStudio?poleConstraints:null,attachPole:applyPoleContacts});
 }
 function bodyBounds() {
   const bounds = new THREE.Box3();
@@ -659,6 +677,7 @@ function storedPose(){const offsets=Object.fromEntries(Object.entries(captureHan
 function capturedStep(previous={}) {
   const pose=storedPose();
   const step={id:previous.id||crypto.randomUUID(),name:previous.name||`Pose ${sequence.steps.length+1}`,kind:previous.kind||'pose',cue:previous.cue||'',holdSeconds:previous.holdSeconds??1.4,transitionSeconds:previous.transitionSeconds??2.2,pose};
+  if(previous.poseContract)step.poseContract=previous.poseContract;
   if(!poleStudio&&(previous.supportRequirements||previous.source))step.supportRequirements=[...supportProfile(previous).requirements];
   if(previous.contactSchedule)step.contactSchedule=structuredClone(previous.contactSchedule);
   if(poleStudio){
@@ -801,13 +820,32 @@ document.querySelector('#sequence-file').onchange=async event=>{
   }catch(error){sequenceMessage(error.message,true);}
   finally{event.target.value='';}
 };
-new ResizeObserver(() => {const {width,height} = viewport.getBoundingClientRect();camera.aspect = width/height;camera.updateProjectionMatrix();renderer.setSize(width,height,false);}).observe(viewport);
+function resizeViewport(){
+ const {width,height}=viewport.getBoundingClientRect();
+ // A hidden workspace reports 0 × 0. Keep the last valid drawing buffer and
+ // camera projection so returning to the Sequence tab cannot blank the scene.
+ if(width<=0||height<=0)return false;
+ camera.aspect=width/height;camera.updateProjectionMatrix();renderer.setSize(width,height,false);return true;
+}
+new ResizeObserver(resizeViewport).observe(viewport);
 enableStageResize(document.querySelector('.stage'));
 enableSequencePanel();
 if (floorConstraints) {floorConstraints.settle();updateFloorContacts();}
 selfConstraints.sync();updateSelfContactUI();
+function openSharedPose(pathname=location.pathname){
+ if(poleStudio)return false;
+ const pose=findPoseByPath(yogaPoses,pathname);
+ if(!pose)return false;
+ applyExamplePose(pose);
+ const step=capturedStep({...pose,id:crypto.randomUUID()});
+ replaceSequence({...emptySequence(),name:pose.name,steps:[step]});
+ document.title=`${pose.name} - Movement`;
+ sequenceMessage(`${pose.name} opened from its share link. You can edit it or add more poses.`);
+ return true;
+}
 choose(poleStudio ? 'leftWrist':'neck');setView('perspective');setMode(poleStudio ? 'view':'pose');
-if (poleStudio) exampleControl.dispatchEvent(new Event('change'));else rebuildSequence();
+if (poleStudio) exampleControl.dispatchEvent(new Event('change'));else if(!openSharedPose())rebuildSequence();
+window.addEventListener('popstate',()=>{if(!poleStudio&&!openSharedPose())replaceSequence(emptySequence());});
 renderer.setAnimationLoop(now => {
   if (playback.playing) {
     const elapsed = playback.lastTick === null ? 0 : Math.min((now-playback.lastTick)/1000,.1);
@@ -842,14 +880,17 @@ if(poseLibrary){
    const detail=document.createElement('small');detail.textContent=`${pose.category} · ${pose.difficulty}`;
    const action=document.createElement('small');action.textContent=pose.draft?'Draft · Add to sequence':'Add to sequence';
    label.append(detail,action);button.append(img,label);
+   if(pose.modification){const note=document.createElement('small');note.textContent=pose.modification;label.append(note);}
    button.onclick=()=>{
     if(sequence.steps.length>=MAX_STEPS){poseLibrary.querySelector('#pose-results').textContent=`Sequence limit reached (${MAX_STEPS} poses).`;return;}
     flushPendingPose();rememberSequence();applyExamplePose(pose);
     sequence.steps.push(capturedStep({...pose,id:crypto.randomUUID()}));playback.index=sequence.steps.length-1;playback.edited=false;
-    rebuildSequence();selectExampleStep(playback.index,false);poseLibrary.close();sequenceMessage(`${pose.name} added.${pose.draft?' Draft pose: refine its alignment and contacts in Pose mode.':' Edit the pose or choose another from Poses.'}`);
+    setWorkspaceTab('sequence');rebuildSequence();selectExampleStep(playback.index,false);sequenceMessage(`${pose.name} added.${pose.draft?' Draft pose: refine its alignment and contacts in Pose mode.':' Edit the pose or choose another from Poses.'}`);
    };
+   const links=document.createElement('div');links.className='pose-card-links';
+   const permalink=document.createElement('a');permalink.href=posePath(pose);permalink.textContent='Open share link';permalink.setAttribute('aria-label',`Open shareable page for ${pose.name}`);
    const source=document.createElement('a');source.href=pose.source;source.target='_blank';source.rel='noopener noreferrer';source.textContent='Pocket Yoga reference';source.setAttribute('aria-label',`${pose.name} — Pocket Yoga reference`);
-   item.append(button,source);return item;
+   links.append(permalink,source);item.append(button,links);return item;
   });
   poseLibrary.querySelector('#library-grid').replaceChildren(...cards);
   poseLibrary.querySelector('#pose-results').textContent=matching.length?`${matching.length} poses · ${page*pageSize+1}–${page*pageSize+visible.length}`:'No poses match. Try another name or category.';
@@ -858,15 +899,33 @@ if(poseLibrary){
   poseLibrary.querySelector('#poses-next').disabled=page+1>=totalPages;
   for(const {pose,img} of pending){
    await new Promise(requestAnimationFrame);
-   if(request!==generation||!poseLibrary.open)return;
+   if(request!==generation||poseLibrary.hidden)return;
    const preview=makeThumbnails([pose],false)[0];previews.set(pose.id,preview);img.src=preview;img.hidden=false;
   }
  }
- document.querySelector('#open-poses').onclick=()=>{closeHand();pausePlayback();poseLibrary.showModal();renderLibrary();search.focus();};
- poseLibrary.querySelector('#close-poses').onclick=()=>poseLibrary.close();
- poseLibrary.addEventListener('close',()=>{generation++;});
+ let activeWorkspaceTab='sequence';
+ const workspaceScroll={sequence:0,poses:0};
+ function setWorkspaceTab(tab,{focus=false}={}){
+  if(tab!==activeWorkspaceTab)workspaceScroll[activeWorkspaceTab]=scrollY;
+  const posesActive=tab==='poses',workspace=document.querySelector('#sequence-workspace');
+  workspace.hidden=posesActive;poseLibrary.hidden=!posesActive;
+  for(const button of document.querySelectorAll('.workspace-tabs [role=tab]')){
+   const active=button.id===(posesActive?'poses-tab':'sequence-tab');button.setAttribute('aria-selected',String(active));button.tabIndex=active?0:-1;
+  }
+  document.body.dataset.workspaceTab=tab;activeWorkspaceTab=tab;
+  if(posesActive){closeHand();pausePlayback();renderLibrary();if(focus)search.focus();}
+  else {generation++;resizeViewport();}
+  requestAnimationFrame(()=>{if(!posesActive)resizeViewport();scrollTo({top:workspaceScroll[tab],behavior:'auto'});});
+ }
+ document.querySelector('#sequence-tab').onclick=()=>setWorkspaceTab('sequence');
+ document.querySelector('#poses-tab').onclick=()=>setWorkspaceTab('poses',{focus:true});
+ document.querySelector('.workspace-tabs').addEventListener('keydown',event=>{
+  if(!['ArrowLeft','ArrowRight'].includes(event.key))return;event.preventDefault();
+  const tab=document.body.dataset.workspaceTab==='poses'?'sequence':'poses';setWorkspaceTab(tab,{focus:tab==='poses'});document.querySelector(`#${tab}-tab`).focus();
+ });
  const filter=()=>{page=0;renderLibrary();};search.oninput=filter;category.onchange=filter;difficulty.onchange=filter;
  for(const [id,delta] of [['poses-previous',-1],['poses-next',1]])poseLibrary.querySelector('#'+id).onclick=()=>{page+=delta;renderLibrary();poseLibrary.scrollTop=0;};
+ setWorkspaceTab('sequence');
 }
 
 for(const button of document.querySelectorAll('[data-foot-shape]'))button.onclick=()=>{
