@@ -24,8 +24,13 @@ export function applyPose(rig,step,{floor,pole,attachPole=()=>{}}={}) {
  const collect=r=>{if(r.alternatives)r.alternatives.filter(a=>a.pass).forEach(collect);else r.samples.filter(s=>s.pass).forEach(s=>preserved.push(s.name));};
  before?.supports.requirements.forEach(collect);
  try {
-  if(step.floorSupport==='palms-knees')placeHandsAndKnees(rig);
-  else if(palmsAreSupported(step))placePalmsOnFloor(rig);
+  // Reviewed poses use the same resolved requirements for repair and validation.
+  // Legacy drafts retain their authored strategy until their contract is reviewed.
+  const required=before?.supports.profile.requirements;
+  if(!before||before.supports.issues.length){
+   if(required?required.includes('palms')&&required.includes('knees'):step.floorSupport==='palms-knees')placeHandsAndKnees(rig);
+   else if(required?required.includes('palms'):palmsAreSupported(step))placePalmsOnFloor(rig);
+  }
   floor?.settle();rig.root.updateWorldMatrix(true,true);
   if(!before)return null;
   const after=inspectPose(rig,step),self=rig.self||createSelfConstraints(rig);

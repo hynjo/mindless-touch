@@ -2,10 +2,11 @@ import * as THREE from 'three';
 import {aim,solve} from './rig.js';
 import {applyHandPreset} from './hands.js';
 import {floorClearance,FLOOR_SKIN} from './floor-constraints.js';
-import {wristMargins} from './wrist-constraints.js';
+import {wristAngles,wristMargins} from './wrist-constraints.js';
 const position=group=>group.getWorldPosition(new THREE.Vector3());
 const flatPalm=new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1,0,0),-Math.PI/2);
 const palmHeight=.015+FLOOR_SKIN;
+const ankleAxis=new THREE.Vector3(1,0,0),ankleDown=new THREE.Vector3(0,-1,0);
 function worldOrientation(group,quaternion) {
   group.quaternion.copy(group.parent.getWorldQuaternion(new THREE.Quaternion()).invert().multiply(quaternion));
 }
@@ -16,8 +17,32 @@ function groundTarget(upper,current,height,length) {
   if(horizontal.length()>reach)horizontal.setLength(reach);
   target.x=start.x+horizontal.x;target.z=start.z+horizontal.z;return target;
 }
-export function placePalmsOnFloor({root,hands,byId,dimensions,meshes}) {
+// Ground fitting preserves a foot's world direction while its parent shin is
+// re-solved. That compensation can push the local ankle past its envelope even
+// when both authored endpoints are valid. Let the foot roll by the minimum
+// amount needed to keep a small interior margin instead.
+export function limitAnkleBend(ankle,min=THREE.MathUtils.degToRad(-40),max=THREE.MathUtils.degToRad(50)) {
+  for(let pass=0;pass<3;pass++){
+    const direction=ankleDown.clone().applyQuaternion(ankle.quaternion);
+    const bend=Math.atan2(-direction.z,-direction.y),target=THREE.MathUtils.clamp(bend,min,max);
+    if(Math.abs(target-bend)<1e-10)break;
+    ankle.quaternion.premultiply(new THREE.Quaternion().setFromAxisAngle(ankleAxis,target-bend));
+  }
+}
+function limitWristBend(wrist,min=THREE.MathUtils.degToRad(-80),max=THREE.MathUtils.degToRad(80)){
+  for(let pass=0;pass<3;pass++){
+    const bend=wristAngles(wrist.quaternion).bend,target=THREE.MathUtils.clamp(bend,min,max);
+    if(Math.abs(target-bend)<1e-10)break;
+    wrist.quaternion.premultiply(new THREE.Quaternion().setFromAxisAngle(ankleAxis,target-bend));
+  }
+}
+function limitHipFlexion(hip,min=THREE.MathUtils.degToRad(-45),max=THREE.MathUtils.degToRad(129)){
+  const angles=new THREE.Euler().setFromQuaternion(hip.quaternion,'XZY');
+  angles.x=-THREE.MathUtils.clamp(-angles.x,min,max);hip.quaternion.setFromEuler(angles);
+}
+export function placePalmsOnFloor({root,hands,byId,dimensions,meshes},{constrainAnkles=false,movingFoot=null,footLift=0}={}) {
   root.updateWorldMatrix(true,true);
+  const stableContactBias=constrainAnkles&&movingFoot?.001:0;
   // A captured/authored supported hold must not run through unconstrained leg
   // IK again: doing so can rotate knees off their hinge or overflex the hips.
   // Preserve exact grounded palms and the existing body geometry on reload.
@@ -27,13 +52,13 @@ export function placePalmsOnFloor({root,hands,byId,dimensions,meshes}) {
       [-.018,.018].every(x=>[-.025,.025].every(y=>Math.abs(hand.palm.localToWorld(new THREE.Vector3(x,y,-.015)).y-FLOOR_SKIN)<.0001))&&
       wristMargins({group:hand.wrist}).every(margin=>margin>=0);
   });
-  if(grounded&&Math.min(...meshes.map(floorClearance))>=FLOOR_SKIN-.00002)return;
+  if(!movingFoot&&grounded&&Math.min(...meshes.map(floorClearance))>=FLOOR_SKIN-.00002)return;
   const feet={};
   for(const side of ['left','right']) {
     const ankle=byId[side+'Ankle'].group;
     const footMeshes=[];ankle.traverse(child=>{if(child.isMesh)footMeshes.push(child);});
     const footClearance=Math.min(...footMeshes.map(floorClearance));
-    feet[side]={position:position(ankle),rotation:ankle.getWorldQuaternion(new THREE.Quaternion()),height:position(ankle).y-footClearance+FLOOR_SKIN};
+    feet[side]={position:position(ankle),rotation:ankle.getWorldQuaternion(new THREE.Quaternion()),height:position(ankle).y-footClearance+FLOOR_SKIN+(side===movingFoot?footLift:-stableContactBias)};
     applyHandPreset(hands[side],'open');
     worldOrientation(hands[side].wrist,flatPalm);
   }
@@ -51,22 +76,26 @@ export function placePalmsOnFloor({root,hands,byId,dimensions,meshes}) {
   for(let pass=0;pass<5;pass++) {
     for(const side of ['left','right']) {
       const upper=byId[side+'Shoulder'].group,middle=byId[side+'Elbow'].group;
-      const target=groundTarget(upper,position(hands[side].wrist),palmHeight-hands[side].root.position.z,dimensions.upperArm+dimensions.forearm);
+      const target=groundTarget(upper,position(hands[side].wrist),palmHeight-stableContactBias-hands[side].root.position.z,dimensions.upperArm+dimensions.forearm);
       const bend=position(middle).add(new THREE.Vector3(0,.1,-.2));
       solve({upper,middle,a:dimensions.upperArm,b:dimensions.forearm},target,bend);
       worldOrientation(hands[side].wrist,flatPalm);
       // A flat palm is not valid support if it overextends the wrist. Move its
       // target forward within arm reach instead of accepting an invalid bend.
-      for(let retry=0;retry<12&&wristMargins({group:hands[side].wrist}).some(margin=>margin<0);retry++){
+      const wristRetries=constrainAnkles?24:12;
+      for(let retry=0;retry<wristRetries&&wristMargins({group:hands[side].wrist}).some(margin=>margin<0);retry++){
         target.z+=.015;
         target.copy(groundTarget(upper,target,target.y,dimensions.upperArm+dimensions.forearm));
         solve({upper,middle,a:dimensions.upperArm,b:dimensions.forearm},target,bend);
         worldOrientation(hands[side].wrist,flatPalm);
       }
+      if(constrainAnkles&&wristMargins({group:hands[side].wrist}).some(margin=>margin<0))limitWristBend(hands[side].wrist);
       const hip=byId[side+'Hip'].group,knee=byId[side+'Knee'].group,ankle=byId[side+'Ankle'].group;
       const footTarget=groundTarget(hip,feet[side].position,feet[side].height,dimensions.thigh+dimensions.shin);
       solve({upper:hip,middle:knee,a:dimensions.thigh,b:dimensions.shin},footTarget,position(knee).add(new THREE.Vector3(0,0,.2)));
+      if(constrainAnkles&&side===movingFoot)limitHipFlexion(hip);
       worldOrientation(ankle,feet[side].rotation);
+      if(constrainAnkles)limitAnkleBend(ankle);
     }
     root.updateWorldMatrix(true,true);
     const min=Math.min(...meshes.map(floorClearance));

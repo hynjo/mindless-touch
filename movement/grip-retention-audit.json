@@ -1,0 +1,72 @@
+[
+  {
+    "seed": 17,
+    "pass": false,
+    "reason": "Insufficient nonpenetrating distal contact within 0.5 mm",
+    "contact": {
+      "fingertipReach": {
+        "pass": false,
+        "residuals": null
+      },
+      "opposedContact": {
+        "pass": false,
+        "normalDot": -0.8836471498397163,
+        "contacts": []
+      },
+      "hookedGripCandidate": {
+        "pass": false,
+        "curled": {
+          "left": [
+            "Middle",
+            "Ring"
+          ],
+          "right": [
+            "Middle",
+            "Ring"
+          ]
+        },
+        "contacts": [],
+        "certified": false
+      },
+      "overlaps": [],
+      "externalClear": true
+    },
+    "probes": [],
+    "certified": false
+  },
+  {
+    "seed": 73,
+    "pass": false,
+    "reason": "Insufficient nonpenetrating distal contact within 0.5 mm",
+    "contact": {
+      "fingertipReach": {
+        "pass": false,
+        "residuals": null
+      },
+      "opposedContact": {
+        "pass": false,
+        "normalDot": -0.8614896507438788,
+        "contacts": []
+      },
+      "hookedGripCandidate": {
+        "pass": false,
+        "curled": {
+          "left": [
+            "Middle",
+            "Ring"
+          ],
+          "right": [
+            "Middle",
+            "Ring"
+          ]
+        },
+        "contacts": [],
+        "certified": false
+      },
+      "overlaps": [],
+      "externalClear": true
+    },
+    "probes": [],
+    "certified": false
+  }
+]

@@ -1,0 +1,13 @@
+import * as T from 'three';
+import {writeFile} from 'node:fs/promises';
+import {createBody} from '../body.js';
+import {yogaPoses} from '../poses.js';
+import {applyPose} from '../apply-pose.js';
+import {createFloorConstraints} from '../floor-constraints.js';
+import {solveFloorEntry} from '../floor-entry-solver.js';
+const dimensions={pelvisHeight:.97,torso:.48,shoulderWidth:.44,hipWidth:.22,upperArm:.29,forearm:.26,thigh:.43,shin:.43},material=new T.MeshStandardMaterial();
+const rig=createBody({scene:new T.Scene(),dimensions,bodyMaterial:material,jointMaterial:material});rig.dimensions=dimensions;rig.byId=Object.fromEntries(rig.joints.map(j=>[j.id,j]));rig.meshes=[];rig.root.traverse(m=>{if(m.isMesh)rig.meshes.push(m)});
+applyPose(rig,yogaPoses.find(p=>p.name==='Big Toe'),{floor:createFloorConstraints(rig)});
+const result=solveFloorEntry(rig),{frames,...report}=result;
+await writeFile(new URL('../floor-entry-results.json',import.meta.url),JSON.stringify({...report,frameCount:frames?.length||0,endPose:frames?.at(-1)},null,2)+'\n');
+console.log({success:result.success,stage:result.stage,candidates:result.attempts.length,frameCount:frames?.length||0,lastAttempt:result.attempts.at(-1)});

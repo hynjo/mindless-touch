@@ -111,3 +111,17 @@ header .sequence-panel-toggle{flex:0 0 40px;width:40px;height:40px;margin-left:1
 .playback-sticky.is-collapsed .control-box-toggle{margin:0;border:0;width:40px;height:40px}
 .stage-controls{top:calc(34px + var(--playback-height,52px))}
 @media(max-width:760px){.playback-sticky{margin-left:22px}}
+
+.experiment-toolbar { margin-block: 1rem; }
+#experiment-options { margin-block: 1rem; }
+#experiment-options > * { margin: .35rem .65rem .35rem 0; }
+#experiment-options label { display: inline-flex; align-items: center; gap: .5rem; }
+#experiment-seed { width: 9rem; }
+.library-card .pose-card[aria-pressed="true"] { outline: 3px solid #ffff70; outline-offset: -3px; }
+.route-review { padding: 1rem; margin-block: 1rem; background: #17180f; border-radius: 1rem; }
+.route-review button { margin: .35rem .65rem .35rem 0; }
+.route-suggestions { display: grid; grid-template-columns: repeat(auto-fill,minmax(150px,1fr)); gap: .75rem; }
+.route-suggestions button { display: flex; flex-direction: column; align-items: center; padding: .5rem; }
+.route-suggestions img { max-width: 100%; height: auto; }
+.route-suggestions button[aria-pressed="true"] { background: #ffff70; color: #111; }
+.route-suggestions small { display: block; margin-top: .4rem; }

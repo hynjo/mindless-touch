@@ -1,9 +1,11 @@
 import {SUPPORT_REQUIREMENTS} from './support-profiles.js';
 import {POSE_CONTRACTS} from './pose-contracts.js';
 import {normalizeContactSchedule} from './contact-schedule.js';
+import {normalizeTransitionMotion} from './transition-motion.js';
 export const SEQUENCE_FORMAT='movement-sequence';
 export const SEQUENCE_VERSION=1;
 export const MAX_STEPS=200;
+export const MAX_SEQUENCE_BYTES=16*1024*1024;
 const plain=value=>value!==null&&typeof value==='object'&&!Array.isArray(value);
 function fail(message){throw new Error(message);}
 function number(value,min,max,label){if(!Number.isFinite(value)||value<min||value>max)fail(`${label} is invalid.`);return value;}
@@ -29,6 +31,8 @@ export function validateSequence(input,{studio,dimensions,jointIds}) {
     const supportRequirements=step.supportRequirements;
     if(step.poseContract!==undefined&&!Object.hasOwn(POSE_CONTRACTS,step.poseContract))fail('Unknown pose contract.');
     const contactSchedule=normalizeContactSchedule(step.contactSchedule);
+    const transitionMotion=normalizeTransitionMotion(step.transitionMotion,jointIds);
+    if(transitionMotion&&(studio!=='movement'||contactSchedule))fail('Solved motion requires Movement Studio and its own contact phases.');
     if(contactSchedule&&studio!=='movement')fail('Floor contact schedules are supported in Movement Studio only.');
     if(supportRequirements!==undefined&&(!Array.isArray(supportRequirements)||supportRequirements.length>12||supportRequirements.some(name=>!SUPPORT_REQUIREMENTS.has(name))))fail('Invalid support requirements.');
     const rotationKeys=Object.keys(step.pose.rotations);
@@ -58,9 +62,16 @@ export function validateSequence(input,{studio,dimensions,jointIds}) {
       orbit={angle:number((step.orbit||fallback).angle,-1000,1000,'Orbit angle'),radius:number((step.orbit||fallback).radius,0,20,'Orbit radius')};
       if(Math.abs(Math.sin(orbit.angle)*orbit.radius-rootPosition[0])>.001||Math.abs(Math.cos(orbit.angle)*orbit.radius-rootPosition[2])>.001)fail('Orbit does not match the saved body position.');
     }
-    return {...(step.poseContract?{poseContract:step.poseContract}:{}),id,name:text(step.name,'Pose name'),kind:step.kind==='transition'?'transition':'pose',cue:typeof step.cue==='string'?step.cue.slice(0,120):'',holdSeconds:number(step.holdSeconds,0,120,'Hold time'),transitionSeconds:number(step.transitionSeconds,.05,120,'Transition time'),...(contactSchedule?{contactSchedule}:{}),...(supportRequirements?{supportRequirements:[...supportRequirements]}:{}),...(step.floorSupport?{floorSupport:step.floorSupport}:{}),...(orbit?{orbit}:{}),pose:{rootPosition,rotations,poleContacts,...(Object.keys(handOffsets).length?{handOffsets}:{})}};
+    return {...(step.poseContract?{poseContract:step.poseContract}:{}),id,name:text(step.name,'Pose name'),kind:step.kind==='transition'?'transition':'pose',cue:typeof step.cue==='string'?step.cue.slice(0,120):'',holdSeconds:number(step.holdSeconds,0,120,'Hold time'),transitionSeconds:number(step.transitionSeconds,.05,120,'Transition time'),...(transitionMotion?{transitionMotion}:{}),...(contactSchedule?{contactSchedule}:{}),...(supportRequirements?{supportRequirements:[...supportRequirements]}:{}),...(step.floorSupport?{floorSupport:step.floorSupport}:{}),...(orbit?{orbit}:{}),pose:{rootPosition,rotations,poleContacts,...(Object.keys(handOffsets).length?{handOffsets}:{})}};
   });
-  return {format:SEQUENCE_FORMAT,version:SEQUENCE_VERSION,studio,dimensions:{...dimensions},name:text(data.name,'Sequence name'),steps};
+  let experiment;
+  if(data.experiment!==undefined){
+    const e=data.experiment;
+    if(!plain(e)||e.version!==1||!Array.isArray(e.poseIds)||e.poseIds.length<2||e.poseIds.length>MAX_STEPS)fail('Invalid experiment metadata.');
+    experiment={version:1,seed:text(e.seed,'Experiment seed',80),poseIds:e.poseIds.map(id=>text(id,'Experiment pose ID',120))};
+  }
+  return {format:SEQUENCE_FORMAT,version:SEQUENCE_VERSION,studio,dimensions:{...dimensions},name:text(data.name,'Sequence name'),steps,...(experiment?{experiment}: {})};
 }
-export function serializeSequence(sequence,context){return JSON.stringify(validateSequence(sequence,context),null,2);}
-export function parseSequence(source,context){let data;try{data=JSON.parse(source);}catch{fail('The file is not valid JSON.');}return validateSequence(data,context);}
+function checkFileSize(source){if(new TextEncoder().encode(source).byteLength>MAX_SEQUENCE_BYTES)fail('A sequence file can be up to 16 MB.');}
+export function serializeSequence(sequence,context){const source=JSON.stringify(validateSequence(sequence,context),null,2);checkFileSize(source);return source;}
+export function parseSequence(source,context){checkFileSize(source);let data;try{data=JSON.parse(source);}catch{fail('The file is not valid JSON.');}return validateSequence(data,context);}

@@ -1,0 +1,1038 @@
+{
+  "summary": {
+    "poses": 171,
+    "withFindings": 0,
+    "withFingerCapsuleOverlap": 0,
+    "withConservativeFindings": 0,
+    "withSubmillimeterFindings": 0
+  },
+  "note": "Static catalog poses after shared applyPose. Negative margins are proxy overlaps; conservative palm/core findings require narrow-phase or visual confirmation. No transition, limb/hand, nose, grip or anatomical certification. Runtime acceptance is unchanged. Raw submillimetre depths retained.",
+  "results": [
+    {
+      "name": "Archer's",
+      "source": "https://www.pocketyoga.com/pose/Archer",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Banana",
+      "source": "https://www.pocketyoga.com/pose/Banana",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Big Toe",
+      "source": "https://www.pocketyoga.com/pose/ForwardBendBigToe",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Bird of Paradise",
+      "source": "https://www.pocketyoga.com/pose/ChairTwistBindUp",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Boat",
+      "source": "https://www.pocketyoga.com/pose/BoatFull",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Bound Angle",
+      "source": "https://www.pocketyoga.com/pose/BoundAngle",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Bow",
+      "source": "https://www.pocketyoga.com/pose/Bow",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Bridge",
+      "source": "https://www.pocketyoga.com/pose/Bridge",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Butterfly",
+      "source": "https://www.pocketyoga.com/pose/Butterfly",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Camel",
+      "source": "https://www.pocketyoga.com/pose/Camel",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Cat",
+      "source": "https://www.pocketyoga.com/pose/Cat",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Caterpillar",
+      "source": "https://www.pocketyoga.com/pose/Caterpillar",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Chair",
+      "source": "https://www.pocketyoga.com/pose/Chair",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Child's",
+      "source": "https://www.pocketyoga.com/pose/ChildTraditional",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Chin Stand",
+      "source": "https://www.pocketyoga.com/pose/ChinStand",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Cobra",
+      "source": "https://www.pocketyoga.com/pose/CobraFull",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Corpse",
+      "source": "https://www.pocketyoga.com/pose/Corpse",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Cow",
+      "source": "https://www.pocketyoga.com/pose/Dog",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Cow Face (Preparation)",
+      "source": "https://www.pocketyoga.com/pose/KneePileBind",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Crane",
+      "source": "https://www.pocketyoga.com/pose/Crane",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Crescent Lunge",
+      "source": "https://www.pocketyoga.com/pose/LungeCrescent",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Crescent Lunge on the Knee",
+      "source": "https://www.pocketyoga.com/pose/WarriorIKneeling",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Crescent Moon",
+      "source": "https://www.pocketyoga.com/pose/CrescentMoon",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Crooked Monkey",
+      "source": "https://www.pocketyoga.com/pose/CrookedMonkey",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Crow",
+      "source": "https://www.pocketyoga.com/pose/Crow",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Deaf Man's",
+      "source": "https://www.pocketyoga.com/pose/DeafMan",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Dolphin",
+      "source": "https://www.pocketyoga.com/pose/Dolphin",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Downward-Facing Dog",
+      "source": "https://www.pocketyoga.com/pose/DownwardDog",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Eagle",
+      "source": "https://www.pocketyoga.com/pose/Eagle",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Easy",
+      "source": "https://www.pocketyoga.com/pose/Easy",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Eight Angle",
+      "source": "https://www.pocketyoga.com/pose/EightAngle",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Eight Point",
+      "source": "https://www.pocketyoga.com/pose/EightPoint",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Elbow Balance",
+      "source": "https://www.pocketyoga.com/pose/RelaxedStance",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Elephant Trunk",
+      "source": "https://www.pocketyoga.com/pose/ElephantTrunk",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Embryo",
+      "source": "https://www.pocketyoga.com/pose/Embryo",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Embryo in Womb",
+      "source": "https://www.pocketyoga.com/pose/EmbryoWomb",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Extended Bridge (Preparation)",
+      "source": "https://www.pocketyoga.com/pose/SetuPreparation",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Extended Puppy",
+      "source": "https://www.pocketyoga.com/pose/PuppyExtended",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Extended Side Angle",
+      "source": "https://www.pocketyoga.com/pose/WarriorIIForwardArmForward",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Extended Standing Hand to Big Toe",
+      "source": "https://www.pocketyoga.com/pose/StandingHandToToeExtended",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Extended Supine Hand to Big Toe",
+      "source": "https://www.pocketyoga.com/pose/SupineHandToToeExtended",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Fire Log",
+      "source": "https://www.pocketyoga.com/pose/FireLog",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Firefly I",
+      "source": "https://www.pocketyoga.com/pose/Firefly",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Firefly II",
+      "source": "https://www.pocketyoga.com/pose/TortoiseBind",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Firefly III",
+      "source": "https://www.pocketyoga.com/pose/TortoiseBindII",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Fish",
+      "source": "https://www.pocketyoga.com/pose/FishPreparation",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Floating Stick",
+      "source": "https://www.pocketyoga.com/pose/FloatingStick",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Flying Lizard",
+      "source": "https://www.pocketyoga.com/pose/FlyingLizard",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Flying Man",
+      "source": "https://www.pocketyoga.com/pose/LungeHandsOnMatFlying",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Flying Pigeon",
+      "source": "https://www.pocketyoga.com/pose/PigeonFlying",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Forearm Balance",
+      "source": "https://www.pocketyoga.com/pose/FeatheredPeacock",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Frog",
+      "source": "https://www.pocketyoga.com/pose/FrogTraditional",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Front Splits",
+      "source": "https://www.pocketyoga.com/pose/SplitsFront",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Garland",
+      "source": "https://www.pocketyoga.com/pose/GarlandSideways",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Gate",
+      "source": "https://www.pocketyoga.com/pose/Gate",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Goddess",
+      "source": "https://www.pocketyoga.com/pose/Goddess",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Gorilla",
+      "source": "https://www.pocketyoga.com/pose/Gorilla",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Grasshopper",
+      "source": "https://www.pocketyoga.com/pose/Grasshopper",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Half Bow",
+      "source": "https://www.pocketyoga.com/pose/ProneBowHalf",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Half Moon",
+      "source": "https://www.pocketyoga.com/pose/HalfMoon",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Half Pigeon",
+      "source": "https://www.pocketyoga.com/pose/PigeonHalf",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Handstand",
+      "source": "https://www.pocketyoga.com/pose/Handstand",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Happy Baby",
+      "source": "https://www.pocketyoga.com/pose/BlissfulBaby",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Head to Knee I",
+      "source": "https://www.pocketyoga.com/pose/HeadToKnee",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Head to Knee II",
+      "source": "https://www.pocketyoga.com/pose/HeadToKneeII",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Head to Knee III",
+      "source": "https://www.pocketyoga.com/pose/HeadToKneeIII",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Hero",
+      "source": "https://www.pocketyoga.com/pose/Hero",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Heron",
+      "source": "https://www.pocketyoga.com/pose/Heron",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Himalayan Duck",
+      "source": "https://www.pocketyoga.com/pose/Duck",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Horse",
+      "source": "https://www.pocketyoga.com/pose/Horse",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Humble Flamingo",
+      "source": "https://www.pocketyoga.com/pose/FlamingoHumble",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Inverted Staff",
+      "source": "https://www.pocketyoga.com/pose/StaffInverted",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Little Thunderbolt",
+      "source": "https://www.pocketyoga.com/pose/LittleThunderbolt",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Lizard",
+      "source": "https://www.pocketyoga.com/pose/Lizard",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Locust I",
+      "source": "https://www.pocketyoga.com/pose/Locust",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Locust II",
+      "source": "https://www.pocketyoga.com/pose/LocustII",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Locust III",
+      "source": "https://www.pocketyoga.com/pose/LocustIII",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Lord of the Fishes",
+      "source": "https://www.pocketyoga.com/pose/LordOfTheFishes",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Lotus",
+      "source": "https://www.pocketyoga.com/pose/LotusFull",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Low Push-up",
+      "source": "https://www.pocketyoga.com/pose/FourLimbedStaff",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Lunge",
+      "source": "https://www.pocketyoga.com/pose/Lunge",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Moon Bird",
+      "source": "https://www.pocketyoga.com/pose/FootBehindHeadElevated",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Mountain",
+      "source": "https://www.pocketyoga.com/pose/MountainArmsSide",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Noose",
+      "source": "https://www.pocketyoga.com/pose/SeatedOnHeelsTwistBound",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "One Leg Behind the Head I",
+      "source": "https://www.pocketyoga.com/pose/FootBehindHead",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "One Leg Behind the Head II",
+      "source": "https://www.pocketyoga.com/pose/FootBehindHeadForward",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "One Legged Bridge",
+      "source": "https://www.pocketyoga.com/pose/BridgeLegUp",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "One Legged Supported Bridge",
+      "source": "https://www.pocketyoga.com/pose/BridgeLegUpSupported",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Peacock",
+      "source": "https://www.pocketyoga.com/pose/Peacock",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Pendant",
+      "source": "https://www.pocketyoga.com/pose/Pendant",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Pigeon",
+      "source": "https://www.pocketyoga.com/pose/Pigeon",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Plank",
+      "source": "https://www.pocketyoga.com/pose/Plank",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Plow",
+      "source": "https://www.pocketyoga.com/pose/Plow",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Pyramid",
+      "source": "https://www.pocketyoga.com/pose/PyramidPrayer",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Rabbit",
+      "source": "https://www.pocketyoga.com/pose/Rabbit",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Reverse Corpse",
+      "source": "https://www.pocketyoga.com/pose/CorpseFrontArmsForward",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Revolved Bird of Paradise",
+      "source": "https://www.pocketyoga.com/pose/BirdOfParadiseRevolved",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Revolved Flying Man",
+      "source": "https://www.pocketyoga.com/pose/FlyingManRevolved",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Revolved Half Moon",
+      "source": "https://www.pocketyoga.com/pose/HalfMoonRevolved",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Revolved Seated Hand to Big Toe",
+      "source": "https://www.pocketyoga.com/pose/SeatedHandToToeRevolved",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Revolved Standing Hand to Big Toe",
+      "source": "https://www.pocketyoga.com/pose/StandingHandToToeRevolved",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Revolved Triangle",
+      "source": "https://www.pocketyoga.com/pose/TriangleRevolved",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Rock the Baby",
+      "source": "https://www.pocketyoga.com/pose/Cradle",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Rooster",
+      "source": "https://www.pocketyoga.com/pose/Rooster",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Sage Bharadvaja's Twist",
+      "source": "https://www.pocketyoga.com/pose/Bharadvaja",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Sage Gheranda's",
+      "source": "https://www.pocketyoga.com/pose/GherandaI",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Sage Marichi's I",
+      "source": "https://www.pocketyoga.com/pose/MarichiITraditional",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Sage Marichi's II",
+      "source": "https://www.pocketyoga.com/pose/MarichiIITraditional",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Sage Marichi's III",
+      "source": "https://www.pocketyoga.com/pose/MarichiIIITraditional",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Sage Marichi's IV",
+      "source": "https://www.pocketyoga.com/pose/MarichiIVTraditional",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Sage Visvamitra's",
+      "source": "https://www.pocketyoga.com/pose/VisvamitraFull",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Scale",
+      "source": "https://www.pocketyoga.com/pose/LotusElevated",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Scorpion",
+      "source": "https://www.pocketyoga.com/pose/Scorpion",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Seated Forward Bend I",
+      "source": "https://www.pocketyoga.com/pose/SeatedForwardBend",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Seated Forward Bend II",
+      "source": "https://www.pocketyoga.com/pose/SeatedForwardBendII",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Seated Forward Bend III",
+      "source": "https://www.pocketyoga.com/pose/SeatedForwardBendIII",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Seated Forward Bend IV",
+      "source": "https://www.pocketyoga.com/pose/SeatedForwardBendIV",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Seated Gate",
+      "source": "https://www.pocketyoga.com/pose/SeatedGate",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Seated Half Bound Lotus Forward Bend",
+      "source": "https://www.pocketyoga.com/pose/SeatedForwardBendHalfLotus",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Seated Three Limbed Forward Bend",
+      "source": "https://www.pocketyoga.com/pose/SeatedForwardBendThreeLimbs",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Shiva Squat",
+      "source": "https://www.pocketyoga.com/pose/ShivaSquat",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Shoelace",
+      "source": "https://www.pocketyoga.com/pose/KneePile",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Shoulder Pressing",
+      "source": "https://www.pocketyoga.com/pose/ScaleForward",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Shoulder Stand with Lotus Legs",
+      "source": "https://www.pocketyoga.com/pose/ShoulderstandLotus",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Side Lunge",
+      "source": "https://www.pocketyoga.com/pose/SideLunge",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Side Plank",
+      "source": "https://www.pocketyoga.com/pose/PlankSide",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Sleeping Yogi",
+      "source": "https://www.pocketyoga.com/pose/YogicSleep",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Snake",
+      "source": "https://www.pocketyoga.com/pose/Snake",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Sphinx",
+      "source": "https://www.pocketyoga.com/pose/Sphinx",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Staff",
+      "source": "https://www.pocketyoga.com/pose/Staff",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Standing Bow",
+      "source": "https://www.pocketyoga.com/pose/LordOfTheDance",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Standing Foot to Head",
+      "source": "https://www.pocketyoga.com/pose/TrivikramaI",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Standing Forward Bend",
+      "source": "https://www.pocketyoga.com/pose/ForwardBend",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Standing Half Bound Lotus Forward Bend",
+      "source": "https://www.pocketyoga.com/pose/StandingForwardBendHalfLotus",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Standing Hand to Big Toe",
+      "source": "https://www.pocketyoga.com/pose/StandingHandToToeFull",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Standing Leg Behind the Head",
+      "source": "https://www.pocketyoga.com/pose/StandingFootBehindHead",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Standing Leg Behind the Head Forward Bend",
+      "source": "https://www.pocketyoga.com/pose/StandingForwardBendFootBehindHead",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Standing Splits",
+      "source": "https://www.pocketyoga.com/pose/SplitsStanding",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Star",
+      "source": "https://www.pocketyoga.com/pose/Star",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Supine Angle",
+      "source": "https://www.pocketyoga.com/pose/SupineAngle",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Supine Foot to Head",
+      "source": "https://www.pocketyoga.com/pose/SupineTrivikrama",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Supine Hand to Big Toe",
+      "source": "https://www.pocketyoga.com/pose/SupineHandToToeFull",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Supine Spinal Twist",
+      "source": "https://www.pocketyoga.com/pose/SupineSpinalTwist",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Supine Straddle",
+      "source": "https://www.pocketyoga.com/pose/SupineStraddle",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Supported Bridge",
+      "source": "https://www.pocketyoga.com/pose/BridgeSupported",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Supported Headstand",
+      "source": "https://www.pocketyoga.com/pose/HeadstandSupported",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Supported Shoulder Stand",
+      "source": "https://www.pocketyoga.com/pose/ShoulderstandSupported",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Tabletop",
+      "source": "https://www.pocketyoga.com/pose/BoxNeutral",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Thunderbolt",
+      "source": "https://www.pocketyoga.com/pose/Thunderbolt",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Tiger",
+      "source": "https://www.pocketyoga.com/pose/Tiger",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Toe Stand",
+      "source": "https://www.pocketyoga.com/pose/ToeStand",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Tortoise",
+      "source": "https://www.pocketyoga.com/pose/SupineTortoise",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Tree",
+      "source": "https://www.pocketyoga.com/pose/TreePrayer",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Triangle",
+      "source": "https://www.pocketyoga.com/pose/TriangleForward",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Tripod Headstand",
+      "source": "https://www.pocketyoga.com/pose/HeadstandTripod",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Two Legs Behind the Head I",
+      "source": "https://www.pocketyoga.com/pose/FootBehindHeadTwoLegged",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Two Legs Behind the Head II",
+      "source": "https://www.pocketyoga.com/pose/FootBehindHeadTwoLeggedElevated",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Upward Plank",
+      "source": "https://www.pocketyoga.com/pose/PlankUpward",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Upward-Facing Dog",
+      "source": "https://www.pocketyoga.com/pose/UpwardDog",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Warrior I",
+      "source": "https://www.pocketyoga.com/pose/WarriorI",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Warrior II",
+      "source": "https://www.pocketyoga.com/pose/WarriorII",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Warrior III",
+      "source": "https://www.pocketyoga.com/pose/WarriorIII",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Waterfall",
+      "source": "https://www.pocketyoga.com/pose/CorpseDoubleLegRaise",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Wheel",
+      "source": "https://www.pocketyoga.com/pose/Wheel",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Wide Legged Forward Bend I",
+      "source": "https://www.pocketyoga.com/pose/WideLeggedForwardBendI",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Wide Legged Forward Bend II",
+      "source": "https://www.pocketyoga.com/pose/WideLeggedForwardBendII",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Wide Legged Forward Bend III",
+      "source": "https://www.pocketyoga.com/pose/WideLeggedForwardBendIII",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Wide Legged Forward Bend IV",
+      "source": "https://www.pocketyoga.com/pose/WideLeggedForwardBendIV",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Wide Splits",
+      "source": "https://www.pocketyoga.com/pose/SplitsWide",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Wild Thing",
+      "source": "https://www.pocketyoga.com/pose/WildThing",
+      "legacyContacts": [],
+      "findings": []
+    },
+    {
+      "name": "Wind Removing",
+      "source": "https://www.pocketyoga.com/pose/Turtle",
+      "legacyContacts": [],
+      "findings": []
+    }
+  ]
+}

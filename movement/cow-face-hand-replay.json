@@ -1,0 +1,866 @@
+{
+  "scope": "Static saved witnesses; conservative negatives require confirmation; hooked candidate is not certified grip. No catalog changes.",
+  "results": [
+    {
+      "family": "legs",
+      "mode": "all",
+      "seed": 17,
+      "kneeSeparationMm": 160,
+      "oldGuardsPass": true,
+      "fingertipReach": {
+        "pass": false,
+        "residuals": {
+          "left": 0.13178526041083838,
+          "right": 0.2854838736086449
+        }
+      },
+      "opposedContact": {
+        "pass": false,
+        "normalDot": 0.1319686773861914,
+        "contacts": []
+      },
+      "hookedGripCandidate": {
+        "pass": false,
+        "curled": {
+          "left": [],
+          "right": []
+        },
+        "contacts": [],
+        "certified": false
+      },
+      "overlaps": [],
+      "externalClear": true
+    },
+    {
+      "family": "legs",
+      "mode": "all",
+      "seed": 73,
+      "kneeSeparationMm": 160,
+      "oldGuardsPass": true,
+      "fingertipReach": {
+        "pass": false,
+        "residuals": {
+          "left": 0.1309917441271263,
+          "right": 0.28693890838248903
+        }
+      },
+      "opposedContact": {
+        "pass": false,
+        "normalDot": 0.1319686773861914,
+        "contacts": []
+      },
+      "hookedGripCandidate": {
+        "pass": false,
+        "curled": {
+          "left": [],
+          "right": []
+        },
+        "contacts": [],
+        "certified": false
+      },
+      "overlaps": [],
+      "externalClear": true
+    },
+    {
+      "family": "legs",
+      "mode": "omit-rom",
+      "seed": 17,
+      "kneeSeparationMm": 160,
+      "oldGuardsPass": true,
+      "fingertipReach": {
+        "pass": false,
+        "residuals": {
+          "left": 0.13004390561149137,
+          "right": 0.2887294064685207
+        }
+      },
+      "opposedContact": {
+        "pass": false,
+        "normalDot": 0.1319686773861914,
+        "contacts": []
+      },
+      "hookedGripCandidate": {
+        "pass": false,
+        "curled": {
+          "left": [],
+          "right": []
+        },
+        "contacts": [],
+        "certified": false
+      },
+      "overlaps": [],
+      "externalClear": true
+    },
+    {
+      "family": "legs",
+      "mode": "omit-rom",
+      "seed": 73,
+      "kneeSeparationMm": 160,
+      "oldGuardsPass": true,
+      "fingertipReach": {
+        "pass": false,
+        "residuals": {
+          "left": 0.13004390561149137,
+          "right": 0.2887294064685207
+        }
+      },
+      "opposedContact": {
+        "pass": false,
+        "normalDot": 0.1319686773861914,
+        "contacts": []
+      },
+      "hookedGripCandidate": {
+        "pass": false,
+        "curled": {
+          "left": [],
+          "right": []
+        },
+        "contacts": [],
+        "certified": false
+      },
+      "overlaps": [],
+      "externalClear": true
+    },
+    {
+      "family": "legs",
+      "mode": "omit-collision",
+      "seed": 17,
+      "kneeSeparationMm": 160,
+      "oldGuardsPass": true,
+      "fingertipReach": {
+        "pass": false,
+        "residuals": {
+          "left": 0.13088092535499218,
+          "right": 0.2871451984488438
+        }
+      },
+      "opposedContact": {
+        "pass": false,
+        "normalDot": 0.1319686773861914,
+        "contacts": []
+      },
+      "hookedGripCandidate": {
+        "pass": false,
+        "curled": {
+          "left": [],
+          "right": []
+        },
+        "contacts": [],
+        "certified": false
+      },
+      "overlaps": [],
+      "externalClear": true
+    },
+    {
+      "family": "legs",
+      "mode": "omit-collision",
+      "seed": 73,
+      "kneeSeparationMm": 160,
+      "oldGuardsPass": true,
+      "fingertipReach": {
+        "pass": false,
+        "residuals": {
+          "left": 0.13004390561149137,
+          "right": 0.2887294064685207
+        }
+      },
+      "opposedContact": {
+        "pass": false,
+        "normalDot": 0.1319686773861914,
+        "contacts": []
+      },
+      "hookedGripCandidate": {
+        "pass": false,
+        "curled": {
+          "left": [],
+          "right": []
+        },
+        "contacts": [],
+        "certified": false
+      },
+      "overlaps": [],
+      "externalClear": true
+    },
+    {
+      "family": "legs",
+      "mode": "omit-floor",
+      "seed": 17,
+      "kneeSeparationMm": 160,
+      "oldGuardsPass": true,
+      "fingertipReach": {
+        "pass": false,
+        "residuals": {
+          "left": 0.13004390561149137,
+          "right": 0.2887294064685207
+        }
+      },
+      "opposedContact": {
+        "pass": false,
+        "normalDot": 0.1319686773861914,
+        "contacts": []
+      },
+      "hookedGripCandidate": {
+        "pass": false,
+        "curled": {
+          "left": [],
+          "right": []
+        },
+        "contacts": [],
+        "certified": false
+      },
+      "overlaps": [],
+      "externalClear": true
+    },
+    {
+      "family": "legs",
+      "mode": "omit-floor",
+      "seed": 73,
+      "kneeSeparationMm": 160,
+      "oldGuardsPass": true,
+      "fingertipReach": {
+        "pass": false,
+        "residuals": {
+          "left": 0.13004390561149137,
+          "right": 0.2887294064685207
+        }
+      },
+      "opposedContact": {
+        "pass": false,
+        "normalDot": 0.1319686773861914,
+        "contacts": []
+      },
+      "hookedGripCandidate": {
+        "pass": false,
+        "curled": {
+          "left": [],
+          "right": []
+        },
+        "contacts": [],
+        "certified": false
+      },
+      "overlaps": [],
+      "externalClear": true
+    },
+    {
+      "family": "legs",
+      "mode": "omit-seat",
+      "seed": 17,
+      "kneeSeparationMm": 160,
+      "oldGuardsPass": true,
+      "fingertipReach": {
+        "pass": false,
+        "residuals": {
+          "left": 0.13004390561149137,
+          "right": 0.2887294064685207
+        }
+      },
+      "opposedContact": {
+        "pass": false,
+        "normalDot": 0.1319686773861914,
+        "contacts": []
+      },
+      "hookedGripCandidate": {
+        "pass": false,
+        "curled": {
+          "left": [],
+          "right": []
+        },
+        "contacts": [],
+        "certified": false
+      },
+      "overlaps": [],
+      "externalClear": true
+    },
+    {
+      "family": "legs",
+      "mode": "omit-seat",
+      "seed": 73,
+      "kneeSeparationMm": 160,
+      "oldGuardsPass": true,
+      "fingertipReach": {
+        "pass": false,
+        "residuals": {
+          "left": 0.13004390561149137,
+          "right": 0.2887294064685207
+        }
+      },
+      "opposedContact": {
+        "pass": false,
+        "normalDot": 0.1319686773861914,
+        "contacts": []
+      },
+      "hookedGripCandidate": {
+        "pass": false,
+        "curled": {
+          "left": [],
+          "right": []
+        },
+        "contacts": [],
+        "certified": false
+      },
+      "overlaps": [],
+      "externalClear": true
+    },
+    {
+      "family": "arms",
+      "mode": "all",
+      "seed": 17,
+      "kneeSeparationMm": null,
+      "oldGuardsPass": true,
+      "fingertipReach": {
+        "pass": true,
+        "residuals": {
+          "left": 0.0006621339913326167,
+          "right": 0.0017505386379103134
+        }
+      },
+      "opposedContact": {
+        "pass": false,
+        "normalDot": 0.09798010121611445,
+        "contacts": []
+      },
+      "hookedGripCandidate": {
+        "pass": false,
+        "curled": {
+          "left": [],
+          "right": []
+        },
+        "contacts": [],
+        "certified": false
+      },
+      "overlaps": [
+        {
+          "a": "leftMiddle3",
+          "b": "rightMiddle3",
+          "kind": "opposite-fingers",
+          "geometry": "capsule-capsule",
+          "approximate": false,
+          "gap": -0.0008235697132404638
+        }
+      ],
+      "externalClear": false
+    },
+    {
+      "family": "arms",
+      "mode": "all",
+      "seed": 73,
+      "kneeSeparationMm": null,
+      "oldGuardsPass": true,
+      "fingertipReach": {
+        "pass": true,
+        "residuals": {
+          "left": 0.0008999643126426348,
+          "right": 0.003125377970616149
+        }
+      },
+      "opposedContact": {
+        "pass": false,
+        "normalDot": -0.49385460876003473,
+        "contacts": [
+          {
+            "a": "leftMiddle3",
+            "b": "rightMiddle3",
+            "kind": "opposite-fingers",
+            "geometry": "capsule-capsule",
+            "approximate": false,
+            "gap": 0.0008166196704291152
+          }
+        ]
+      },
+      "hookedGripCandidate": {
+        "pass": false,
+        "curled": {
+          "left": [],
+          "right": []
+        },
+        "contacts": [],
+        "certified": false
+      },
+      "overlaps": [
+        {
+          "a": "leftThumb2",
+          "b": "torso",
+          "kind": "finger-core",
+          "geometry": "capsule-ellipsoid-lower-bound",
+          "approximate": true,
+          "gap": -0.00213690980800702
+        }
+      ],
+      "externalClear": false
+    },
+    {
+      "family": "arms",
+      "mode": "omit-rom",
+      "seed": 17,
+      "kneeSeparationMm": null,
+      "oldGuardsPass": true,
+      "fingertipReach": {
+        "pass": false,
+        "residuals": {
+          "left": 0.0026826301114060342,
+          "right": 0.12804987128982354
+        }
+      },
+      "opposedContact": {
+        "pass": false,
+        "normalDot": 0.15953493128680984,
+        "contacts": [
+          {
+            "a": "leftRing3",
+            "b": "rightThumb2",
+            "kind": "opposite-fingers",
+            "geometry": "capsule-capsule",
+            "approximate": false,
+            "gap": 0.004836639392034556
+          }
+        ]
+      },
+      "hookedGripCandidate": {
+        "pass": false,
+        "curled": {
+          "left": [],
+          "right": []
+        },
+        "contacts": [],
+        "certified": false
+      },
+      "overlaps": [],
+      "externalClear": true
+    },
+    {
+      "family": "arms",
+      "mode": "omit-rom",
+      "seed": 73,
+      "kneeSeparationMm": null,
+      "oldGuardsPass": true,
+      "fingertipReach": {
+        "pass": false,
+        "residuals": {
+          "left": 0.01022699515369838,
+          "right": 0.059112138181721244
+        }
+      },
+      "opposedContact": {
+        "pass": false,
+        "normalDot": -0.58109945681285,
+        "contacts": []
+      },
+      "hookedGripCandidate": {
+        "pass": false,
+        "curled": {
+          "left": [],
+          "right": []
+        },
+        "contacts": [],
+        "certified": false
+      },
+      "overlaps": [],
+      "externalClear": true
+    },
+    {
+      "family": "arms",
+      "mode": "omit-collision",
+      "seed": 17,
+      "kneeSeparationMm": null,
+      "oldGuardsPass": true,
+      "fingertipReach": {
+        "pass": false,
+        "residuals": {
+          "left": 0.12569831886427468,
+          "right": 0.2887294064685207
+        }
+      },
+      "opposedContact": {
+        "pass": false,
+        "normalDot": 0.173383546118554,
+        "contacts": []
+      },
+      "hookedGripCandidate": {
+        "pass": false,
+        "curled": {
+          "left": [],
+          "right": []
+        },
+        "contacts": [],
+        "certified": false
+      },
+      "overlaps": [],
+      "externalClear": true
+    },
+    {
+      "family": "arms",
+      "mode": "omit-collision",
+      "seed": 73,
+      "kneeSeparationMm": null,
+      "oldGuardsPass": true,
+      "fingertipReach": {
+        "pass": true,
+        "residuals": {
+          "left": 0.004296034741611643,
+          "right": 0.003195840261587586
+        }
+      },
+      "opposedContact": {
+        "pass": false,
+        "normalDot": -0.49738760035948637,
+        "contacts": [
+          {
+            "a": "leftMiddle3",
+            "b": "rightMiddle3",
+            "kind": "opposite-fingers",
+            "geometry": "capsule-capsule",
+            "approximate": false,
+            "gap": 0.003822968519184876
+          }
+        ]
+      },
+      "hookedGripCandidate": {
+        "pass": false,
+        "curled": {
+          "left": [],
+          "right": []
+        },
+        "contacts": [],
+        "certified": false
+      },
+      "overlaps": [
+        {
+          "a": "leftThumb2",
+          "b": "torso",
+          "kind": "finger-core",
+          "geometry": "capsule-ellipsoid-lower-bound",
+          "approximate": true,
+          "gap": -0.015350115341151752
+        }
+      ],
+      "externalClear": false
+    },
+    {
+      "family": "arms",
+      "mode": "omit-floor",
+      "seed": 17,
+      "kneeSeparationMm": null,
+      "oldGuardsPass": true,
+      "fingertipReach": {
+        "pass": true,
+        "residuals": {
+          "left": 0.0006621339913326167,
+          "right": 0.0017505386379103134
+        }
+      },
+      "opposedContact": {
+        "pass": false,
+        "normalDot": 0.09798010121611445,
+        "contacts": []
+      },
+      "hookedGripCandidate": {
+        "pass": false,
+        "curled": {
+          "left": [],
+          "right": []
+        },
+        "contacts": [],
+        "certified": false
+      },
+      "overlaps": [
+        {
+          "a": "leftMiddle3",
+          "b": "rightMiddle3",
+          "kind": "opposite-fingers",
+          "geometry": "capsule-capsule",
+          "approximate": false,
+          "gap": -0.0008235697132404638
+        }
+      ],
+      "externalClear": false
+    },
+    {
+      "family": "arms",
+      "mode": "omit-floor",
+      "seed": 73,
+      "kneeSeparationMm": null,
+      "oldGuardsPass": true,
+      "fingertipReach": {
+        "pass": true,
+        "residuals": {
+          "left": 0.0008999643126426348,
+          "right": 0.003125377970616149
+        }
+      },
+      "opposedContact": {
+        "pass": false,
+        "normalDot": -0.49385460876003473,
+        "contacts": [
+          {
+            "a": "leftMiddle3",
+            "b": "rightMiddle3",
+            "kind": "opposite-fingers",
+            "geometry": "capsule-capsule",
+            "approximate": false,
+            "gap": 0.0008166196704291152
+          }
+        ]
+      },
+      "hookedGripCandidate": {
+        "pass": false,
+        "curled": {
+          "left": [],
+          "right": []
+        },
+        "contacts": [],
+        "certified": false
+      },
+      "overlaps": [
+        {
+          "a": "leftThumb2",
+          "b": "torso",
+          "kind": "finger-core",
+          "geometry": "capsule-ellipsoid-lower-bound",
+          "approximate": true,
+          "gap": -0.00213690980800702
+        }
+      ],
+      "externalClear": false
+    },
+    {
+      "family": "arms",
+      "mode": "omit-seat",
+      "seed": 17,
+      "kneeSeparationMm": null,
+      "oldGuardsPass": true,
+      "fingertipReach": {
+        "pass": false,
+        "residuals": {
+          "left": 0.10097876028426019,
+          "right": 0.24214753156455232
+        }
+      },
+      "opposedContact": {
+        "pass": false,
+        "normalDot": 0.02414508834332202,
+        "contacts": []
+      },
+      "hookedGripCandidate": {
+        "pass": false,
+        "curled": {
+          "left": [],
+          "right": []
+        },
+        "contacts": [],
+        "certified": false
+      },
+      "overlaps": [],
+      "externalClear": true
+    },
+    {
+      "family": "arms",
+      "mode": "omit-seat",
+      "seed": 73,
+      "kneeSeparationMm": null,
+      "oldGuardsPass": true,
+      "fingertipReach": {
+        "pass": false,
+        "residuals": {
+          "left": 0.12604930857233537,
+          "right": 0.27362650802276667
+        }
+      },
+      "opposedContact": {
+        "pass": false,
+        "normalDot": 0.05019269772867363,
+        "contacts": []
+      },
+      "hookedGripCandidate": {
+        "pass": false,
+        "curled": {
+          "left": [],
+          "right": []
+        },
+        "contacts": [],
+        "certified": false
+      },
+      "overlaps": [],
+      "externalClear": true
+    },
+    {
+      "family": "legs",
+      "mode": "all",
+      "seed": 17,
+      "kneeSeparationMm": 100,
+      "oldGuardsPass": true,
+      "fingertipReach": {
+        "pass": false,
+        "residuals": {
+          "left": 0.13156272653983808,
+          "right": 0.28588810684278443
+        }
+      },
+      "opposedContact": {
+        "pass": false,
+        "normalDot": 0.1319686773861914,
+        "contacts": []
+      },
+      "hookedGripCandidate": {
+        "pass": false,
+        "curled": {
+          "left": [],
+          "right": []
+        },
+        "contacts": [],
+        "certified": false
+      },
+      "overlaps": [],
+      "externalClear": true
+    },
+    {
+      "family": "legs",
+      "mode": "all",
+      "seed": 73,
+      "kneeSeparationMm": 100,
+      "oldGuardsPass": true,
+      "fingertipReach": {
+        "pass": false,
+        "residuals": {
+          "left": 0.13163928969683117,
+          "right": 0.2857487017721349
+        }
+      },
+      "opposedContact": {
+        "pass": false,
+        "normalDot": 0.1319686773861914,
+        "contacts": []
+      },
+      "hookedGripCandidate": {
+        "pass": false,
+        "curled": {
+          "left": [],
+          "right": []
+        },
+        "contacts": [],
+        "certified": false
+      },
+      "overlaps": [],
+      "externalClear": true
+    },
+    {
+      "family": "legs",
+      "mode": "all",
+      "seed": 17,
+      "kneeSeparationMm": 220,
+      "oldGuardsPass": true,
+      "fingertipReach": {
+        "pass": false,
+        "residuals": {
+          "left": 0.13179723067146737,
+          "right": 0.2854622115137049
+        }
+      },
+      "opposedContact": {
+        "pass": false,
+        "normalDot": 0.1319686773861914,
+        "contacts": []
+      },
+      "hookedGripCandidate": {
+        "pass": false,
+        "curled": {
+          "left": [],
+          "right": []
+        },
+        "contacts": [],
+        "certified": false
+      },
+      "overlaps": [],
+      "externalClear": true
+    },
+    {
+      "family": "legs",
+      "mode": "all",
+      "seed": 73,
+      "kneeSeparationMm": 220,
+      "oldGuardsPass": true,
+      "fingertipReach": {
+        "pass": false,
+        "residuals": {
+          "left": 0.1316919852302488,
+          "right": 0.28565295504912824
+        }
+      },
+      "opposedContact": {
+        "pass": false,
+        "normalDot": 0.1319686773861914,
+        "contacts": []
+      },
+      "hookedGripCandidate": {
+        "pass": false,
+        "curled": {
+          "left": [],
+          "right": []
+        },
+        "contacts": [],
+        "certified": false
+      },
+      "overlaps": [],
+      "externalClear": true
+    },
+    {
+      "family": "legs",
+      "mode": "all",
+      "seed": 17,
+      "kneeSeparationMm": -160,
+      "oldGuardsPass": true,
+      "fingertipReach": {
+        "pass": false,
+        "residuals": {
+          "left": 0.13173774150728973,
+          "right": 0.28556994861408713
+        }
+      },
+      "opposedContact": {
+        "pass": false,
+        "normalDot": 0.1319686773861914,
+        "contacts": []
+      },
+      "hookedGripCandidate": {
+        "pass": false,
+        "curled": {
+          "left": [],
+          "right": []
+        },
+        "contacts": [],
+        "certified": false
+      },
+      "overlaps": [],
+      "externalClear": true
+    },
+    {
+      "family": "legs",
+      "mode": "all",
+      "seed": 73,
+      "kneeSeparationMm": -160,
+      "oldGuardsPass": true,
+      "fingertipReach": {
+        "pass": false,
+        "residuals": {
+          "left": 0.13131377556019283,
+          "right": 0.28634381154986904
+        }
+      },
+      "opposedContact": {
+        "pass": false,
+        "normalDot": 0.1319686773861914,
+        "contacts": []
+      },
+      "hookedGripCandidate": {
+        "pass": false,
+        "curled": {
+          "left": [],
+          "right": []
+        },
+        "contacts": [],
+        "certified": false
+      },
+      "overlaps": [],
+      "externalClear": true
+    }
+  ]
+}

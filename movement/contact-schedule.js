@@ -88,3 +88,16 @@ export function sampleContactSchedule(input, progress) {
   // This flags absence of scheduled full contact, NOT measured loss of balance.
   return {anchors, requiredAnchors, unsupported: requiredAnchors.length === 0};
 }
+
+const footAnchor=anchor=>/-(sole|heel|forefoot|toe|foot-top|foot-edge)$/.test(anchor);
+export function movingFootSide(input){
+  const schedule=normalizeContactSchedule(input);
+  if(!schedule)return null;
+  const sides=['left','right'];
+  const transferred=sides.find(side=>
+    schedule.anchors.some(entry=>entry.anchor.startsWith(`${side}-`)&&footAnchor(entry.anchor)&&entry.start&&!entry.end)&&
+    schedule.anchors.some(entry=>entry.anchor.startsWith(`${side}-`)&&footAnchor(entry.anchor)&&!entry.start&&entry.end));
+  if(transferred)return transferred;
+  const stable=sides.filter(side=>schedule.anchors.some(entry=>entry.anchor.startsWith(`${side}-`)&&footAnchor(entry.anchor)&&entry.start&&entry.end));
+  return stable.length===1?sides.find(side=>side!==stable[0]):null;
+}

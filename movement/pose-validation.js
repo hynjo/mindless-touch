@@ -107,10 +107,10 @@ export function inspectSupports(rig,pose){
 export function evaluateSupportRequirements(surfaces,requirements){
  const bilateral={'sit-bones':'sit-bone',palms:'palm',forearms:'forearm','upper-arms':'upper-arm',elbows:'elbow',shins:'shin',knees:'knee',soles:'sole',heels:'heel',forefeet:'forefoot',toes:'toe','foot-tops':'foot-top',fingertips:'fingertip'};
  const assess=name=>{
-  const opposite={'opposite-sole-heel':['heel'],'opposite-sole-toe':['toe'],'opposite-sole-knee-foot-top':['knee','foot-top']}[name];
+  const opposite={'opposite-sole-heel':['heel'],'opposite-sole-toe':['toe'],'opposite-forefoot-toe':['toe'],'opposite-sole-knee-foot-top':['knee','foot-top']}[name];
   if(opposite){
    const alternatives=['left','right'].map(side=>{
-    const other=side==='left'?'right':'left',names=[side+'-sole',...opposite.map(part=>other+'-'+part)];
+    const other=side==='left'?'right':'left',base=name.startsWith('opposite-forefoot')?'forefoot':'sole',names=[side+'-'+base,...opposite.map(part=>other+'-'+part)];
     const samples=names.map(n=>surfaces[n]);
     return {name:names.join(' + '),pass:samples.every(s=>s.pass),samples};
    });

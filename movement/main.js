@@ -7,11 +7,15 @@ import {createSelfConstraints} from './self-constraints.js';
 import {createBody} from './body.js';
 import {colorBody,bodyParts} from './body-colors.js';
 import {createPoleConstraints,POLE,capturePose} from './pole-constraints.js';
-import {SEQUENCE_FORMAT,SEQUENCE_VERSION,MAX_STEPS,parseSequence,serializeSequence} from './sequence-file.js';
+import {SEQUENCE_FORMAT,SEQUENCE_VERSION,MAX_STEPS,MAX_SEQUENCE_BYTES,parseSequence,serializeSequence} from './sequence-file.js';
 import { sunSalutation } from './examples.js';
 import {neckStretching} from './neck-example.js';
 import {ashtangaShortPractice} from './ashtanga-example.js';
 import {yogaPoses} from './poses.js';
+import {experimentOrder} from './sequence-experiment.js';
+import {changesFootSupport,inspectTransitionSupports} from './transition-supports.js';
+import {enableRouteReview} from './route-review.js';
+import {compileTransitionMotion,sameMotionFrame,replayTransitionMotion} from './transition-motion.js';
 import {findPoseByPath,posePath} from './pose-routes.js';
 import { createTimeline } from './playback.js';
 import { poleFlow } from './pole-example.js';
@@ -33,7 +37,7 @@ import {inspectPoseForm} from './pose-contracts.js';
 import {inspectSupports} from './pose-validation.js';
 import {supportProfile} from './support-profiles.js';
 import {projectSupportPose} from './support-solver.js';
-import {sampleContactSchedule} from './contact-schedule.js';
+import {movingFootSide,sampleContactSchedule} from './contact-schedule.js';
 import {inspectScheduledHolds} from './scheduled-supports.js';
 import {enablePlaybackToolbar,setPlaybackIcon} from './playback-toolbar.js';
 enablePlaybackToolbar();
@@ -596,6 +600,23 @@ function renderPlayback() {
   const from = sequenceFrames[sample.index], to = sequenceFrames[sample.next];
   if (!from || !to) return;
   const selfBefore=selfConstraints.snapshot(),surface=poleConstraints||floorConstraints,surfaceBefore=surface.snapshot();
+  const solvedMotion=!poleStudio&&sample.index!==sample.next&&sequence.steps[sample.index].transitionMotion;
+  if(!poleStudio){
+    const previous=timeline.sample(lastSelfPlaybackTime);
+    for(let index=previous.index;index<=sample.index;index++){
+      const step=sequence.steps[index];if(!step?.transitionMotion||index>=sequence.steps.length-1)continue;
+      let failure;
+      try{
+        const motion=compileTransitionMotion(step.transitionMotion,joints.map(j=>j.id));
+        if(!sameMotionFrame(motion.start,sequenceFrames[index])||!sameMotionFrame(motion.end,sequenceFrames[index+1]))failure={reason:'Route endpoints changed. Search again'};
+        else failure=replayTransitionMotion(supportRig,selfConstraints,motion,index===previous.index?previous.progress:0,index===sample.index?sample.progress:1);
+      }catch(error){failure={reason:error.message};}
+      if(failure){
+        surface.restore(surfaceBefore);selfConstraints.restore(selfBefore);playback.time=lastSelfPlaybackTime;playback.index=previous.index;pausePlayback();updateFloorContacts();
+        sequenceMessage(`Transition blocked: ${failure.reason} (${step.name} → ${sequence.steps[index+1].name}).`,true);routeReview?.record(index,failure.reason,sample.progress);return;
+      }
+    }
+  }
   if (poleStudio) {
     const motion=samplePoleMotion(sequence.steps,sequenceFrames,sample.index,sample.next,sample.mix,joints.map((j,i)=>j.isFinger ? i:-1).filter(i=>i>=0));
     blendHandOffsets(root,from.handOffsets,to.handOffsets,sample.mix);
@@ -604,24 +625,32 @@ function renderPlayback() {
     poleConstraints.grips.clear();
     for (const [side,grip] of motion.grips) poleConstraints.grips.set(side,{...grip});
     if(!poleConstraints.commit()){pausePlayback();sequenceMessage('Transition blocked by pole contact. Add an intermediate pose.',true);}
-  } else {
+  } else if(!solvedMotion) {
     blendHandOffsets(root,from.handOffsets,to.handOffsets,sample.mix);
     root.position.lerpVectors(from.position,to.position,sample.mix);
     joints.forEach(({group},i)=>group.quaternion.slerpQuaternions(from.rotations[i],to.rotations[i],sample.mix));
     const startSupport=palmsAreSupported(sequence.steps[sample.index]),endSupport=palmsAreSupported(sequence.steps[sample.next]);
     if(sequence.steps[sample.index].floorSupport==='palms-knees'&&sequence.steps[sample.next].floorSupport==='palms-knees')placeHandsAndKnees(palmRig);
-    else if(startSupport && endSupport)placePalmsOnFloor(palmRig);
+    else if(startSupport && endSupport){
+      const schedule=sequence.steps[sample.index].contactSchedule;
+      const movingFoot=movingFootSide(schedule);
+      const constrainAnkles=changesFootSupport(sequence.steps[sample.index],sequence.steps[sample.next]);
+      const activeMovingFoot=sample.progress>0&&sample.progress<1?movingFoot:null;
+      placePalmsOnFloor(palmRig,{constrainAnkles,movingFoot:activeMovingFoot,footLift:activeMovingFoot?Math.pow(Math.sin(Math.PI*sample.progress),.25)*.03:0});
+      if(activeMovingFoot)for(let pass=0;pass<2;pass++)placePalmsOnFloor(palmRig,{constrainAnkles,movingFoot:activeMovingFoot,footLift:Math.pow(Math.sin(Math.PI*sample.progress),.25)*.003});
+    }
     else if(startSupport || endSupport)preparePalmLanding(palmRig);
     if((sequence.steps[sample.index].floorSupport&&sequence.steps[sample.next].floorSupport)||floorConstraints.clearance()<.0007)floorConstraints.settle();
     updateFloorContacts();
   }
+  if(solvedMotion)updateFloorContacts();
   if(!selfConstraints.commit()){
     const failure=selfConstraints.failure();
     const label=id=>joints.find(joint=>joint.id===id)?.label||id;
     const reason=failure?.joint?`${label(failure.joint)} ${failure.axis} limit`:failure?`${label(failure.a)} / ${label(failure.b)} contact`:'body contact';
     const transition=`${sequence.steps[sample.index].name} → ${sequence.steps[sample.next].name}`;
     surface.restore(surfaceBefore);selfConstraints.restore(selfBefore);playback.time=lastSelfPlaybackTime;playback.index=timeline.sample(playback.time).index;pausePlayback();updateSelfContactUI(true);updateFloorContacts();
-    sequenceMessage(`Transition blocked: ${reason} (${transition}). Adjust the pose or add an intermediate pose.`,true);return;
+    sequenceMessage(`Transition blocked: ${reason} (${transition}). Adjust the pose or add an intermediate pose.`,true);routeReview?.record(sample.index,reason,sample.progress);return;
   }
   if(!poleStudio&&sample.index!==sample.next&&sequence.steps[sample.index].contactSchedule){
     const scheduled=sampleContactSchedule(sequence.steps[sample.index].contactSchedule,sample.progress);
@@ -629,6 +658,13 @@ function renderPlayback() {
     if(inspection.issues.length){
       surface.restore(surfaceBefore);selfConstraints.restore(selfBefore);playback.time=lastSelfPlaybackTime;playback.index=timeline.sample(playback.time).index;pausePlayback();updateFloorContacts();
       sequenceMessage(`Transition blocked: scheduled contact missing (${inspection.issues.map(issue=>issue.name.replaceAll('-',' ')).join(', ')}). Adjust the pose or release/landing timing.`,true);return;
+    }
+  }
+  if(!poleStudio&&!solvedMotion&&!sequence.steps[sample.index].contactSchedule){
+    const inspection=inspectTransitionSupports(supportRig,sequence.steps[sample.index],sequence.steps[sample.next],sample.mix);
+    if(!inspection.pass){
+      surface.restore(surfaceBefore);selfConstraints.restore(selfBefore);playback.time=lastSelfPlaybackTime;playback.index=timeline.sample(playback.time).index;pausePlayback();updateFloorContacts();
+      sequenceMessage(`Transition blocked: ${inspection.reason} (${sequence.steps[sample.index].name} → ${sequence.steps[sample.next].name}).`,true);routeReview?.record(sample.index,inspection.reason,sample.progress);return;
     }
   }
   lastSelfPlaybackTime=playback.time;
@@ -672,6 +708,13 @@ speedControl.onchange = event => {playback.speed = Number(event.target.value);};
 document.addEventListener('visibilitychange',() => {if (document.hidden) pausePlayback();});
 function statusText(message){document.querySelector('#sequence-status').textContent=message;}
 function sequenceMessage(message,error=false){const node=document.querySelector('#sequence-message');node.textContent=message;node.dataset.error=String(error);}
+const routeReview=poleStudio?null:enableRouteReview({container:document.querySelector('#example-gallery'),dimensions,catalog:yogaPoses,preview:pose=>makeThumbnails([pose],false)[0],getSequence:()=>({...sequence,pendingPose:playback.edited?storedPose():null}),applyCandidate:(index,inserted,motion,transitionSeconds)=>{
+ if(sequence.steps.length+inserted.length>MAX_STEPS){sequenceMessage('Candidate exceeds the sequence limit.',true);return false;}
+ pausePlayback();rememberSequence();const steps=structuredClone(sequence.steps);
+ if(motion){steps[index].transitionMotion=structuredClone(motion);steps[index].transitionSeconds=transitionSeconds;delete steps[index].contactSchedule;}
+ else {delete steps[index].transitionMotion;steps.splice(index+1,0,...inserted.map(step=>({...structuredClone(step),id:crypto.randomUUID()})));}
+ replaceSequence({...sequence,steps},index);sequenceMessage('Supported route applied.');return true;
+}});
 function rememberSequence(){sequenceHistory.push({sequence:structuredClone(sequence),index:playback.index});if(sequenceHistory.length>20)sequenceHistory.shift();document.querySelector('#undo-sequence').disabled=false;}
 function storedPose(){const offsets=Object.fromEntries(Object.entries(captureHandOffsets(root)).filter(([,v])=>v.lengthSq()>0).map(([side,v])=>[side,v.toArray()]));return {...(Object.keys(offsets).length?{handOffsets:offsets}:{}),rootPosition:root.position.toArray(),rotations:Object.fromEntries(joints.map(({id,group})=>[id,[group.rotation.x,group.rotation.y,group.rotation.z]])),poleContacts:poleStudio?Object.fromEntries([...poleConstraints.grips].map(([side,grip])=>[side,{...grip}])):{}};}
 function capturedStep(previous={}) {
@@ -814,7 +857,7 @@ document.querySelector('#load-sequence').onclick=()=>document.querySelector('#se
 document.querySelector('#sequence-file').onchange=async event=>{
   const file=event.target.files[0];if(!file)return;
   try{
-    if(file.size>2*1024*1024)throw new Error('Choose a sequence file smaller than 2 MB.');
+    if(file.size>MAX_SEQUENCE_BYTES)throw new Error('Choose a sequence file no larger than 16 MB.');
     const next=parseSequence(await file.text(),fileContext);validatePoses(next);
     flushPendingPose();rememberSequence();exampleControl.value='';replaceSequence(next);sequenceMessage(`Loaded ${next.steps.length} poses from ${file.name}.`);
   }catch(error){sequenceMessage(error.message,true);}
@@ -860,6 +903,24 @@ renderer.setAnimationLoop(now => {
 
 const poseLibrary=document.querySelector('#pose-library');
 if(poseLibrary){
+ const selected=new Set();let selecting=false,draft=null;
+ const toolbar=document.createElement('div');toolbar.className='experiment-toolbar';
+ toolbar.innerHTML='<button type="button" id="select-experiment" aria-pressed="false">Select poses</button><div id="experiment-options" hidden><span id="experiment-count" role="status"></span><label>Seed <input id="experiment-seed" value="1" maxlength="80"></label><button type="button" id="generate-experiment">Generate</button><button type="button" id="shuffle-experiment">Shuffle</button><button type="button" id="clear-experiment">Clear</button><ol id="experiment-preview"></ol><button type="button" id="apply-experiment" hidden>Use as sequence</button><span id="experiment-message" role="status"></span></div>';
+ poseLibrary.querySelector('.library-heading').after(toolbar);
+ const control=id=>toolbar.querySelector('#'+id);
+ function invalidateExperiment(){draft=null;control('experiment-preview').replaceChildren();control('apply-experiment').hidden=true;control('experiment-count').textContent=`${selected.size} selected`;control('generate-experiment').disabled=control('shuffle-experiment').disabled=selected.size<2;}
+ control('select-experiment').onclick=()=>{selecting=!selecting;control('select-experiment').setAttribute('aria-pressed',String(selecting));control('experiment-options').hidden=!selecting;renderLibrary();};
+ control('clear-experiment').onclick=()=>{selected.clear();invalidateExperiment();renderLibrary();};
+ control('experiment-seed').oninput=invalidateExperiment;
+ function generateExperiment(){try{const seed=control('experiment-seed').value;draft={version:1,seed,poseIds:experimentOrder([...selected],seed)};control('experiment-preview').replaceChildren(...draft.poseIds.map(id=>{const li=document.createElement('li');li.textContent=yogaPoses.find(p=>p.id===id).name;return li;}));control('apply-experiment').hidden=false;control('experiment-message').textContent='';}catch(error){control('experiment-message').textContent=error.message;}}
+ control('generate-experiment').onclick=generateExperiment;
+ control('shuffle-experiment').onclick=()=>{control('experiment-seed').value=String(crypto.getRandomValues(new Uint32Array(1))[0]);generateExperiment();};
+ control('apply-experiment').onclick=()=>{
+  if(!draft)return;flushPendingPose();rememberSequence();pausePlayback();closeHand();
+  const steps=draft.poseIds.map(id=>{const pose=yogaPoses.find(p=>p.id===id);applyExamplePose(pose);return capturedStep({...pose,id:crypto.randomUUID(),holdSeconds:1.4,transitionSeconds:2.2});});
+  exampleControl.value='';replaceSequence({...emptySequence(),name:`Transition experiment ${draft.seed}`,experiment:structuredClone(draft),steps});setWorkspaceTab('sequence');sequenceMessage(`Experiment seed: ${draft.seed}. Transitions are unverified. Undo restores your previous sequence.`);
+ };
+ invalidateExperiment();
  const previews=new Map(),pageSize=24;
  let page=0,generation=0;
  const search=poseLibrary.querySelector('#pose-search'),category=poseLibrary.querySelector('#pose-category'),difficulty=poseLibrary.querySelector('#pose-difficulty');
@@ -879,9 +940,11 @@ if(poseLibrary){
    const label=document.createElement('span');label.className='pose-label';label.textContent=pose.name;
    const detail=document.createElement('small');detail.textContent=`${pose.category} · ${pose.difficulty}`;
    const action=document.createElement('small');action.textContent=pose.draft?'Draft · Add to sequence':'Add to sequence';
+   if(selecting){button.setAttribute('aria-pressed',String(selected.has(pose.id)));button.setAttribute('aria-label',`Select ${pose.name}`);action.textContent=selected.has(pose.id)?'Selected':'Select';}
    label.append(detail,action);button.append(img,label);
    if(pose.modification){const note=document.createElement('small');note.textContent=pose.modification;label.append(note);}
    button.onclick=()=>{
+    if(selecting){if(selected.has(pose.id))selected.delete(pose.id);else selected.add(pose.id);invalidateExperiment();renderLibrary();return;}
     if(sequence.steps.length>=MAX_STEPS){poseLibrary.querySelector('#pose-results').textContent=`Sequence limit reached (${MAX_STEPS} poses).`;return;}
     flushPendingPose();rememberSequence();applyExamplePose(pose);
     sequence.steps.push(capturedStep({...pose,id:crypto.randomUUID()}));playback.index=sequence.steps.length-1;playback.edited=false;

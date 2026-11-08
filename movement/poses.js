@@ -7,6 +7,10 @@ import {boundAngleCorrection} from './bound-angle-correction.js';
 import {crowCorrection} from './crow-correction.js';
 import {archerCorrection} from './archer-correction.js';
 import {bridgeCorrection,bridgeVariations} from './bridge-variations.js';
+import {cobraCorrection} from './cobra-correction.js';
+import {caterpillarCorrection} from './caterpillar-correction.js';
+import {butterflyCorrection} from './butterfly-correction.js';
+import {cowFaceCorrection} from './cow-face-correction.js';
 import catalog from './pose-catalog.json' with {type:'json'};
 // Reviewed clearance offsets for the mannequin proportions; stored poses are not rewritten.
 import corrections from './pose-corrections.json' with {type:'json'};
@@ -14,7 +18,10 @@ import {poseShapes,normalizeRotations} from './pose-shapes.js';
 import {sunSalutation} from './examples.js';
 // Independently authored mannequin poses. Pocket Yoga links identify the reference pose;
 // no source illustrations or descriptive text are bundled.
-const fromSequence=(id,name,category,source)=>({...structuredClone(sunSalutation.steps.find(step=>step.id===id)),id:`library-${id}`,name,category,source:`https://www.pocketyoga.com/pose/${source}`});
+const fromSequence=(id,name,category,source)=>{
+ const result={...structuredClone(sunSalutation.steps.find(step=>step.id===id)),id:`library-${id}`,name,category,source:`https://www.pocketyoga.com/pose/${source}`};
+ delete result.contactSchedule;return result;
+};
 function pose(id,name,category,source,rotations,extra={}){
  return {id:`library-${id}`,name,category,source:`https://www.pocketyoga.com/pose/${source}`,rootPosition:[0,.97,0],rotations,holdSeconds:3,transitionSeconds:2.2,...extra};
 }
@@ -49,7 +56,8 @@ const correctedYogaPoses=uncorrectedYogaPoses.map(pose=>{
  // Full authored rotations replace old clearance/IK angles, rather than leaving
  // unrelated joints from the previous draft in the new stance.
  const authored=key==='ForwardBendBigToe'?bigToeCorrection:key==='BoundAngle'?boundAngleCorrection:key==='Crow'?crowCorrection:key==='Archer'?archerCorrection:key==='Bridge'?bridgeCorrection:standingSupportCorrections[key]||lungeSupportCorrections[key];
- const result=authored?{...grounded,...structuredClone(authored)}:grounded;
+ const reviewed={Caterpillar:[caterpillarCorrection,'caterpillar-palms-v1'],CobraFull:[cobraCorrection,'cobra-grounded-v1'],Butterfly:[butterflyCorrection,'butterfly-forward-fold-v1'],KneePileBind:[cowFaceCorrection,'cow-face-preparation-v1']}[key];
+ const result=reviewed?{...grounded,...structuredClone(reviewed[0]),poseContract:reviewed[1]}:authored?{...grounded,...structuredClone(authored)}:grounded;
  const contract={ForwardBend:'forward-fold-v1',BoundAngle:'bound-angle-raised-knees-v1',Crow:'crow-bent-arms-v1',Archer:'archer-forward-lean-v1',Bridge:'bridge-interlaced-v1',BoxNeutral:'tabletop-neutral-v1',Cat:'cat-rounded-v1',Dog:'cow-extended-v1',Plank:'plank-straight-v1',FourLimbedStaff:'low-plank-v1',DownwardDog:'downward-dog-v1',Corpse:'corpse-supine-v1'}[key];
  return contract?{...result,poseContract:contract}:result;
 });

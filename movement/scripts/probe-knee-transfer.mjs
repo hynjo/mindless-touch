@@ -1,0 +1,17 @@
+import * as T from 'three';
+import {createBody} from '../body.js';
+import {applyPose} from '../apply-pose.js';
+import {yogaPoses} from '../poses.js';
+import {createFloorConstraints} from '../floor-constraints.js';
+import {capturePose,restorePose} from '../pole-constraints.js';
+import {solveFloorEntry} from '../floor-entry-solver.js';
+import {solveKneelingTransfer} from '../kneeling-transfer.js';
+const dimensions={pelvisHeight:.97,torso:.48,shoulderWidth:.44,hipWidth:.22,upperArm:.29,forearm:.26,thigh:.43,shin:.43},m=new T.MeshStandardMaterial();
+const rig=createBody({scene:new T.Scene(),dimensions,bodyMaterial:m,jointMaterial:m});rig.dimensions=dimensions;rig.byId=Object.fromEntries(rig.joints.map(j=>[j.id,j]));rig.meshes=[];rig.root.traverse(m=>{if(m.isMesh)rig.meshes.push(m)});
+const floor=createFloorConstraints(rig);
+applyPose(rig,yogaPoses.find(p=>p.name==='Cow'),{floor});const cow=capturePose(rig.root,rig.joints);
+applyPose(rig,yogaPoses.find(p=>p.name==='Big Toe'),{floor});const entry=solveFloorEntry(rig);
+if(!entry.success)throw new Error('Floor entry failed');
+restorePose(rig.root,rig.joints,entry.frames.at(-1));const result=solveKneelingTransfer(rig,cow);
+console.log(JSON.stringify({success:result.success,phases:result.phases.map(p=>({name:p.name,frames:p.frames.length,supports:p.supportRequirements})),failure:result.failure},null,2));
+if(!result.success)process.exitCode=1;

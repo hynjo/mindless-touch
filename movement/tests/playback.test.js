@@ -22,6 +22,12 @@ test('all example cards can be sought exactly, including the support transitions
   });
   assert.equal(timeline.sample(timeline.duration).index,sunSalutation.steps.length-1);
 });
+test('Sun Salutation routes Upward-Facing Dog through Plank before Downward-Facing Dog',()=>{
+ const index=sunSalutation.steps.findIndex(step=>step.name==='Upward-Facing Dog');
+ assert.equal(sunSalutation.steps[index+1].name,'Plank');
+ assert.equal(sunSalutation.steps[index+2].name,'Downward-Facing Dog');
+ assert.deepEqual(sunSalutation.steps[index+1].supportRequirements,['palms','toes']);
+});
 test('timeline sampling has no state: pausing and resuming preserves the pose',() => {
   const timeline = createTimeline(sunSalutation.steps);
   const paused = timeline.sample(4.25);

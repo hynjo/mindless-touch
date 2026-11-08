@@ -1,9 +1,14 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
-import {SEQUENCE_FORMAT,validateSequence,serializeSequence,parseSequence} from '../sequence-file.js';
+import {SEQUENCE_FORMAT,MAX_SEQUENCE_BYTES,validateSequence,serializeSequence,parseSequence} from '../sequence-file.js';
 const context={studio:'movement',dimensions:{pelvisHeight:.97},jointIds:['neck','leftThumb1']};
 const pose={rootPosition:[.1,.97,.2],rotations:{neck:[.1,.2,.3],leftThumb1:[.8,0,-.25]},poleContacts:{}};
 const document=()=>({format:SEQUENCE_FORMAT,version:1,studio:'movement',dimensions:{pelvisHeight:.97},name:'My flow',steps:[{id:'one',name:'Start',kind:'pose',cue:'Inhale',holdSeconds:3.5,transitionSeconds:1.8,floorSupport:'ground',pose:structuredClone(pose)},{id:'two',name:'Finish',kind:'transition',holdSeconds:.5,transitionSeconds:2,pose:structuredClone(pose)}]});
+test('sequence import enforces the shared motion-aware UTF-8 file budget',()=>{
+ assert.equal(MAX_SEQUENCE_BYTES,16*1024*1024);
+ assert.throws(()=>parseSequence(' '.repeat(MAX_SEQUENCE_BYTES+1),context),/16 MB/);
+ assert.throws(()=>parseSequence('한'.repeat(Math.ceil(MAX_SEQUENCE_BYTES/3)),context),/16 MB/);
+});
 test('sequence round trip preserves order, names, timing, fingers and positions',()=>{
   const original=document();const saved=serializeSequence(original,context),restored=parseSequence(saved,context);
   assert.deepEqual(restored,validateSequence(original,context));
@@ -59,4 +64,9 @@ test('optional transition contact schedules round trip without changing legacy f
  assert.deepEqual(restored.steps[0].contactSchedule,original.steps[0].contactSchedule);
  restored.steps[0].contactSchedule.anchors[1].release[0]=.2;assert.equal(original.steps[0].contactSchedule.anchors[1].release[0],.1);
  const invalid=structuredClone(original);invalid.steps[0].contactSchedule.anchors[1].landing=[.2,.4];assert.throws(()=>validateSequence(invalid,context),/contact schedule/);
+});
+test('experiment seed and generator provenance survive save/load',()=>{
+ const input=document();input.experiment={version:1,seed:'42',poseIds:['library-Cat','library-Cow']};
+ assert.deepEqual(parseSequence(serializeSequence(input,context),context).experiment,input.experiment);
+ input.experiment.version=999;assert.throws(()=>validateSequence(input,context),/metadata/);
 });

@@ -2,7 +2,7 @@ import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import * as THREE from 'three';
 import {createBody} from '../body.js';
-import {yogaPoses} from '../poses.js';
+import {yogaPoses,uncorrectedYogaPoses} from '../poses.js';
 import {createFloorConstraints} from '../floor-constraints.js';
 import {applyHandOffsets} from '../hand-offsets.js';
 import {inspectJointRanges,inspectSupports,evaluateSupportRequirements} from '../pose-validation.js';
@@ -10,9 +10,9 @@ import {supportProfile} from '../support-profiles.js';
 import {createSelfConstraints} from '../self-constraints.js';
 import {capturePose,restorePose} from '../pole-constraints.js';
 import {ashtangaShortPractice} from '../ashtanga-example.js';
-function fixture(name){
+function fixture(name,{legacy=false}={}){
  const dimensions={pelvisHeight:.97,torso:.48,shoulderWidth:.44,hipWidth:.22,upperArm:.29,forearm:.26,thigh:.43,shin:.43},material=new THREE.MeshStandardMaterial();
- const body=createBody({scene:new THREE.Scene(),dimensions,bodyMaterial:material,jointMaterial:material}),pose=yogaPoses.find(p=>p.name===name),meshes=[];
+ const body=createBody({scene:new THREE.Scene(),dimensions,bodyMaterial:material,jointMaterial:material}),pose=(legacy?uncorrectedYogaPoses:yogaPoses).find(p=>p.name===name),meshes=[];
  body.root.traverse(m=>{if(m.isMesh)meshes.push(m);});
  const rig={...body,meshes,dimensions,byId:Object.fromEntries(body.joints.map(j=>[j.id,j]))};
  applyHandOffsets(body.root,pose.handOffsets);body.root.position.fromArray(pose.rootPosition);
@@ -37,9 +37,10 @@ test('Bound Angle preserves seated sole-to-sole contact after save and restore',
  assert(pose.draft);assert.match(pose.modification,/No hand grip/);
  rig.byId.leftHip.group.rotation.z+=.08;rig.root.updateWorldMatrix(true,true);
  assert(inspectSupports(rig,pose).issues.some(i=>i.name==='sole-pair'),'a separated pair must still fail');
- for(const step of ashtangaShortPractice.steps.filter(p=>p.source?.endsWith('/BoundAngle'))){
-  assert.deepEqual(supportProfile(step).requirements,['seat','any-foot-edge'],'explicit open-foot examples stay distinct');
- }
+ const ashtanga=ashtangaShortPractice.steps.filter(p=>p.source?.endsWith('/BoundAngle'));
+ assert.deepEqual(supportProfile(ashtanga.find(step=>step.name==='Bound Angle')).requirements,['sit-bones','sole-pair'],'the routine reuses the canonical library contract');
+ for(const step of ashtanga.filter(step=>['Lift Heels','Draw Heels In','Open Knees','Bring Soles Together'].includes(step.name)))assert.deepEqual(supportProfile(step).requirements,['seat'],'airborne repositioning keeps the pelvis supported');
+ assert.equal(ashtanga.some(step=>step.name==='Closing Seat — Open Legs'),false,'the shortened practice no longer inserts a redundant seated closing substitute');
 });
 test('bilateral sit-bone support rejects a tilted seated pelvis and stays distinct from supine pelvis contact',()=>{
  const seated=fixture('Bound Angle'),supine=fixture('Corpse');
@@ -51,12 +52,13 @@ test('bilateral sit-bone support rejects a tilted seated pelvis and stays distin
  assert.notEqual(result.surfaces['left-sit-bone'].gapMm,result.surfaces['right-sit-bone'].gapMm);
 });
 test('opposite-leg contracts cannot be satisfied by a single supporting limb',()=>{
- const surfaces=Object.fromEntries(['left','right'].flatMap(side=>['sole','heel','toe','knee','foot-top'].map(part=>[side+'-'+part,{name:side+'-'+part,pass:side==='left'}])));
- for(const requirement of ['opposite-sole-heel','opposite-sole-toe','opposite-sole-knee-foot-top']){
+ const surfaces=Object.fromEntries(['left','right'].flatMap(side=>['sole','forefoot','heel','toe','knee','foot-top'].map(part=>[side+'-'+part,{name:side+'-'+part,pass:side==='left'}])));
+ for(const requirement of ['opposite-sole-heel','opposite-sole-toe','opposite-forefoot-toe','opposite-sole-knee-foot-top']){
   assert.equal(evaluateSupportRequirements(surfaces,[requirement])[0].pass,false,requirement);
  }
  surfaces['right-heel'].pass=true;assert(evaluateSupportRequirements(surfaces,['opposite-sole-heel'])[0].pass);
  surfaces['right-toe'].pass=true;assert(evaluateSupportRequirements(surfaces,['opposite-sole-toe'])[0].pass);
+ assert(evaluateSupportRequirements(surfaces,['opposite-forefoot-toe'])[0].pass);
  surfaces['right-knee'].pass=true;assert.equal(evaluateSupportRequirements(surfaces,['opposite-sole-knee-foot-top'])[0].pass,false);
  surfaces['right-foot-top'].pass=true;assert(evaluateSupportRequirements(surfaces,['opposite-sole-knee-foot-top'])[0].pass);
 });
@@ -70,8 +72,8 @@ test('one penetrated palm patch cannot pass just because the highest patch is cl
  const surface=inspectSupports(rig,pose).surfaces['left-palm'];
  assert(surface.gapMm<5);assert(surface.minGapMm<-1);assert.equal(surface.pass,false);
 });
-test('collision-free Caterpillar still fails seated support while its entire palms pass',()=>{
- const {rig,pose,floor}=fixture('Caterpillar'),s=inspectSupports(rig,pose);
+test('legacy floating Caterpillar is rejected despite full palm contact',()=>{
+ const {rig,pose,floor}=fixture('Caterpillar',{legacy:true}),s=inspectSupports(rig,pose);
  assert(floor.clearance()>0);assert(s.requirements.find(r=>r.name==='palms').pass);
  assert(!s.requirements.find(r=>r.name==='sit-bones').pass);assert(s.surfaces['left-sit-bone'].gapMm>300);
 });

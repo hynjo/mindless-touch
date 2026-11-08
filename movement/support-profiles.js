@@ -3,7 +3,7 @@ import {poseContract} from "./pose-contracts.js";
 // variants. Source descriptions were checked against Pocket Yoga /poses.json.
 // These describe geometry, not forces. Alternatives are intentional, not failures.
 const overrides={};
-export const SUPPORT_REQUIREMENTS=new Set('seat sit-bones back front-core front-chest head back-head palms forearms upper-arms elbows shins knees soles sole-pair heels forefeet toes foot-tops fingertips hands-together any-palm any-sole any-heel any-back-leg any-forefoot any-knee any-foot-edge any-toe any-foot-top any-hand palms-or-forearms head-or-chest opposite-sole-heel opposite-sole-toe opposite-sole-knee-foot-top'.split(' '));
+export const SUPPORT_REQUIREMENTS=new Set('seat sit-bones back front-core front-chest head back-head palms forearms upper-arms elbows shins knees soles sole-pair heels forefeet toes foot-tops fingertips hands-together any-palm any-sole any-heel any-back-leg any-forefoot any-knee any-foot-edge any-toe any-foot-top any-hand palms-or-forearms head-or-chest opposite-sole-heel opposite-sole-toe opposite-forefoot-toe opposite-sole-knee-foot-top'.split(' '));
 const assign=(keys,requirements,note='')=>{for(const key of keys.split(' '))overrides[key]={requirements,note};};
 SUPPORT_REQUIREMENTS.add('crow-knees-on-arms');
 SUPPORT_REQUIREMENTS.add('legs-airborne');

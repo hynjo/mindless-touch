@@ -1,6 +1,7 @@
 import {blendHandOffsets} from './hand-offsets.js';
 import * as THREE from 'three';
 import {createHandCollisionPairs} from './hand-collisions.js';
+import {createExternalHandCollisionPairs} from './external-hand-collisions.js';
 import {wristMargins} from './wrist-constraints.js';
 import {capturePose,restorePose} from './pole-constraints.js';
 // Closest distance between finite segments (including degenerate segments).
@@ -20,6 +21,8 @@ export function createSelfConstraints({root,joints}){
   if(mesh)bodies.push({id:joint.id,mesh,side:joint.id.startsWith('left')?'left':'right',arm:/Shoulder|Elbow/.test(joint.id)});
  }
  const cores=joints.filter(j=>['torso','waist','pelvis'].includes(j.id)).map(j=>({id:j.id,mesh:j.group.children.find(m=>m.isMesh&&m.geometry.type==='SphereGeometry'&&!m.userData.joint),core:true})).filter(b=>b.mesh);
+ const headJoint=joints.find(j=>j.id==='neck');
+ const head=headJoint&&{id:'head',mesh:headJoint.group.children.find(m=>m.isMesh&&m.geometry.type==='SphereGeometry'&&!m.userData.joint),core:true};
  const pairs=[];
  for(let i=0;i<bodies.length;i++)for(let j=i+1;j<bodies.length;j++){
   const a=bodies[i],b=bodies[j];
@@ -27,8 +30,18 @@ export function createSelfConstraints({root,joints}){
   if(a.side===b.side&&a.arm===b.arm)continue;
   pairs.push([a,b]);
  }
- for(const body of bodies)for(const core of cores){if(/Elbow|Knee/.test(body.id))pairs.push([body,core]);}
+ for(const body of bodies)for(const core of cores){
+  if(/Elbow/.test(body.id)||(body.id.endsWith('Knee')&&core.id==='pelvis'))pairs.push([body,core]);
+ }
  const handPairs=createHandCollisionPairs(joints,segmentDistance);
+ let externalPairs;
+ // Explicit diagnostic API: preserve submillimetre findings without changing
+ // runtime acceptance while conservative proxies and catalog impacts are reviewed.
+ function externalContacts(minDepth=0){
+  externalPairs??=createExternalHandCollisionPairs({root,joints});
+  return externalPairs.distances().flatMap((distance,i)=>distance< -minDepth?
+   [{...externalPairs.pairs[i],depth:-distance}]:[]);
+ }
  const wrists=joints.filter(joint=>joint.id.endsWith('Wrist'));
  const capsule=({mesh})=>{const half=mesh.geometry.parameters.height/2;return {a:mesh.localToWorld(new THREE.Vector3(0,-half,0)),b:mesh.localToWorld(new THREE.Vector3(0,half,0)),r:mesh.geometry.parameters.radius};};
  function coreDistance(cap,body){
@@ -39,6 +52,11 @@ export function createSelfConstraints({root,joints}){
   return (a.addScaledVector(d,t).length()-1)*Math.min(scale.x,scale.y,scale.z);
  }
  function distances(){root.updateWorldMatrix(true,true);const caps=new Map(bodies.map(body=>[body,capsule(body)]));return pairs.map(([a,b])=>{const x=caps.get(a);if(b.core)return coreDistance(x,b);const y=caps.get(b);return segmentDistance(x.a,x.b,y.a,y.b)-x.r-y.r;}).concat(handPairs.distances(),wrists.flatMap(joint=>wristMargins(joint).map(margin=>margin*.1)));}
+ function headContacts(minDepth=0){
+  if(!head?.mesh)return [];
+  root.updateWorldMatrix(true,true);
+  return bodies.filter(body=>body.arm).map(body=>({a:body.id,b:'head',depth:-coreDistance(capsule(body),head)})).filter(contact=>contact.depth>minDepth);
+ }
  const pairNames=pairs.map(([a,b])=>({a:a.id,b:b.id})).concat(handPairs.pairs);
  let safe=capturePose(root,joints);
  let baseline=distances();
@@ -68,5 +86,5 @@ export function createSelfConstraints({root,joints}){
   }
   restorePose(root,joints,to);sync();return true;
  }
- return {contacts,jointViolations,commit,sync,failure:()=>lastFailure,snapshot:()=>({safe,baseline:[...baseline]}),restore(state){safe=state.safe;baseline=[...state.baseline];}};
+ return {contacts,headContacts,externalContacts,jointViolations,commit,sync,failure:()=>lastFailure,snapshot:()=>({safe,baseline:[...baseline]}),restore(state){safe=state.safe;baseline=[...state.baseline];}};
 }

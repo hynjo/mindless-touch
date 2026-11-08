@@ -1,0 +1,302 @@
+[
+  {
+    "seed": 17,
+    "success": false,
+    "reason": "No guarded tight-contact candidate passed local pull probes within budget",
+    "contact": {
+      "fingertipReach": {
+        "pass": false,
+        "residuals": null
+      },
+      "opposedContact": {
+        "pass": true,
+        "normalDot": -0.8476885229947431,
+        "contacts": [
+          {
+            "a": "leftMiddle3",
+            "b": "rightRing3",
+            "kind": "opposite-fingers",
+            "geometry": "capsule-capsule",
+            "approximate": false,
+            "gap": 0.00038584878525174237
+          },
+          {
+            "a": "leftRing3",
+            "b": "rightMiddle2",
+            "kind": "opposite-fingers",
+            "geometry": "capsule-capsule",
+            "approximate": false,
+            "gap": 0.0038204550425766223
+          },
+          {
+            "a": "leftRing3",
+            "b": "rightMiddle3",
+            "kind": "opposite-fingers",
+            "geometry": "capsule-capsule",
+            "approximate": false,
+            "gap": 0.00010536302213805682
+          }
+        ]
+      },
+      "hookedGripCandidate": {
+        "pass": false,
+        "curled": {
+          "left": [
+            "Middle",
+            "Ring"
+          ],
+          "right": [
+            "Middle"
+          ]
+        },
+        "contacts": [
+          {
+            "a": "leftRing3",
+            "b": "rightMiddle2",
+            "kind": "opposite-fingers",
+            "geometry": "capsule-capsule",
+            "approximate": false,
+            "gap": 0.0038204550425766223
+          },
+          {
+            "a": "leftRing3",
+            "b": "rightMiddle3",
+            "kind": "opposite-fingers",
+            "geometry": "capsule-capsule",
+            "approximate": false,
+            "gap": 0.00010536302213805682
+          }
+        ],
+        "certified": false
+      },
+      "overlaps": [],
+      "externalClear": true
+    },
+    "retention": {
+      "pass": false,
+      "reason": "Insufficient nonpenetrating distal contact within 0.5 mm",
+      "contact": {
+        "fingertipReach": {
+          "pass": false,
+          "residuals": null
+        },
+        "opposedContact": {
+          "pass": true,
+          "normalDot": -0.8476885229947431,
+          "contacts": [
+            {
+              "a": "leftMiddle3",
+              "b": "rightRing3",
+              "kind": "opposite-fingers",
+              "geometry": "capsule-capsule",
+              "approximate": false,
+              "gap": 0.00038584878525174237
+            },
+            {
+              "a": "leftRing3",
+              "b": "rightMiddle3",
+              "kind": "opposite-fingers",
+              "geometry": "capsule-capsule",
+              "approximate": false,
+              "gap": 0.00010536302213805682
+            }
+          ]
+        },
+        "hookedGripCandidate": {
+          "pass": false,
+          "curled": {
+            "left": [
+              "Middle",
+              "Ring"
+            ],
+            "right": [
+              "Middle"
+            ]
+          },
+          "contacts": [
+            {
+              "a": "leftRing3",
+              "b": "rightMiddle3",
+              "kind": "opposite-fingers",
+              "geometry": "capsule-capsule",
+              "approximate": false,
+              "gap": 0.00010536302213805682
+            }
+          ],
+          "certified": false
+        },
+        "overlaps": [],
+        "externalClear": true
+      },
+      "probes": [],
+      "certified": false
+    },
+    "iterations": 20000,
+    "cost": 0.8610026700909849,
+    "blockers": {
+      "body": [],
+      "wrist": [],
+      "rom": [],
+      "supports": [],
+      "floor": 0.001774235793203141,
+      "external": []
+    },
+    "certified": false
+  },
+  {
+    "seed": 73,
+    "success": false,
+    "reason": "No guarded tight-contact candidate passed local pull probes within budget",
+    "contact": {
+      "fingertipReach": {
+        "pass": false,
+        "residuals": null
+      },
+      "opposedContact": {
+        "pass": false,
+        "normalDot": -0.7897438900815533,
+        "contacts": [
+          {
+            "a": "leftIndex3",
+            "b": "rightRing3",
+            "kind": "opposite-fingers",
+            "geometry": "capsule-capsule",
+            "approximate": false,
+            "gap": 0.0044933188662000505
+          },
+          {
+            "a": "leftMiddle2",
+            "b": "rightMiddle3",
+            "kind": "opposite-fingers",
+            "geometry": "capsule-capsule",
+            "approximate": false,
+            "gap": 0.000041435317701203275
+          },
+          {
+            "a": "leftMiddle3",
+            "b": "rightMiddle3",
+            "kind": "opposite-fingers",
+            "geometry": "capsule-capsule",
+            "approximate": false,
+            "gap": 0.000003158591738581379
+          },
+          {
+            "a": "leftMiddle3",
+            "b": "rightRing3",
+            "kind": "opposite-fingers",
+            "geometry": "capsule-capsule",
+            "approximate": false,
+            "gap": 0.0004942915346099709
+          },
+          {
+            "a": "leftRing2",
+            "b": "rightIndex3",
+            "kind": "opposite-fingers",
+            "geometry": "capsule-capsule",
+            "approximate": false,
+            "gap": 0.004833463752357087
+          },
+          {
+            "a": "leftRing3",
+            "b": "rightIndex3",
+            "kind": "opposite-fingers",
+            "geometry": "capsule-capsule",
+            "approximate": false,
+            "gap": 0.00006163653917624738
+          }
+        ]
+      },
+      "hookedGripCandidate": {
+        "pass": false,
+        "curled": {
+          "left": [
+            "Ring"
+          ],
+          "right": [
+            "Ring"
+          ]
+        },
+        "contacts": [],
+        "certified": false
+      },
+      "overlaps": [],
+      "externalClear": true
+    },
+    "retention": {
+      "pass": false,
+      "reason": "Insufficient nonpenetrating distal contact within 0.5 mm",
+      "contact": {
+        "fingertipReach": {
+          "pass": false,
+          "residuals": null
+        },
+        "opposedContact": {
+          "pass": false,
+          "normalDot": -0.7897438900815533,
+          "contacts": [
+            {
+              "a": "leftMiddle2",
+              "b": "rightMiddle3",
+              "kind": "opposite-fingers",
+              "geometry": "capsule-capsule",
+              "approximate": false,
+              "gap": 0.000041435317701203275
+            },
+            {
+              "a": "leftMiddle3",
+              "b": "rightMiddle3",
+              "kind": "opposite-fingers",
+              "geometry": "capsule-capsule",
+              "approximate": false,
+              "gap": 0.000003158591738581379
+            },
+            {
+              "a": "leftMiddle3",
+              "b": "rightRing3",
+              "kind": "opposite-fingers",
+              "geometry": "capsule-capsule",
+              "approximate": false,
+              "gap": 0.0004942915346099709
+            },
+            {
+              "a": "leftRing3",
+              "b": "rightIndex3",
+              "kind": "opposite-fingers",
+              "geometry": "capsule-capsule",
+              "approximate": false,
+              "gap": 0.00006163653917624738
+            }
+          ]
+        },
+        "hookedGripCandidate": {
+          "pass": false,
+          "curled": {
+            "left": [
+              "Ring"
+            ],
+            "right": [
+              "Ring"
+            ]
+          },
+          "contacts": [],
+          "certified": false
+        },
+        "overlaps": [],
+        "externalClear": true
+      },
+      "probes": [],
+      "certified": false
+    },
+    "iterations": 20000,
+    "cost": 4.257400034552369,
+    "blockers": {
+      "body": [],
+      "wrist": [],
+      "rom": [],
+      "supports": [],
+      "floor": 0.00201243505049499,
+      "external": []
+    },
+    "certified": false
+  }
+]

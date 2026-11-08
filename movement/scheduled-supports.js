@@ -21,8 +21,13 @@ export function inspectScheduledHolds(rig,steps,frames){
     const surfaces=Object.fromEntries(CONTACT_ANCHORS.map(name=>[name,{name,pass:declared.has(name)}]));
     // Relation/clearance requirements are checked on the actual hold geometry,
     // not treated as floor anchors to maintain throughout a transition.
-    const relationNames=new Set(['both-toe-grips','archer-leg-support','crow-knees-on-arms','legs-airborne']);
-    const missingIntent=evaluateSupportRequirements(surfaces,(target.supportRequirements||[]).filter(name=>!relationNames.has(name))).filter(requirement=>!requirement.pass);
+    const relationNames=new Set(['both-toe-grips','archer-leg-support','crow-knees-on-arms','legs-airborne','hands-together']);
+    // The schedule has one pelvic floor anchor. The hold contract still checks
+    // the two approximate sit-bone landmarks against the actual endpoint pose.
+    const scheduledRequirements=(target.supportRequirements||[]).filter(name=>!relationNames.has(name)).map(name=>name==='sit-bones'?'seat':name);
+    let missingIntent;
+    try{missingIntent=evaluateSupportRequirements(surfaces,scheduledRequirements).filter(requirement=>!requirement.pass);}
+    catch(error){issues.push({index,reason:`${endpoint?'End':'Start'} schedule has unsupported hold intent: ${error.message}.`});continue;}
     if(missingIntent.length)issues.push({index,reason:`${endpoint?'End':'Start'} schedule omits required hold supports: ${missingIntent.map(r=>r.name).join(', ')}.`});
     restorePose(rig.root,rig.joints,frames[index+endpoint]);
     const missing=inspectSupports(rig,{supportRequirements:state.requiredAnchors}).issues;
