@@ -21,7 +21,7 @@ export function inspectScheduledHolds(rig,steps,frames){
     const surfaces=Object.fromEntries(CONTACT_ANCHORS.map(name=>[name,{name,pass:declared.has(name)}]));
     // Relation/clearance requirements are checked on the actual hold geometry,
     // not treated as floor anchors to maintain throughout a transition.
-    const relationNames=new Set(['both-toe-grips','archer-leg-support','crow-knees-on-arms','legs-airborne','hands-together']);
+    const relationNames=new Set(['both-toe-grips','archer-leg-support','crow-knees-on-arms','legs-airborne','hands-together','rear-foot-grip']);
     // The schedule has one pelvic floor anchor. The hold contract still checks
     // the two approximate sit-bone landmarks against the actual endpoint pose.
     const scheduledRequirements=(target.supportRequirements||[]).filter(name=>!relationNames.has(name)).map(name=>name==='sit-bones'?'seat':name);

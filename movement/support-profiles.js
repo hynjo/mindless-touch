@@ -9,6 +9,8 @@ SUPPORT_REQUIREMENTS.add('crow-knees-on-arms');
 SUPPORT_REQUIREMENTS.add('legs-airborne');
 SUPPORT_REQUIREMENTS.add('both-toe-grips');
 SUPPORT_REQUIREMENTS.add('archer-leg-support');
+SUPPORT_REQUIREMENTS.add('opposite-sole-knee-palm');
+SUPPORT_REQUIREMENTS.add('rear-foot-grip');
 assign('Archer BoatFull BoundAngle Butterfly Cradle Easy EmbryoWomb FireLog FootBehindHead FootBehindHeadForward FootBehindHeadTwoLegged HeadToKnee Heron KneePile KneePileBind LordOfTheFishes LotusFull MarichiIIITraditional MarichiIITraditional MarichiITraditional MarichiIVTraditional SeatedForwardBend SeatedForwardBendHalfLotus SeatedForwardBendII SeatedForwardBendIII SeatedForwardBendIV SeatedForwardBendThreeLimbs SeatedGate SeatedHandToToeRevolved SplitsFront SupineTortoise',['seat']);
 assign('BoundAngle',['seat','sole-pair'],'Closed sole-to-sole variant: heel and forefoot patches face and meet their opposite-side partners. Knees need not touch the floor. Explicit open-foot preparations use their own requirements.');
 assign('Archer',['seat','archer-leg-support','both-toe-grips'],'Both hands hook their own big toes; lifted foot approaches the ear. The authored modification allows a slightly softened supporting knee.');
@@ -47,7 +49,7 @@ assign('Lunge',['palms','opposite-sole-toe'],'Flat hands reflect the current aut
 assign('Lizard',['palms-or-forearms','opposite-sole-toe']);
 assign('LungeCrescent',['opposite-sole-toe'],'Front sole and opposite rear toes; rear heel is deliberately raised.');
 assign('TriangleRevolved',['soles','any-hand'],'The catalog variant has no block: the lower hand supports on the floor. Explicitly labeled shallow preparations may declare different supports.');
-assign('CrookedMonkey',['any-palm','any-knee','any-sole']);
+assign('CrookedMonkey',['opposite-sole-knee-palm','rear-foot-grip']);
 assign('Gate',['any-knee','any-sole']);
 assign('Tiger',['palms','any-knee']);
 assign('PigeonHalf',['knees','any-foot-top'],'Contact of the folded shin is reviewed separately from leg orientation.');

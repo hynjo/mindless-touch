@@ -30,8 +30,10 @@
 <section id="pose-library" class="pose-library-workspace" role="tabpanel" aria-labelledby="poses-tab" hidden>
 <div class="library-heading"><div><span class="eyebrow">POSE LIBRARY</span><h2 id="poses-title">Poses</h2></div></div>
 <p>Choose a pose to add it to your sequence and apply it to the model. The library includes 167 primary poses plus reviewed variations. Draft poses still need alignment and contact refinement, especially for binds and balances. Reference links open the original pose.</p>
-<div class="library-filters"><label for="pose-search">Search poses<input id="pose-search" type="search" placeholder="Try Cat or Plank"></label><label for="pose-category">Category<select id="pose-category"><option value="">All categories</option></select></label><label for="pose-difficulty">Difficulty<select id="pose-difficulty"><option value="">All levels</option><option value="beginner">Beginner</option><option value="intermediate">Intermediate</option><option value="expert">Expert</option></select></label></div>
-<div class="library-pagination"><button id="poses-previous" type="button">Previous</button><span id="pose-page"></span><button id="poses-next" type="button">Next</button></div>
-<p id="pose-results" role="status"></p><div id="library-grid"></div>
+<div class="library-toolbar" role="region" aria-label="Pose library controls">
+<div class="library-filters"><label for="pose-search">Search poses<input id="pose-search" type="search" placeholder="Try Cat or Plank" aria-controls="library-grid"></label><label for="pose-category">Category<select id="pose-category" aria-controls="library-grid"><option value="">All categories</option></select></label><label for="pose-difficulty">Difficulty<select id="pose-difficulty" aria-controls="library-grid"><option value="">All levels</option><option value="beginner">Beginner</option><option value="intermediate">Intermediate</option><option value="expert">Expert</option></select></label></div>
+<div class="library-browse-controls"><nav class="library-pagination" aria-label="Pose pages"><button id="poses-previous" type="button" aria-controls="library-grid">Previous</button><span id="pose-page"></span><button id="poses-next" type="button" aria-controls="library-grid">Next</button></nav><p id="pose-results" role="status" aria-atomic="true"></p></div>
+</div>
+<div id="library-grid"></div>
 </section>
 <script type="module" src="/movement/main.js"></script></body></html>

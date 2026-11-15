@@ -56,6 +56,24 @@ input,select{accent-color:#fff875}
 
 .library-pagination{display:flex;align-items:center;gap:14px;margin:12px 0;font-size:12px}.library-card img[hidden]{display:block;visibility:hidden}.library-card .pose-label{min-height:90px}.library-card button{vertical-align:top}.library-filters label{min-width:0}
 
+.library-toolbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:8;min-width:0;padding:12px 0;background:#10110d;margin-bottom:18px}
+.library-toolbar .library-filters{display:grid;grid-template-columns:minmax(0,2fr) repeat(2,minmax(0,1fr));align-items:end;gap:12px}
+.library-toolbar label{margin:0}
+.library-toolbar input,.library-toolbar select{margin-top:6px;min-height:44px;border:0;padding:10px 12px}
+.library-browse-controls{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px 16px;margin-top:12px}
+.library-toolbar .library-pagination{margin:0;gap:12px}
+.library-pagination button{min-height:44px;border:0}
+#pose-page{min-width:88px;text-align:center;white-space:nowrap;font-variant-numeric:tabular-nums}
+.library-toolbar #pose-results{margin:0;font-size:12px}
+.library-toolbar+#library-grid{min-height:calc(100svh - var(--library-toolbar-height,150px));align-content:start}
+@media(max-width:760px){
+ .library-toolbar .library-filters{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .library-toolbar .library-filters label:first-child{grid-column:1 / -1}
+ .library-toolbar input,.library-toolbar select{font-size:16px}
+ .library-toolbar .library-pagination{gap:10px}
+ .library-pagination button{padding-inline:12px}
+}
+
 .body-key{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;margin:0 0 26px;font-size:11px;color:#c5c7b7}.body-key button{display:flex;align-items:center;gap:8px;width:100%;padding:7px 8px;border:0;background:transparent;color:inherit;text-align:left;font-size:inherit}.body-key-swatch{display:flex;width:14px;height:10px;border-radius:3px;flex-shrink:0;overflow:visible}.body-key-swatch i{width:50%;height:100%}.body-key-swatch i:first-child{border-radius:3px 0 0 3px}.body-key-swatch i:last-child{border-radius:0 3px 3px 0}.body-key button:hover{background:#252619}.body-key button[aria-pressed=true]{background:#292b18;color:#fff875}.body-key button[aria-pressed=true] .body-key-swatch{outline:1px solid #5b5c3c;outline-offset:2px}.body-key button[data-selected-side=left] .body-key-swatch i:first-child,.body-key button[data-selected-side=right] .body-key-swatch i:last-child{outline:2px solid #fff875;outline-offset:1px;position:relative;z-index:1}.body-key button[aria-pressed=true] .body-key-swatch:empty{outline:2px solid #fff875;outline-offset:2px}.body-key-note{grid-column:1 / -1;font-size:10px;margin:2px 0 0;line-height:1.6}
 
 #self-contact-status{font-size:11px;color:#c6cf8a}#self-contact-status[data-error=true]{color:#ffaaa0}
@@ -125,3 +143,20 @@ header .sequence-panel-toggle{flex:0 0 40px;width:40px;height:40px;margin-left:1
 .route-suggestions img { max-width: 100%; height: auto; }
 .route-suggestions button[aria-pressed="true"] { background: #ffff70; color: #111; }
 .route-suggestions small { display: block; margin-top: .4rem; }
+
+/* A long, non-wrapping sequence must scroll inside its gallery instead of
+   becoming the mobile grid track's intrinsic width. */
+@media(max-width:760px){
+ main{grid-template-columns:minmax(0,1fr);width:100%;overflow-x:clip}
+ main>.stage,main>aside,main>.example-gallery{width:100%;min-width:0}
+ .pose-gallery{width:100%;max-width:100%;overscroll-behavior-inline:contain}
+}
+@media(max-width:480px){
+ header{height:116px;display:grid;grid-template-columns:auto minmax(0,1fr) auto;grid-template-rows:44px 44px;gap:8px 10px;padding:10px 12px}
+ header>a{grid-column:1;grid-row:1}
+ header .studio-switcher{grid-column:2;grid-row:1;justify-self:end;margin-left:0}
+ header .sequence-panel-toggle{grid-column:3;grid-row:1;margin-left:0}
+ header .workspace-actions{grid-column:1 / -1;grid-row:2;justify-self:start;margin-left:0;max-width:100%}
+ .stage,.has-example .stage{min-height:max(620px,calc(100svh - 116px))}
+ #pose-library{min-height:calc(100svh - 116px)}
+}

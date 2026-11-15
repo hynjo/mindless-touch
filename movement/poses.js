@@ -11,6 +11,8 @@ import {cobraCorrection} from './cobra-correction.js';
 import {caterpillarCorrection} from './caterpillar-correction.js';
 import {butterflyCorrection} from './butterfly-correction.js';
 import {cowFaceCorrection} from './cow-face-correction.js';
+import {crookedMonkeyCorrection} from './crooked-monkey-correction.js';
+import {deafManCorrection} from './deaf-man-correction.js';
 import catalog from './pose-catalog.json' with {type:'json'};
 // Reviewed clearance offsets for the mannequin proportions; stored poses are not rewritten.
 import corrections from './pose-corrections.json' with {type:'json'};
@@ -56,7 +58,7 @@ const correctedYogaPoses=uncorrectedYogaPoses.map(pose=>{
  // Full authored rotations replace old clearance/IK angles, rather than leaving
  // unrelated joints from the previous draft in the new stance.
  const authored=key==='ForwardBendBigToe'?bigToeCorrection:key==='BoundAngle'?boundAngleCorrection:key==='Crow'?crowCorrection:key==='Archer'?archerCorrection:key==='Bridge'?bridgeCorrection:standingSupportCorrections[key]||lungeSupportCorrections[key];
- const reviewed={Caterpillar:[caterpillarCorrection,'caterpillar-palms-v1'],CobraFull:[cobraCorrection,'cobra-grounded-v1'],Butterfly:[butterflyCorrection,'butterfly-forward-fold-v1'],KneePileBind:[cowFaceCorrection,'cow-face-preparation-v1']}[key];
+ const reviewed={DeafMan:[deafManCorrection,'deaf-man-grounded-preparation-v1'],CrookedMonkey:[crookedMonkeyCorrection,'crooked-monkey-heel-hold-v1'],Caterpillar:[caterpillarCorrection,'caterpillar-palms-v1'],CobraFull:[cobraCorrection,'cobra-grounded-v1'],Butterfly:[butterflyCorrection,'butterfly-forward-fold-v1'],KneePileBind:[cowFaceCorrection,'cow-face-preparation-v1']}[key];
  const result=reviewed?{...grounded,...structuredClone(reviewed[0]),poseContract:reviewed[1]}:authored?{...grounded,...structuredClone(authored)}:grounded;
  const contract={ForwardBend:'forward-fold-v1',BoundAngle:'bound-angle-raised-knees-v1',Crow:'crow-bent-arms-v1',Archer:'archer-forward-lean-v1',Bridge:'bridge-interlaced-v1',BoxNeutral:'tabletop-neutral-v1',Cat:'cat-rounded-v1',Dog:'cow-extended-v1',Plank:'plank-straight-v1',FourLimbedStaff:'low-plank-v1',DownwardDog:'downward-dog-v1',Corpse:'corpse-supine-v1'}[key];
  return contract?{...result,poseContract:contract}:result;

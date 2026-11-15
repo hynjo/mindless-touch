@@ -1,7 +1,11 @@
 import {Vector3} from 'three';
 import {createSelfConstraints} from './self-constraints.js';
+import {crookedMonkeySides} from './rear-foot-grip.js';
+import {floorClearance} from './floor-constraints.js';
 // Versioned editorial identities. These are mannequin criteria, not medical ROM.
 export const POSE_CONTRACTS = Object.freeze({
+ 'deaf-man-grounded-preparation-v1': {requirements:['back','back-head','upper-arms','forearms','knees','foot-tops'],form:'deaf-man-preparation'},
+ 'crooked-monkey-heel-hold-v1': {requirements:['opposite-sole-knee-palm','rear-foot-grip'],form:'crooked-monkey'},
  'cow-face-preparation-v1': {requirements:['sit-bones'],form:'cow-face-preparation'},
  'butterfly-forward-fold-v1': {requirements:['sit-bones','sole-pair','palms'],form:'butterfly'},
  'caterpillar-palms-v1': {requirements:['sit-bones','palms','heels'],form:'caterpillar'},
@@ -34,6 +38,36 @@ export function inspectPoseForm(rig,pose) {
  const contract=poseContract(pose),checks=[];
  const degrees=id=>rig.byId[id].group.rotation.x*180/Math.PI;
  const check=(name,pass)=>checks.push({name,pass});
+ if(contract?.form==='deaf-man-preparation'){
+  rig.root.updateWorldMatrix(true,true);
+  const position=id=>rig.byId[id].group.getWorldPosition(new Vector3());
+  const head=rig.headMesh.getWorldPosition(new Vector3());
+  check('Pelvis folds above the head',position('pelvis').y>head.y+.15);
+  check('Lumbar and thoracic spine round',degrees('waist')>20&&degrees('torso')>30);
+  for(const side of ['left','right']){
+   check(`${side} knee remains folded`,degrees(side+'Knee')>45);
+   check(`${side} arm extends along the floor`,Math.abs(degrees(side+'Elbow'))<20);
+   const upperArm=rig.byId[side+'Shoulder'].group.children.find(m=>m.geometry?.type==='CapsuleGeometry');
+   check(`${side} upper arm contacts the floor`,floorClearance(upperArm)<=.0057);
+   check(`${side} foot reaches beyond the head`,position(side+'Ankle').z<head.z-.10);
+   check(`${side} hand extends away from the feet`,position(side+'Wrist').z>head.z+.10);
+  }
+  check('Arms clear the head',createSelfConstraints(rig).headContacts(0).length===0);
+ }
+ if(contract?.form==='crooked-monkey'){
+  rig.root.updateWorldMatrix(true,true);
+  const {front,rear}=crookedMonkeySides(rig),sign=front==='left'?1:-1;
+  const position=id=>rig.byId[id].group.getWorldPosition(new Vector3());
+  const local=id=>rig.root.worldToLocal(position(id));
+  check('Front knee bent',degrees(front+'Knee')>55&&degrees(front+'Knee')<125);
+  check('Front knee opens outward',local(front+'Knee').x*sign>local(front+'Hip').x*sign+.04);
+  check('Rear knee behind pelvis',local(rear+'Knee').z<-.18);
+  check('Rear knee folded',degrees(rear+'Knee')>110);
+  check('Rear foot lifted',Math.min(...rig.feet[rear].meshes.map(floorClearance))>.10);
+  check('Chest twists toward the free hand',rig.byId.torso.group.rotation.y*sign>30*Math.PI/180);
+  check('Supporting hand stays inside front foot',local(front+'Ankle').x*sign>local(rear+'Wrist').x*sign+.10);
+  check('Arms clear the head',createSelfConstraints(rig).headContacts(0).length===0);
+ }
  if(contract?.form==='cow-face-preparation'){
   rig.root.updateWorldMatrix(true,true);
   const position=id=>rig.byId[id].group.getWorldPosition(new Vector3());

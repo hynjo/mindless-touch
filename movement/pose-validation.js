@@ -7,6 +7,7 @@ import {inspectSolePair} from './sole-pair-contact.js';
 import {inspectCrowSupport} from './crow-support.js';
 import {inspectToeGrips} from './toe-grip.js';
 import {inspectArcherLegs} from './archer-support.js';
+import {inspectRearFootGrip} from './rear-foot-grip.js';
 const deg=THREE.MathUtils.radToDeg;
 const down=new THREE.Vector3(0,-1,0);
 export const CONTACT_TOLERANCE_MM=5;
@@ -101,13 +102,14 @@ export function inspectSupports(rig,pose){
  if(profile.requirements.some(name=>['crow-knees-on-arms','legs-airborne'].includes(name)))Object.assign(surfaces,inspectCrowSupport(rig));
  if(profile.requirements.includes('both-toe-grips'))surfaces['both-toe-grips']=inspectToeGrips(rig);
  if(profile.requirements.includes('archer-leg-support'))surfaces['archer-leg-support']=inspectArcherLegs(rig,surfaces);
+ if(profile.requirements.includes('rear-foot-grip'))surfaces['rear-foot-grip']=inspectRearFootGrip(rig);
  const requirements=evaluateSupportRequirements(surfaces,profile.requirements);
  return {profile,requirements,issues:requirements.filter(r=>!r.pass),surfaces,actualContactRegions:Object.values(surfaces).filter(s=>s.kind==='clearance'?false:s.kind==='relation'||s.name==='sole-pair'?s.pass:s.minGapMm<=CONTACT_TOLERANCE_MM).map(s=>s.name)};
 }
 export function evaluateSupportRequirements(surfaces,requirements){
  const bilateral={'sit-bones':'sit-bone',palms:'palm',forearms:'forearm','upper-arms':'upper-arm',elbows:'elbow',shins:'shin',knees:'knee',soles:'sole',heels:'heel',forefeet:'forefoot',toes:'toe','foot-tops':'foot-top',fingertips:'fingertip'};
  const assess=name=>{
-  const opposite={'opposite-sole-heel':['heel'],'opposite-sole-toe':['toe'],'opposite-forefoot-toe':['toe'],'opposite-sole-knee-foot-top':['knee','foot-top']}[name];
+  const opposite={'opposite-sole-heel':['heel'],'opposite-sole-toe':['toe'],'opposite-forefoot-toe':['toe'],'opposite-sole-knee-foot-top':['knee','foot-top'],'opposite-sole-knee-palm':['knee','palm']}[name];
   if(opposite){
    const alternatives=['left','right'].map(side=>{
     const other=side==='left'?'right':'left',base=name.startsWith('opposite-forefoot')?'forefoot':'sole',names=[side+'-'+base,...opposite.map(part=>other+'-'+part)];

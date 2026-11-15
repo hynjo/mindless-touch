@@ -361,7 +361,7 @@ function updateFloorContacts() {
   const step=sequence.steps[playback.index];
   fitSupportsButton.disabled=playback.playing||!step?.supportRequirements?.length;
   if(status&&step?.supportRequirements?.length&&!playback.playing){
-    const inspection=inspectSupports({root,byId,hands,feet,headMesh},step);
+    const inspection=inspectSupports(supportRig,step);
     inspection.issues.push(...inspectPoseForm(supportRig,step).issues);
     status.dataset.error=String(inspection.issues.length>0);
     status.textContent=inspection.issues.length?`Support needs adjustment: ${inspection.issues.map(issue=>issue.name).join(', ')}. Floor clearance alone does not confirm support.`:'Required floor supports are in contact.';
@@ -986,8 +986,22 @@ if(poseLibrary){
   if(!['ArrowLeft','ArrowRight'].includes(event.key))return;event.preventDefault();
   const tab=document.body.dataset.workspaceTab==='poses'?'sequence':'poses';setWorkspaceTab(tab,{focus:tab==='poses'});document.querySelector(`#${tab}-tab`).focus();
  });
- const filter=()=>{page=0;renderLibrary();};search.oninput=filter;category.onchange=filter;difficulty.onchange=filter;
- for(const [id,delta] of [['poses-previous',-1],['poses-next',1]])poseLibrary.querySelector('#'+id).onclick=()=>{page+=delta;renderLibrary();poseLibrary.scrollTop=0;};
+ const libraryToolbar=poseLibrary.querySelector('.library-toolbar'),libraryGrid=poseLibrary.querySelector('#library-grid');
+ const libraryToolbarSize=new ResizeObserver(()=>{
+  const height=libraryToolbar.getBoundingClientRect().height;
+  if(height)poseLibrary.style.setProperty('--library-toolbar-height',`${height}px`);
+ });
+ libraryToolbarSize.observe(libraryToolbar);
+ function revealLibraryStart(){
+  const toolbar=libraryToolbar.getBoundingClientRect();
+  poseLibrary.style.setProperty('--library-toolbar-height',`${toolbar.height}px`);
+  const gridTop=libraryGrid.getBoundingClientRect().top;
+  // The document scrolls, not the library panel. Keep the sticky controls in
+  // place and bring the first new result beneath them without stealing focus.
+  if(gridTop<toolbar.bottom)scrollTo({top:Math.max(0,scrollY+gridTop-toolbar.height-8),behavior:'instant'});
+ }
+ const filter=()=>{page=0;renderLibrary();revealLibraryStart();};search.oninput=filter;category.onchange=filter;difficulty.onchange=filter;
+ for(const [id,delta] of [['poses-previous',-1],['poses-next',1]])poseLibrary.querySelector('#'+id).onclick=()=>{page+=delta;renderLibrary();revealLibraryStart();};
  setWorkspaceTab('sequence');
 }
 

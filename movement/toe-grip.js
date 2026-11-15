@@ -17,7 +17,7 @@ function pointEllipsoid(point,mesh){
  for(let i=0;i<30;i++){const t=(lo+hi)/2;if(p.reduce((s,x,i)=>s+squared[i]*x*x/(t+squared[i])**2,0)>1)lo=t;else hi=t;}
  const t=(lo+hi)/2;return Math.hypot(...p.map((x,i)=>x*t/(t+squared[i])));
 }
-function capEllipsoid(cap,mesh){
+export function capsuleEllipsoidGap(cap,mesh){
  const at=t=>pointEllipsoid(cap.a.clone().lerp(cap.b,t),mesh);
  let lo=0,hi=1;for(let i=0;i<24;i++){const a=lo+(hi-lo)/3,b=hi-(hi-lo)/3;if(at(a)<at(b))hi=b;else lo=a;}
  return Math.min(at(0),at(1),at((lo+hi)/2))-cap.r;
@@ -46,7 +46,7 @@ export function handFootContacts({root,hands,feet},tolerance=.0005){
    if(h.userData.boxHalfExtents){
     if(f.geometry.type==='SphereGeometry')distance=boxEllipsoid(h,f);
     else {const c=capsule(f);distance=boxDistance(h.worldToLocal(c.a),h.worldToLocal(c.b),h.userData.boxHalfExtents)-c.r;}
-   }else{const a=capsule(h);distance=f.geometry.type==='CapsuleGeometry'?gap(a,capsule(f)):capEllipsoid(a,f);}
+   }else{const a=capsule(h);distance=f.geometry.type==='CapsuleGeometry'?gap(a,capsule(f)):capsuleEllipsoidGap(a,f);}
    if(distance< -tolerance)contacts.push({hand:handSide,foot:footSide,part:h.userData.fingerJoint?.id||'palm',depth:-distance});
   }
  }
